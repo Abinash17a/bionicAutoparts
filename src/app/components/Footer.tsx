@@ -11,10 +11,10 @@ export default function Footer() {
           <div className="mb-6 md:mb-0 flex items-center">
             {/* Visa image on the left */}
             <Image
-              src="/visa.png" // Direct path from publidc directory
+              src="/visa.png" 
               alt="Visa"
-              width={50} // Adjust width as needed
-              height={30} // Adjust height as needed
+              width={200} 
+              height={200} 
               className="mr-4"
             />
             <div>

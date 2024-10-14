@@ -13,10 +13,18 @@ export default function Navbar() {
     <nav className="bg-gray-800 shadow-md">
       <div className="container mx-auto px-6 py-4 flex justify-between items-center">
         {/* Logo Section */}
-        <div className="text-white text-3xl font-bold">
-          <Link href="/">Grade Auto Parts</Link>
+        <div className="flex items-center">
+          {/* Placeholder for logo */}
+          <img
+            src="/logo.png" // Replace with your logo's URL
+            alt="Bionic Auto Parts Logo"
+            className="h-10 w-10 mr-3" // Adjust the height/width as needed
+          />
+          <div className="text-white text-3xl font-bold">
+            <Link href="/">Bionic Auto Parts</Link>
+          </div>
         </div>
-        
+
         {/* Mobile Menu Button */}
         <div className="md:hidden flex items-center">
           <button onClick={toggleMenu} className="text-white focus:outline-none">
@@ -35,15 +43,9 @@ export default function Navbar() {
           <Link href="/about-us" className="text-white hover:bg-gray-700 transition duration-300 ease-in-out px-4 py-2 rounded-lg font-semibold">
             About Us
           </Link>
-          {/* <Link href="/blogs" className="text-white hover:bg-gray-700 transition duration-300 ease-in-out px-4 py-2 rounded-lg font-semibold">
-            Blogs
-          </Link> */}
           <Link href="/contact" className="text-white hover:bg-gray-700 transition duration-300 ease-in-out px-4 py-2 rounded-lg font-semibold">
             Contact
           </Link>
-          {/* <Link href="/admin" className="text-white hover:bg-gray-700 transition duration-300 ease-in-out px-4 py-2 rounded-lg font-semibold">
-            Admin
-          </Link> */}
         </div>
       </div>
 
