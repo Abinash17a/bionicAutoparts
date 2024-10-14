@@ -5,6 +5,7 @@ import { fetchPartsData } from './lib/fetchPartsData';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+
 const initialData = {
   years: [1960, 1961, 1962, 1963, 1964, 1965, 1966, 1967, 1968, 1969, 1970, 1971, 1972, 1973, 1974, 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023],
   makes: [
@@ -592,9 +593,6 @@ interface DataType {
   parts: string[];
 }
 
-
-
-
 export default function Home() {
   const [data, setData] = useState<DataType>({
     years: [],
@@ -929,28 +927,28 @@ export default function Home() {
         {/* Right side: Image grid with four images and added spacing */}
         <div className="grid grid-cols-2 gap-6 p-10 rounded-md">
           <Image
-            src="https://images.unsplash.com/photo-1717068341263-33331ec8104c?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            src="/mainpage1.jpg"
             alt="Car Part 1"
             width={250}
             height={150}
             className="rounded-md w-full"
           />
           <Image
-            src="https://images.unsplash.com/photo-1727413433599-496949ef8196?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            src="/mainpage2.jpg"
             alt="Car Part 2"
             width={250}
             height={150}
             className="rounded-md w-full"
           />
           <Image
-            src="https://images.unsplash.com/photo-1702146715471-ae6b10689969?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            src="/mainpage3.jpg"
             alt="Car Part 3"
             width={250}
             height={150}
             className="rounded-md w-full"
           />
           <Image
-            src="https://images.unsplash.com/photo-1702146713882-2579afb0bfba?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            src="/mainpage4.jpg"
             alt="Car Part 4"
             width={250}
             height={150}

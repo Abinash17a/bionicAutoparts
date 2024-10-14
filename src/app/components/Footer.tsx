@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa'; // Import icons for social media
-import Image from 'next/image'; // Import Next.js Image component
+import Image from 'next/image'; 
 
 export default function Footer() {
   return (

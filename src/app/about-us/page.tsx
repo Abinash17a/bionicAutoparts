@@ -12,30 +12,15 @@ export default function AboutUs() {
             Our Huge Inventory and Computerized Search Network
             We encourage you to contact us at any time that you are looking for used auto parts. Our inventory is organized and coded, so we can look up parts for you in seconds on our computers. We also have access to the Computerized Search Network that is connected to over affiliated recycling centers.
           </p>
-          {/* <p className="mt-4 text-lg">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quis lorem ut libero malesuada feugiat. Proin eget tortor risus. Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.
-          </p>
-          <p className="mt-4 text-lg">
-            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-          </p> */}
         </div>
 
-        {/* Right Side: Additional Information */}
+        {/* Right Side: Large Image */}
         <div className="w-full md:w-1/2 md:pl-8">
-          <h2 className="text-xl font-semibold">What We Offer</h2>
-          <p className="mt-4 text-lg">
-            We offer a wide range of auto parts including:
-          </p>
-          <ul className="mt-4 list-disc pl-6 text-lg">
-            <li>Engine Parts</li>
-            <li>Brakes and Suspension</li>
-            <li>Electrical Components</li>
-            <li>Body Parts</li>
-            <li>Accessories and More!</li>
-          </ul>
-          <p className="mt-4 text-lg">
-            Our team is always here to help you find exactly what you need, ensuring that your vehicle runs at its best.
-          </p>
+          <img
+            src="/aboutusmain.jpg"
+            alt="About Us"
+            className="w-full h-auto rounded-lg shadow-lg"
+          />
         </div>
       </div>
 
@@ -46,30 +31,6 @@ export default function AboutUs() {
           Our mission is to provide the best quality auto parts at competitive prices while ensuring customer satisfaction through our dedicated service.
         </p>
       </div>
-
-      {/* Team Section */}
-      <div className="mt-12">
-        <h2 className="text-2xl font-bold text-center">Meet Our Team</h2>
-        <div className="flex flex-wrap justify-center mt-6">
-          <div className="bg-white shadow-lg rounded-lg p-4 mx-4 mb-4 text-center w-1/3">
-            <img src="/images/team1.jpg" alt="Team Member" className="rounded-full w-32 h-32 mx-auto" />
-            <h3 className="text-lg font-semibold mt-2">John Doe</h3>
-            <p className="text-sm text-gray-600">CEO</p>
-          </div>
-          <div className="bg-white shadow-lg rounded-lg p-4 mx-4 mb-4 text-center w-1/3">
-            <img src="/images/team2.jpg" alt="Team Member" className="rounded-full w-32 h-32 mx-auto" />
-            <h3 className="text-lg font-semibold mt-2">Jane Smith</h3>
-            <p className="text-sm text-gray-600">Operations Manager</p>
-          </div>
-          <div className="bg-white shadow-lg rounded-lg p-4 mx-4 mb-4 text-center w-1/3">
-            <img src="/images/team3.jpg" alt="Team Member" className="rounded-full w-32 h-32 mx-auto" />
-            <h3 className="text-lg font-semibold mt-2">Emily Johnson</h3>
-            <p className="text-sm text-gray-600">Customer Support</p>
-          </div>
-        </div>
-      </div>
-
-
 
       {/* Fancy Bottom Section */}
       <div className="mt-12 text-center bg-gray-600 text-white p-6 rounded-lg shadow-lg">
