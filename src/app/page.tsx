@@ -621,6 +621,19 @@ export default function Home() {
   const [contact, setContact] = useState('');
   const [email, setEmail] = useState('');
   const [zipCode, setZipCode] = useState('');
+  const [isValid, setIsValid] = useState(false); 
+
+  const validateForm = () => {
+    if (year && make && model && part) {
+      setIsValid(true);
+    } else {
+      setIsValid(false);
+    }
+  };
+
+  useEffect(() => {
+    validateForm();
+  }, [year, make, model, part]);
 
 
   const images = [
@@ -664,9 +677,15 @@ export default function Home() {
   }, [searchedPart]);
 
   const handleSearch = () => {
-    setSearchedPart({ years: [year], makes: [make], models: [model], parts: [part] }); //
+    setSearchedPart({ years: [year], makes: [make], models: [model], parts: [part] }); 
+    if(isValid){
     setShowSearchResult(true);
     setModalVisible(true);
+    }
+    else{
+      setModalVisible(false);
+      toast.error('All fields need to be filled before submitting!');
+    }
   };
 
   const handleModalClose = () => {

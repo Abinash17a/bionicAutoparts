@@ -9,14 +9,15 @@ export default function AboutUs() {
         <div className="w-full md:w-1/2 mb-8 md:mb-0">
           <h2 className="text-3xl font-bold">About Our Company</h2>
           <p className="mt-4 text-lg">
-            At Grade Auto Parts, we are committed to providing the highest quality auto parts and exceptional customer service. Our dedicated team works tirelessly to ensure that our customers have access to the parts they need to keep their vehicles running smoothly.
+            Our Huge Inventory and Computerized Search Network
+            We encourage you to contact us at any time that you are looking for used auto parts. Our inventory is organized and coded, so we can look up parts for you in seconds on our computers. We also have access to the Computerized Search Network that is connected to over affiliated recycling centers.
           </p>
-          <p className="mt-4 text-lg">
+          {/* <p className="mt-4 text-lg">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quis lorem ut libero malesuada feugiat. Proin eget tortor risus. Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.
           </p>
           <p className="mt-4 text-lg">
             Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-          </p>
+          </p> */}
         </div>
 
         {/* Right Side: Additional Information */}
@@ -51,24 +52,24 @@ export default function AboutUs() {
         <h2 className="text-2xl font-bold text-center">Meet Our Team</h2>
         <div className="flex flex-wrap justify-center mt-6">
           <div className="bg-white shadow-lg rounded-lg p-4 mx-4 mb-4 text-center w-1/3">
-            <img src="/images/team1.jpg" alt="Team Member" className="rounded-full w-32 h-32 mx-auto"/>
+            <img src="/images/team1.jpg" alt="Team Member" className="rounded-full w-32 h-32 mx-auto" />
             <h3 className="text-lg font-semibold mt-2">John Doe</h3>
             <p className="text-sm text-gray-600">CEO</p>
           </div>
           <div className="bg-white shadow-lg rounded-lg p-4 mx-4 mb-4 text-center w-1/3">
-            <img src="/images/team2.jpg" alt="Team Member" className="rounded-full w-32 h-32 mx-auto"/>
+            <img src="/images/team2.jpg" alt="Team Member" className="rounded-full w-32 h-32 mx-auto" />
             <h3 className="text-lg font-semibold mt-2">Jane Smith</h3>
             <p className="text-sm text-gray-600">Operations Manager</p>
           </div>
           <div className="bg-white shadow-lg rounded-lg p-4 mx-4 mb-4 text-center w-1/3">
-            <img src="/images/team3.jpg" alt="Team Member" className="rounded-full w-32 h-32 mx-auto"/>
+            <img src="/images/team3.jpg" alt="Team Member" className="rounded-full w-32 h-32 mx-auto" />
             <h3 className="text-lg font-semibold mt-2">Emily Johnson</h3>
             <p className="text-sm text-gray-600">Customer Support</p>
           </div>
         </div>
       </div>
 
-  
+
 
       {/* Fancy Bottom Section */}
       <div className="mt-12 text-center bg-gray-600 text-white p-6 rounded-lg shadow-lg">

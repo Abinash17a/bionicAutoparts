@@ -35,15 +35,15 @@ export default function Navbar() {
           <Link href="/about-us" className="text-white hover:bg-gray-700 transition duration-300 ease-in-out px-4 py-2 rounded-lg font-semibold">
             About Us
           </Link>
-          <Link href="/blogs" className="text-white hover:bg-gray-700 transition duration-300 ease-in-out px-4 py-2 rounded-lg font-semibold">
+          {/* <Link href="/blogs" className="text-white hover:bg-gray-700 transition duration-300 ease-in-out px-4 py-2 rounded-lg font-semibold">
             Blogs
-          </Link>
+          </Link> */}
           <Link href="/contact" className="text-white hover:bg-gray-700 transition duration-300 ease-in-out px-4 py-2 rounded-lg font-semibold">
             Contact
           </Link>
-          <Link href="/admin" className="text-white hover:bg-gray-700 transition duration-300 ease-in-out px-4 py-2 rounded-lg font-semibold">
+          {/* <Link href="/admin" className="text-white hover:bg-gray-700 transition duration-300 ease-in-out px-4 py-2 rounded-lg font-semibold">
             Admin
-          </Link>
+          </Link> */}
         </div>
       </div>
 

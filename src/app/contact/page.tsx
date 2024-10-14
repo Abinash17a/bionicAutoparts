@@ -1,5 +1,44 @@
-"use client"
+"use client";
+import { useState } from 'react';
+
 export default function Contact() {
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [responseMessage, setResponseMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleChange = (e:any) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e:any) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
+      console.log("form data",formData)
+      const result = await response.json();
+      console.log("result",result)
+      if (result.success) {
+        setResponseMessage('Message sent successfully!');
+        setFormData({ name: '', email: '', message: '' });
+      } else {
+        setResponseMessage('Failed to send message. Please try again.');
+      }
+    } catch (error) {
+      console.log("the error is",error);
+      setResponseMessage('An error occurred. Please try again later.');
+    }
+
+    setIsLoading(false);
+  };
+
   return (
     <section className="container mx-auto px-6 py-8">
       <h1 className="text-3xl font-bold text-center mb-6">Contact Us</h1>
@@ -9,37 +48,46 @@ export default function Contact() {
         {/* Left Side: Get in Touch */}
         <div className="w-full md:w-1/2 mb-8 md:mb-0">
           <h2 className="text-2xl font-semibold">Get in Touch</h2>
-          <p className="mt-2">
-            We would love to hear from you! Please reach out with any questions, comments, or concerns.
-          </p>
-          <form className="mt-4">
+          <p className="mt-2">We would love to hear from you! Please reach out with any questions, comments, or concerns.</p>
+          <form className="mt-4" onSubmit={handleSubmit}>
             <div className="flex flex-col space-y-4">
-              <input 
-                type="text" 
-                placeholder="Your Name" 
-                className="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring focus:ring-blue-500" 
-                required 
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Your Name"
+                className="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring focus:ring-blue-500"
+                required
               />
-              <input 
-                type="email" 
-                placeholder="Your Email" 
-                className="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring focus:ring-blue-500" 
-                required 
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Your Email"
+                className="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring focus:ring-blue-500"
+                required
               />
-              <textarea 
-                placeholder="Your Message" 
-                className="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring focus:ring-blue-500" 
-                rows={4} 
-                required 
+              <textarea
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                placeholder="Your Message"
+                className="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring focus:ring-blue-500"
+                rows={4}
+                required
               />
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300 ease-in-out"
+                disabled={isLoading}
               >
-                Send Message
+                {isLoading ? 'Sending...' : 'Send Message'}
               </button>
             </div>
           </form>
+          {responseMessage && <p className="mt-4 text-center text-gray-600">{responseMessage}</p>}
         </div>
 
         {/* Right Side: Contact Information */}
@@ -72,13 +120,13 @@ export default function Contact() {
       <div className="mt-12">
         <h2 className="text-2xl font-semibold text-center">Find Us Here</h2>
         <div className="mt-4 bg-gray-100 rounded-lg shadow-md overflow-hidden">
-          <iframe 
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.8354345093743!2d-122.41941548468034!3d37.77492927975969!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80858064fcd0d755%3A0xe019c88c141f8f72!2s6322%20Deep%20Canyon%20Dr!5e0!3m2!1sen!2sus!4v1642998001515!5m2!1sen!2sus" 
-            width="100%" 
-            height="300" 
-            style={{ border: 0 }} 
-            allowFullScreen 
-            loading="lazy" 
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.8354345093743!2d-122.41941548468034!3d37.77492927975969!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80858064fcd0d755%3A0xe019c88c141f8f72!2s6322%20Deep%20Canyon%20Dr!5e0!3m2!1sen!2sus!4v1642998001515!5m2!1sen!2sus"
+            width="100%"
+            height="300"
+            style={{ border: 0 }}
+            allowFullScreen
+            loading="lazy"
             title="Google Map of Deep Canyon Dr"
           ></iframe>
         </div>
