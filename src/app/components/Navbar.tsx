@@ -17,8 +17,8 @@ export default function Navbar() {
           {/* Placeholder for logo */}
           <img
             src="/logo1.png" // Replace with your logo's URL
-            alt="Bionic Auto Parts Logo"
-            className="h-10 w-10 mr-3" // Adjust the height/width as needed
+            alt="Bionics Auto Parts Logo"
+            className="h-12 w-12 mr-3" // Increased the height/width from h-10 w-10 to h-12 w-12
           />
           <div className="text-white text-3xl font-bold">
             <Link href="/">Bionic Auto Parts</Link>
