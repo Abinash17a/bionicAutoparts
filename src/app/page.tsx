@@ -21,7 +21,7 @@ const initialData = {
       'AMC Matador', 'AMC Pacer', 'AMC Rambler', 'AMC Rebel', 'AMC Spirit',
       'AMC Other',
     ],
-    ACURA: [
+    Acura: [
       'Acura CL', 'Acura CSX', 'Acura EL', 'Acura ILX', 'Acura Integra',
       'Acura Legend', 'Acura MDX', 'Acura NSX', 'Acura RDX', 'Acura RL',
       'Acura RLX', 'Acura RSX', 'Acura SLX', 'Acura TL', 'Acura TLX',
