@@ -15,10 +15,10 @@ const Admin = () => {
     const [error, setError] = useState('');
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const router = useRouter();
-    const [isMounted, setIsMounted] = useState(false); // Track whether component is mounted
+    const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
-        setIsMounted(true); // Component is now mounted
+        setIsMounted(true);
     }, []);
 
     const [logoutTimer, setLogoutTimer] = useState<NodeJS.Timeout | null>(null);
@@ -50,7 +50,6 @@ const Admin = () => {
         try {
             const response = await fetch('/api/getSubmissions');
             const data = await response.json();
-
             if (response.ok) {
                 setUserData(data.submissions || []);
             } else {
@@ -101,6 +100,25 @@ const Admin = () => {
             });
     };
 
+    const handleStatusChange = async (submissionId: string, status: string) => {
+        try {
+            const response = await fetch(`/api/updateSubmissionStatus`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: submissionId, status }),
+            });
+            if (response.ok) {
+                toast.success('Status updated successfully!');
+                fetchData(); 
+            } else {
+                toast.error('Failed to update status');
+            }
+        } catch (error) {
+            console.error('Error updating status:', error);
+            toast.error('Error updating status');
+        }
+    };
+
     useEffect(() => {
         auth.signOut()
             .then(() => {
@@ -135,7 +153,7 @@ const Admin = () => {
     }, []);
 
     if (!isMounted) {
-        return null; // Render nothing until component is mounted
+        return null;
     }
 
     if (loading) {
@@ -213,6 +231,22 @@ const Admin = () => {
                                         <span className="font-medium">Created At:</span>{' '}
                                         {formatDate(submission.createdAt)}
                                     </p>
+                                    <div className="mt-4"> 
+                                        <select 
+                                            value={submission.status || 'Pending'}
+                                            onChange={(e) =>
+                                                handleStatusChange(submission.id, e.target.value)
+                                            }
+                                            className={`p-2 border rounded
+                                            ${submission.status === 'Pending' ? 'bg-yellow-100 text-yellow-700' : ''}
+                                            ${submission.status === 'Completed' ? 'bg-green-100 text-green-700' : ''}
+                                            ${submission.status === 'Rejected' ? 'bg-gray-200 text-gray-600' : ''}
+                                            `}>
+                                            <option value="Pending">Pending</option>
+                                            <option value="Completed">Completed</option>
+                                            <option value="Rejected">Rejected</option>
+                                        </select>
+                                    </div>
                                 </li>
                             ))}
                         </ul>
@@ -220,28 +254,9 @@ const Admin = () => {
                         <p className="text-center text-gray-700">No submissions found.</p>
                     )}
 
-                    <div className="mt-8">
-                        <button
-                            onClick={handleLogout}
-                            className="bg-red-200 text-white p-2 rounded"
-                        >
-                            Log Out
-                        </button>
-                    </div>
+                    <ToastContainer position="top-right" />
                 </>
             )}
-
-            <ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-            />
         </div>
     );
 };

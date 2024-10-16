@@ -16,7 +16,7 @@ export default function Navbar() {
         <div className="flex items-center">
           {/* Placeholder for logo */}
           <img
-            src="/logo.png" // Replace with your logo's URL
+            src="/logo1.png" // Replace with your logo's URL
             alt="Bionic Auto Parts Logo"
             className="h-10 w-10 mr-3" // Adjust the height/width as needed
           />
