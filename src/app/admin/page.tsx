@@ -51,7 +51,10 @@ const Admin = () => {
             const response = await fetch('/api/getSubmissions');
             const data = await response.json();
             if (response.ok) {
-                setUserData(data.submissions || []);
+                const sortedData = (data.submissions || []).sort((a: any, b: any) => {
+                    return new Date(a.createdAt.seconds * 1000) - new Date(b.createdAt.seconds * 1000);
+                });
+                setUserData(sortedData); // Sorting by oldest to latest
             } else {
                 console.error('Error fetching user data:', data.message);
             }
