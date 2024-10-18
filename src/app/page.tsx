@@ -1602,6 +1602,16 @@ export default function Home() {
             If you need to return an item, you may call or text  +1 617-390-7248, email  auth@bionicsautoparts.com, or chat us on this website.
             We take pride in our timely and efficient return process. We want to make sure you are taken care of every step of the way, even after the transaction is completed if needed. Please keep in mind that while we may refund your credit card within 1-2 days of the part being returned, it may take the credit card processor an additional 3-5 business days to actually process that refund to your card.
           </p>
+          <p className="mt-4">
+            <a
+              href="/files/warranty.pdf"
+              target="_blank"
+              className="text-blue-600 underline hover:text-blue-800"
+              rel="noopener noreferrer"
+            >
+              Download Our Company Brochure (PDF)
+            </a>
+          </p>
         </div>
 
         {/* Right side: Image grid with four images and added spacing */}
