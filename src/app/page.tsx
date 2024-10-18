@@ -1302,8 +1302,11 @@ export default function Home() {
 
 
   const images = [
-    { src: 'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', alt: 'Car Parts' },
-    { src: 'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', alt: 'Car Parts' }
+    { src: '/carouselImages/caro1.jpg', alt: 'Car Parts' },
+    { src: '/carouselImages/caro2.jpg', alt: 'Car Parts' },
+    { src: '/carouselImages/caro3.jpg', alt: 'Car Parts' },
+    { src: '/carouselImages/caro4.jpg', alt: 'Car Parts' },
+    { src: '/carouselImages/caro5.jpg', alt: 'Car Parts' }
   ];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -1312,8 +1315,6 @@ export default function Home() {
 
     return `${part.years.join(', ')} ${part.makes.join(', ')} ${part.models.join(', ')} ${part.parts.join(', ')}`;
   };
-
-
   const handlePrev = () => {
     setCurrentImageIndex((prevIndex) =>
       prevIndex === 0 ? images.length - 1 : prevIndex - 1
