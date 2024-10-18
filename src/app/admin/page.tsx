@@ -170,12 +170,12 @@ const Admin = () => {
     return (
         <div className="container mx-auto py-8 px-4">
             {!isLoggedIn ? (
-                <div className="mt-8">
+                <div className="mt-8 max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg">
                     <h3 className="text-2xl font-bold mb-4 text-center text-gray-800">Admin Login</h3>
                     {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
                     <form
                         onSubmit={handleLogin}
-                        className="flex flex-col space-y-4 max-w-md mx-auto"
+                        className="flex flex-col space-y-4"
                     >
                         <input
                             type="email"
@@ -241,10 +241,10 @@ const Admin = () => {
                                                 handleStatusChange(submission.id, e.target.value)
                                             }
                                             className={`p-2 border rounded
-                                            ${submission.status === 'Pending' ? 'bg-yellow-100 text-yellow-700' : ''}
-                                            ${submission.status === 'Completed' ? 'bg-green-100 text-green-700' : ''}
-                                            ${submission.status === 'Rejected' ? 'bg-gray-200 text-gray-600' : ''}
-                                            `}>
+                                            ${submission.status === 'Pending' ? 'bg-yellow-100 text-yellow-700' : ''} 
+                                            ${submission.status === 'Completed' ? 'bg-green-100 text-green-700' : ''} 
+                                            ${submission.status === 'Rejected' ? 'bg-gray-200 text-gray-600' : ''}`}
+                                        >
                                             <option value="Pending">Pending</option>
                                             <option value="Completed">Completed</option>
                                             <option value="Rejected">Rejected</option>

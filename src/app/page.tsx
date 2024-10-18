@@ -1606,7 +1606,7 @@ export default function Home() {
               className="text-blue-600 underline hover:text-blue-800"
               rel="noopener noreferrer"
             >
-              Download Our Company Brochure (PDF)
+              Terms and Conditions (PDF)
             </a>
           </p>
         </div>

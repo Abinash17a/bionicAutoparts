@@ -1,72 +1,89 @@
-"use client"; // This indicates that the component is a client component.
+"use client"
+import * as React from 'react';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import MenuIcon from '@mui/icons-material/Menu';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import Link from 'next/link';
-import { useState } from 'react';
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false); // State for mobile menu
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
+  const handleMenu = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
   return (
-    <nav className="bg-gray-800 shadow-md">
-      <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-        {/* Logo Section */}
-        <div className="flex items-center">
-          {/* Placeholder for logo */}
-          <img
-            src="/logo1.png" // Replace with your logo's URL
-            alt="Bionics Auto Parts Logo"
-            className="h-14 w-14 mr-3" // Adjusted to h-14 w-14 for a slightly smaller size
-          />
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar position="static" sx={{ backgroundColor: '#1D4E89' }}> {/* Blue Ribbon color */}
+        <Toolbar>
+          {/* Logo Section */}
+          <Link href="/" style={{ color: 'inherit', textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
+            <img 
+              src="/logo1.png" 
+              alt="Bionics Auto Parts Logo" 
+              style={{ height: '60px', marginRight: '10px' }} // Increased logo height
+            />
+            <Typography variant="h6" component="div" sx={{ fontWeight: 'bold', fontSize: '1.5rem' }}>
+              Bionics Auto Parts
+            </Typography>
+          </Link>
 
-          <div className="text-white text-3xl font-bold">
-            <Link href="/">Bionics Auto Parts</Link>
-          </div>
-        </div>
+          {/* Space between logo and navigation links */}
+          <Box sx={{ flexGrow: 1 }} />
 
-        {/* Mobile Menu Button */}
-        <div className="md:hidden flex items-center">
-          <button onClick={toggleMenu} className="text-white focus:outline-none">
-            {/* Hamburger Icon */}
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-            </svg>
-          </button>
-        </div>
+          {/* Links for Large Screens */}
+          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+            <Link href="/" style={{ textDecoration: 'none' }}>
+              <Button color="inherit" sx={{ fontSize: '1rem', fontWeight: '600' }}>Home</Button>
+            </Link>
+            <Link href="/about-us" style={{ textDecoration: 'none' }}>
+              <Button color="inherit" sx={{ fontSize: '1rem', fontWeight: '600' }}>About Us</Button>
+            </Link>
+            <Link href="/contact" style={{ textDecoration: 'none' }}>
+              <Button color="inherit" sx={{ fontSize: '1rem', fontWeight: '600' }}>Contact</Button>
+            </Link>
+          </Box>
 
-        {/* Links Section */}
-        <div className={`hidden md:flex md:items-center md:space-x-4`}>
-          <Link href="/" className="text-white hover:bg-gray-700 transition duration-300 ease-in-out px-4 py-2 rounded-lg font-semibold">
-            Home
-          </Link>
-          <Link href="/about-us" className="text-white hover:bg-gray-700 transition duration-300 ease-in-out px-4 py-2 rounded-lg font-semibold">
-            About Us
-          </Link>
-          <Link href="/contact" className="text-white hover:bg-gray-700 transition duration-300 ease-in-out px-4 py-2 rounded-lg font-semibold">
-            Contact
-          </Link>
-        </div>
-      </div>
+          {/* Hamburger Icon for Mobile */}
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ display: { xs: 'flex', md: 'none' }, mr: 2 }}
+            onClick={handleMenu}
+          >
+            <MenuIcon />
+          </IconButton>
 
-      {/* Mobile Menu */}
-      <div className={`md:hidden bg-gray-700 ${isOpen ? 'block' : 'hidden'}`}>
-        <div className="flex flex-col space-y-2 px-6 py-4">
-          <Link href="/" className="text-white hover:bg-gray-600 transition duration-300 ease-in-out px-4 py-2 rounded-lg">
-            Home
-          </Link>
-          <Link href="/about-us" className="text-white hover:bg-gray-600 transition duration-300 ease-in-out px-4 py-2 rounded-lg">
-            About Us
-          </Link>
-          <Link href="/blogs" className="text-white hover:bg-gray-600 transition duration-300 ease-in-out px-4 py-2 rounded-lg">
-            Blogs
-          </Link>
-          <Link href="/contact" className="text-white hover:bg-gray-600 transition duration-300 ease-in-out px-4 py-2 rounded-lg">
-            Contact
-          </Link>
-        </div>
-      </div>
-    </nav>
+          {/* Mobile Menu */}
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            <MenuItem onClick={handleClose}>
+              <Link href="/" style={{ textDecoration: 'none', color: 'inherit' }}>Home</Link>
+            </MenuItem>
+            <MenuItem onClick={handleClose}>
+              <Link href="/about-us" style={{ textDecoration: 'none', color: 'inherit' }}>About Us</Link>
+            </MenuItem>
+            <MenuItem onClick={handleClose}>
+              <Link href="/contact" style={{ textDecoration: 'none', color: 'inherit' }}>Contact</Link>
+            </MenuItem>
+          </Menu>
+        </Toolbar>
+      </AppBar>
+    </Box>
   );
 }

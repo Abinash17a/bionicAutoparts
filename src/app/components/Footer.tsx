@@ -1,75 +1,75 @@
 import React from 'react';
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa'; // Import icons for social media
 import Image from 'next/image'; 
+import { Box, Container, Typography, Grid, Link, IconButton } from '@mui/material';
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-800 text-white py-6">
-      <div className="container mx-auto px-6">
-        <div className="flex flex-col md:flex-row justify-between">
+    <Box sx={{ backgroundColor: '#1D4E89', color: 'white', py: 6 }}>
+      <Container maxWidth="lg">
+        <Grid container spacing={3} justifyContent="space-between">
           {/* Left side with logo and description */}
-          <div className="mb-6 md:mb-0 flex items-center">
-            {/* Visa image on the left */}
+          <Grid item xs={12} md={6} container alignItems="center">
             <Image
               src="/visa.png" 
               alt="Visa"
               width={200} 
               height={200} 
-              className="mr-4"
+              style={{ marginRight: '16px' }} // Adjust margin
             />
-            <div>
-              <h3 className="text-lg font-bold">Bionic Auto Parts</h3>
-              <p className="text-sm">
+            <Box>
+              <Typography variant="h6" fontWeight="bold">Bionic Auto Parts</Typography>
+              <Typography variant="body2">
                 Providing quality auto parts since 2020. Your reliable partner for all automotive needs.
-              </p>
-            </div>
-          </div>
-          
+              </Typography>
+            </Box>
+          </Grid>
+
           {/* Quick Links and Contact Us */}
-          <div className="flex flex-col md:flex-row">
-            <div className="mb-6 md:mb-0 md:mr-8">
-              <h4 className="text-md font-semibold">Quick Links</h4>
-              <ul>
+          <Grid item xs={12} md={6} container spacing={3}>
+            <Grid item xs={6} md={4}>
+              <Typography variant="subtitle1" fontWeight="bold" mb={1}>Quick Links</Typography>
+              <ul style={{ paddingLeft: '0', listStyleType: 'none' }}>
                 <li>
-                  <a href="/" className="text-sm hover:underline">Home</a>
+                  <Link href="/" color="inherit" underline="hover">Home</Link>
                 </li>
                 <li>
-                  <a href="/about" className="text-sm hover:underline">About Us</a>
+                  <Link href="/about" color="inherit" underline="hover">About Us</Link>
                 </li>
                 <li>
-                  <a href="/contact" className="text-sm hover:underline">Contact</a>
+                  <Link href="/contact" color="inherit" underline="hover">Contact</Link>
                 </li>
               </ul>
-            </div>
-            <div className="mb-6 md:mb-0">
-              <h4 className="text-md font-semibold">Contact Us</h4>
-              <p className="text-sm">Email:  parts@bionicsautoparts.com</p>
-              <p className="text-sm">Phone: +1 617-390-7248</p>
-            </div>
-          </div>
-        </div>
+            </Grid>
+            <Grid item xs={6} md={4}>
+              <Typography variant="subtitle1" fontWeight="bold" mb={1}>Contact Us</Typography>
+              <Typography variant="body2">Email: parts@bionicsautoparts.com</Typography>
+              <Typography variant="body2">Phone: +1 617-390-7248</Typography>
+            </Grid>
+          </Grid>
+        </Grid>
 
         {/* Social Media Icons */}
-        <div className="flex justify-center mt-6">
-          <a href="https://facebook.com" className="mx-2 text-white hover:text-gray-300">
+        <Box display="flex" justifyContent="center" mt={4}>
+          <IconButton href="https://facebook.com" color="inherit" sx={{ mx: 1 }}>
             <FaFacebook size={24} />
-          </a>
-          <a href="https://twitter.com" className="mx-2 text-white hover:text-gray-300">
+          </IconButton>
+          <IconButton href="https://twitter.com" color="inherit" sx={{ mx: 1 }}>
             <FaTwitter size={24} />
-          </a>
-          <a href="https://instagram.com" className="mx-2 text-white hover:text-gray-300">
+          </IconButton>
+          <IconButton href="https://instagram.com" color="inherit" sx={{ mx: 1 }}>
             <FaInstagram size={24} />
-          </a>
-          <a href="https://linkedin.com" className="mx-2 text-white hover:text-gray-300">
+          </IconButton>
+          <IconButton href="https://linkedin.com" color="inherit" sx={{ mx: 1 }}>
             <FaLinkedin size={24} />
-          </a>
-        </div>
+          </IconButton>
+        </Box>
 
         {/* Footer copyright */}
-        <div className="text-center mt-6">
-          <p className="text-sm">&copy; 2020 Bionic Auto Parts. All rights reserved.</p>
-        </div>
-      </div>
-    </footer>
+        <Typography variant="body2" align="center" mt={4}>
+          &copy; 2020 Bionic Auto Parts. All rights reserved.
+        </Typography>
+      </Container>
+    </Box>
   );
 }
