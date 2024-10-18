@@ -3,6 +3,9 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import CarCompanySlider from "./components/Companyslider";
 
 export const metadata: Metadata = {
   title: "Car Parts",
@@ -24,6 +27,7 @@ export default function RootLayout({
         <main className="flex-grow">
           {children}
         </main>
+        <CarCompanySlider/>
         <Footer />
       </body>
 

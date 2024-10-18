@@ -18,10 +18,11 @@ export default function Navbar() {
           <img
             src="/logo1.png" // Replace with your logo's URL
             alt="Bionics Auto Parts Logo"
-            className="h-12 w-12 mr-3" // Increased the height/width from h-10 w-10 to h-12 w-12
+            className="h-14 w-14 mr-3" // Adjusted to h-14 w-14 for a slightly smaller size
           />
+
           <div className="text-white text-3xl font-bold">
-            <Link href="/">Bionic Auto Parts</Link>
+            <Link href="/">Bionics Auto Parts</Link>
           </div>
         </div>
 
