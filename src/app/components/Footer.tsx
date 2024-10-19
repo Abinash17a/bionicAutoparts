@@ -67,7 +67,7 @@ export default function Footer() {
 
         {/* Footer copyright */}
         <Typography variant="body2" align="center" mt={4}>
-          &copy; 2020 Bionic Auto Parts. All rights reserved.
+          &copy; 2020 Bionics Auto Parts. All rights reserved.
         </Typography>
       </Container>
     </Box>
