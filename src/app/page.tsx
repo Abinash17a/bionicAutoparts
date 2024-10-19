@@ -1396,7 +1396,16 @@ export default function Home() {
 
 
   return (
-    <section className="container mx-auto px-6 py-8">
+    <div
+      className="min-h-screen"
+      style={{
+        backgroundImage: "url('/mainpagebg.jpg')", // Replace with your image path
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed',
+      }}
+    >
+    <section className="container mx-auto px-6 py-8 bg-white bg-opacity-95">
       <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} closeOnClick pauseOnHover draggable />
       {/* Top section divided into two parts */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -1733,5 +1742,6 @@ export default function Home() {
         </div>
       </div>
     </section>
+    </div>
   );
 }
