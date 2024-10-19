@@ -11,7 +11,7 @@ const initialData = {
   makes: [
     'AMC', 'Acura', 'ALFA', 'Aston_Martin', 'Audi', 'Austin', 'AutoCar', 'Avanti', 'BMW', 'Bentley', 'Buick', 'Cadillac', 'Chevy', 'Chrysler', 'Citroen',
     'Daewoo', 'Daihatsu', 'Delorean', 'Dodge', 'Eagle', 'Ferrari', 'Fiat', 'Fisker', 'Ford', 'Genesis', 'GMC', 'Honda', 'Hudson', 'Hummer', 'Hyundai', 'Infiniti', 'Isuzu', 'Jaguar', 'Jeep', 'Kia',
-    'Lamborghini', 'Land Rover', 'Lexus', 'Lincoln', 'Lotus', 'MG', 'Maserati', 'Maybach', 'Mazda', 'McLaren', 'Mercedes-Benz', 'Mercury', 'Mini', 'Mitsubishi', 'Nissan',
+    'Lamborghini', 'LandRover', 'Lexus', 'Lincoln', 'Lotus', 'MG', 'Maserati', 'Maybach', 'Mazda', 'McLaren', 'MercedesBenz', 'Mercury', 'Mini', 'Mitsubishi', 'Nissan',
     'Oldsmobile', 'Plymouth', 'Polestar', 'Pontiac', 'Porsche', 'Ram', 'Renault', 'RollsRoyce', 'Rover', 'Saab', 'Saturn', 'Subaru', 'Suzuki', 'Tesla', 'Toyota', 'Triumph', 'Volkswagen', 'Volvo', 'Western', 'Willys', 'Winnebago', 'Yugo'
   ],
   models: {
