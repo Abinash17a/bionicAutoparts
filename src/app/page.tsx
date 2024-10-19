@@ -443,7 +443,7 @@ const initialData = {
       'Plymouth Scamp (except 1983)', 'Plymouth Sundance', 'Plymouth Trailduster',
       'Plymouth Valiant', 'Plymouth Van 100', 'Plymouth Van 150', 'Plymouth Van 200',
       'Plymouth Van 250', 'Plymouth Van 300', 'Plymouth Van 350', 'Plymouth Volare',
-      'Plymouth Voyager', 'Plymouth Other', 'Plymouth Other',
+      'Plymouth Voyager', 'Plymouth Other',
     ],
     Polestar: [
       'Polestar 1', 'Polestar 2',
