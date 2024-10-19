@@ -34,7 +34,7 @@ export default function Footer() {
                   <Link href="/" color="inherit" underline="hover">Home</Link>
                 </li>
                 <li>
-                  <Link href="/about" color="inherit" underline="hover">About Us</Link>
+                  <Link href="/about-us" color="inherit" underline="hover">About Us</Link>
                 </li>
                 <li>
                   <Link href="/contact" color="inherit" underline="hover">Contact</Link>

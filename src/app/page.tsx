@@ -1667,7 +1667,7 @@ export default function Home() {
           <div className="bg-white p-6 rounded-md shadow-md flex flex-col h-full">
             <div className="h-60 overflow-hidden">
               <Image
-                src="/cardcarpartsmpage.jpg"
+                src="/cardinteriormpage.jpg"
                 alt="Part 2"
                 width={500}
                 height={300}
@@ -1684,7 +1684,7 @@ export default function Home() {
           <div className="bg-white p-6 rounded-md shadow-md flex flex-col h-full">
             <div className="h-60 overflow-hidden">
               <Image
-                src="/cardinteriormpage.jpg"
+                src="/cardcarpartsmpage.jpg"
                 alt="Part 3"
                 width={500}
                 height={300}
@@ -1707,25 +1707,28 @@ export default function Home() {
           {/* Testimonial 1 */}
           <div className="bg-white p-6 rounded-md shadow-md text-center">
             <p className="text-gray-700 italic">
-              "Great selection of car parts! I found exactly what I needed for my vehicle and the quality was excellent."
+            "I recently purchased a part for my project, and I couldn't be more satisfied. The quality is outstanding, and it fits perfectly. The ordering process was smooth, and it arrived on time. Highly recommend this part to anyone in need!"
             </p>
-            <p className="text-blue-500 font-bold mt-4">- John Doe</p>
+            <p className="text-blue-500 font-bold mt-4">- Jay</p>
+            <p className="text-blue-500 font-bold mt-4">-Ford F350-</p>
           </div>
 
           {/* Testimonial 2 */}
           <div className="bg-white p-6 rounded-md shadow-md text-center">
             <p className="text-gray-700 italic">
-              "Fast shipping and reliable parts. My car has never run better after installing the parts I ordered."
+            "I found the exact part I needed in no time! The service was quick and reliable, making my repair process so much easier."
             </p>
-            <p className="text-blue-500 font-bold mt-4">- Jane Smith</p>
+            <p className="text-blue-500 font-bold mt-4">- Brenda</p>
+            <p className="text-blue-500 font-bold mt-4">-Dodge Charger-</p>
           </div>
 
           {/* Testimonial 3 */}
           <div className="bg-white p-6 rounded-md shadow-md text-center">
             <p className="text-gray-700 italic">
-              "Amazing customer service and top-notch products. I will definitely be shopping here again."
+              "An excellent service when it comes to "Used car spare parts"."            "
             </p>
-            <p className="text-blue-500 font-bold mt-4">- Mike Johnson</p>
+            <p className="text-blue-500 font-bold mt-4">- Damien</p>
+            <p className="text-blue-500 font-bold mt-4">-Chevy S10-</p>
           </div>
         </div>
       </div>

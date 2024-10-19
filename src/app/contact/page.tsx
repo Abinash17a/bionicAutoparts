@@ -90,7 +90,6 @@ export default function Contact() {
           {responseMessage && <p className="mt-4 text-center text-gray-600">{responseMessage}</p>}
         </div>
 
-        {/* Right Side: Contact Information */}
         <div className="w-full md:w-1/2 md:pl-8">
           <h2 className="text-2xl font-semibold">Contact Information</h2>
           <ul className="mt-4 space-y-2">
@@ -116,7 +115,6 @@ export default function Contact() {
         </div>
       </div>
 
-      {/* Map Section */}
       <div className="mt-12">
         <h2 className="text-2xl font-semibold text-center">Find Us Here</h2>
         <div className="mt-4 bg-gray-100 rounded-lg shadow-md overflow-hidden">
