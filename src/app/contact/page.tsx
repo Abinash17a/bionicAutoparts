@@ -29,8 +29,8 @@ export default function Contact() {
       } else {
         setResponseMessage('Failed to send message. Please try again.');
       }
-    } catch (error) {
-      setResponseMessage('An error occurred. Please try again later.');
+    } catch (error:any) {
+      setResponseMessage(`An error occurred. Please try again later ${error}.`);
     }
 
     setIsLoading(false);
