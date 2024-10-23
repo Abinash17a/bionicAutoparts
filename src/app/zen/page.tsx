@@ -1,7 +1,7 @@
-//@typescript-eslint/no-unused-vars
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 import { useState, useEffect } from 'react';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import { auth } from '../lib/firebase';
 import { ToastContainer, toast } from 'react-toastify';
@@ -15,7 +15,7 @@ const Admin = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-  const router = useRouter();
+ 
 
   const [logoutTimer, setLogoutTimer] = useState<NodeJS.Timeout | null>(null);
   const [fetchInterval, setFetchInterval] = useState<NodeJS.Timeout | null>(null);
