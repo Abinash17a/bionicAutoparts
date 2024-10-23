@@ -18,7 +18,7 @@ export default function Footer() {
               style={{ marginRight: '16px' }} // Adjust margin
             />
             <Box>
-              <Typography variant="h6" fontWeight="bold">Bionic Auto Parts</Typography>
+              <Typography variant="h6" fontWeight="bold">Bionics Auto Parts</Typography>
               <Typography variant="body2">
                 Providing quality auto parts since 2020. Your reliable partner for all automotive needs.
               </Typography>
