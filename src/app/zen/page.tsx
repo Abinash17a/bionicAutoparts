@@ -19,14 +19,13 @@ const Admin = () => {
   const [fetchInterval, setFetchInterval] = useState<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    setIsMounted(true); // Ensures client-side-only rendering
-    // Check localStorage for login status on mount
+    setIsMounted(true);
     const loggedInUser = localStorage.getItem('isLoggedIn');
     if (loggedInUser === 'true') {
       setIsLoggedIn(true);
       fetchData(); // Fetch data if already logged in
       resetLogoutTimer();
-      setFetchInterval(setInterval(fetchData, 15 * 1000)); // Fetch every 15 seconds
+      setFetchInterval(setInterval(fetchData, 30 * 1000)); // Fetch every 15 seconds
     }
   }, []);
 
@@ -53,27 +52,27 @@ const Admin = () => {
   };
 
   const fetchData = async () => {
-    setLoading(true); // Set loading to true while fetching data
+    setLoading(true);
     try {
       const response = await fetch('/api/getSubmissions');
       const data = await response.json();
 
       if (response.ok) {
-        // Ensure valid dates by using 'new Date()' and check for 'seconds'
         const sortedData = (data.submissions || []).sort((a: any, b: any) => {
           const dateA = a.createdAt?.seconds ? new Date(a.createdAt.seconds * 1000) : new Date();
           const dateB = b.createdAt?.seconds ? new Date(b.createdAt.seconds * 1000) : new Date();
           return dateB.getTime() - dateA.getTime();
         });
-
+        
         setUserData(sortedData);
+        console.log("Fetched Data:", sortedData);
       } else {
         console.error('Error fetching user data:', data.message);
       }
     } catch (error) {
       console.error('Error:', error);
     } finally {
-      setLoading(false); // Stop loading after data is fetched
+      setLoading(false); 
     }
   };
 
