@@ -13,6 +13,7 @@ export async function GET() {
       id: doc.id,
       ...doc.data(),
     }));
+    console.log("Fetched submissions in route:", submissions);
     const response = NextResponse.json({ submissions });
 
 
