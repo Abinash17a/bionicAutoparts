@@ -51,30 +51,31 @@ const Admin = () => {
     }
   };
 
-  const fetchData = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch('/api/getSubmissions');
-      const data = await response.json();
+const fetchData = async () => {
+  setLoading(true);
+  try {
+    // Adding a timestamp query parameter to prevent caching
+    const response = await fetch(`/api/getSubmissions?timestamp=${new Date().getTime()}`);
+    const data = await response.json();
 
-      if (response.ok) {
-        const sortedData = (data.submissions || []).sort((a: any, b: any) => {
-          const dateA = a.createdAt?.seconds ? new Date(a.createdAt.seconds * 1000) : new Date();
-          const dateB = b.createdAt?.seconds ? new Date(b.createdAt.seconds * 1000) : new Date();
-          return dateB.getTime() - dateA.getTime();
-        });
-        
-        setUserData(sortedData);
-        console.log("Fetched Data:", sortedData);
-      } else {
-        console.error('Error fetching user data:', data.message);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    } finally {
-      setLoading(false); 
+    if (response.ok) {
+      const sortedData = (data.submissions || []).sort((a:any, b:any) => {
+        const dateA = a.createdAt?.seconds ? new Date(a.createdAt.seconds * 1000) : new Date();
+        const dateB = b.createdAt?.seconds ? new Date(b.createdAt.seconds * 1000) : new Date();
+        return dateB.getTime() - dateA.getTime();
+      });
+
+      setUserData(sortedData);
+      console.log("Fetched Data:", sortedData);
+    } else {
+      console.error('Error fetching user data:', data.message);
     }
-  };
+  } catch (error) {
+    console.error('Error:', error);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const formatDate = (timestamp: any) => {
     if (timestamp?.seconds) {
