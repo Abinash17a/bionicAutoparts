@@ -14,10 +14,13 @@ export async function GET() {
       ...doc.data(),
     }));
     const response = NextResponse.json({ submissions });
-    response.headers.set('Cache-Control', 'no-store');
+
+
+    response.headers.set('Cache-Control', 'no-store, max-age=0');
     response.headers.set('Access-Control-Allow-Origin', 'https://www.bionicsautoparts.com');
-    response.headers.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    response.headers.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
     response.headers.set('Access-Control-Allow-Headers', 'Content-Type');
+    response.headers.set('Access-Control-Allow-Credentials', 'true');
 
     return response;
   } catch (error) {
