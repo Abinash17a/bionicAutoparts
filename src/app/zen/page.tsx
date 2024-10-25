@@ -54,10 +54,9 @@ const Admin = () => {
 const fetchData = async () => {
   setLoading(true);
   try {
-    // Adding a timestamp query parameter to prevent caching
     const response = await fetch(`/api/getSubmissions?timestamp=${new Date().getTime()}`);
     const data = await response.json();
-
+    console.log("data in fetch in zen",data)
     if (response.ok) {
       const sortedData = (data.submissions || []).sort((a:any, b:any) => {
         const dateA = a.createdAt?.seconds ? new Date(a.createdAt.seconds * 1000) : new Date();
