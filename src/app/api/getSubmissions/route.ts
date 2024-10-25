@@ -13,8 +13,12 @@ export async function GET() {
       id: doc.id,
       ...doc.data(),
     }));
+    const response = NextResponse.json({ submissions });
+    response.headers.set('Access-Control-Allow-Origin', 'https://www.bionicsautoparts.com');
+    response.headers.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type');
 
-    return NextResponse.json({ submissions });
+    return response;
   } catch (error) {
     console.error('Error fetching submissions:', error);
     return NextResponse.json(
