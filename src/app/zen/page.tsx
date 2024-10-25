@@ -15,13 +15,19 @@ const Admin = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
- 
-
   const [logoutTimer, setLogoutTimer] = useState<NodeJS.Timeout | null>(null);
   const [fetchInterval, setFetchInterval] = useState<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     setIsMounted(true); // Ensures client-side-only rendering
+    // Check localStorage for login status on mount
+    const loggedInUser = localStorage.getItem('isLoggedIn');
+    if (loggedInUser === 'true') {
+      setIsLoggedIn(true);
+      fetchData(); // Fetch data if already logged in
+      resetLogoutTimer();
+      setFetchInterval(setInterval(fetchData, 15 * 1000)); // Fetch every 15 seconds
+    }
   }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -33,9 +39,10 @@ const Admin = () => {
       await signInWithEmailAndPassword(auth, email, password);
       toast.success('Login successful!');
       setIsLoggedIn(true);
+      localStorage.setItem('isLoggedIn', 'true'); // Persist login status
       fetchData();
       resetLogoutTimer();
-      setFetchInterval(setInterval(fetchData, 5 * 60 * 1000)); // Fetch every 5 minutes
+      setFetchInterval(setInterval(fetchData, 15 * 1000)); // Fetch every 15 seconds
       setPassword('');
     } catch (error: any) {
       setError(error.message);
@@ -46,30 +53,29 @@ const Admin = () => {
   };
 
   const fetchData = async () => {
-  setLoading(true); // Set loading to true while fetching data
-  try {
-    const response = await fetch('/api/getSubmissions');
-    const data = await response.json();
-    
-    if (response.ok) {
-      // Ensure valid dates by using 'new Date()' and check for 'seconds'
-      const sortedData = (data.submissions || []).sort((a: any, b: any) => {
-        const dateA = a.createdAt?.seconds ? new Date(a.createdAt.seconds * 1000) : new Date();
-        const dateB = b.createdAt?.seconds ? new Date(b.createdAt.seconds * 1000) : new Date();
-        return dateB.getTime() - dateA.getTime();
-      });
+    setLoading(true); // Set loading to true while fetching data
+    try {
+      const response = await fetch('/api/getSubmissions');
+      const data = await response.json();
 
-      setUserData(sortedData);
-    } else {
-      console.error('Error fetching user data:', data.message);
+      if (response.ok) {
+        // Ensure valid dates by using 'new Date()' and check for 'seconds'
+        const sortedData = (data.submissions || []).sort((a: any, b: any) => {
+          const dateA = a.createdAt?.seconds ? new Date(a.createdAt.seconds * 1000) : new Date();
+          const dateB = b.createdAt?.seconds ? new Date(b.createdAt.seconds * 1000) : new Date();
+          return dateB.getTime() - dateA.getTime();
+        });
+
+        setUserData(sortedData);
+      } else {
+        console.error('Error fetching user data:', data.message);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setLoading(false); // Stop loading after data is fetched
     }
-  } catch (error) {
-    console.error('Error:', error);
-  } finally {
-    setLoading(false); // Stop loading after data is fetched
-  }
-};
-
+  };
 
   const formatDate = (timestamp: any) => {
     if (timestamp?.seconds) {
@@ -91,6 +97,7 @@ const Admin = () => {
         toast.info('Logged out due to inactivity.');
         setIsLoggedIn(false);
         setUserData([]);
+        localStorage.removeItem('isLoggedIn'); // Clear login status
         if (logoutTimer) clearTimeout(logoutTimer);
         if (fetchInterval) clearInterval(fetchInterval);
       })
@@ -169,7 +176,7 @@ const Admin = () => {
       ) : (
         <>
           <h2 className="text-2xl font-bold mb-8 text-center text-gray-800">Admin Dashboard</h2>
-          {loading ? ( // If loading is true, show the loading spinner
+          {loading ? (
             <div className="flex justify-center items-center">
               <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-16 w-16"></div>
             </div>
@@ -201,14 +208,14 @@ const Admin = () => {
                           onChange={(e) => handleStatusChange(submission.id, e.target.value)}
                           className={`p-2 border rounded ${
                             submission.status === 'Pending'
-                              ? 'bg-yellow-100 text-yellow-700'
-                              : submission.status === 'Completed'
-                              ? 'bg-green-100 text-green-700'
-                              : 'bg-gray-200 text-gray-600'
+                              ? 'border-yellow-400'
+                              : submission.status === 'Approved'
+                              ? 'border-green-400'
+                              : 'border-red-400'
                           }`}
                         >
                           <option value="Pending">Pending</option>
-                          <option value="Completed">Completed</option>
+                          <option value="Approved">Approved</option>
                           <option value="Rejected">Rejected</option>
                         </select>
                       </div>
@@ -216,14 +223,19 @@ const Admin = () => {
                   ))}
                 </ul>
               ) : (
-                <p className="text-center text-gray-700">No submissions found.</p>
+                <p className="text-center text-gray-500">No submissions available.</p>
               )}
             </>
           )}
-
-          <ToastContainer position="top-right" />
+          <button
+            onClick={handleLogout}
+            className="mt-8 bg-red-600 text-white p-3 rounded-md"
+          >
+            Logout
+          </button>
         </>
       )}
+      <ToastContainer />
     </div>
   );
 };
