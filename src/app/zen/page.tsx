@@ -41,7 +41,7 @@ const Admin = () => {
       localStorage.setItem('isLoggedIn', 'true'); // Persist login status
       fetchData();
       resetLogoutTimer();
-      setFetchInterval(setInterval(fetchData, 15 * 1000)); // Fetch every 15 seconds
+      setFetchInterval(setInterval(fetchData, 30 * 1000)); // Fetch every 15 seconds
       setPassword('');
     } catch (error: any) {
       setError(error.message);

@@ -3,6 +3,7 @@ import { collection, getDocs, query, orderBy } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
 
 export async function GET() {
+  console.log("GET request received");
   try {
     const submissionsRef = collection(db, 'submissions');
     const q = query(submissionsRef, orderBy('createdAt', 'desc'));
@@ -18,7 +19,7 @@ export async function GET() {
 
 
     response.headers.set('Cache-Control', 'no-store, max-age=0');
-    response.headers.set('Access-Control-Allow-Origin', 'https://www.bionicsautoparts.com');
+    response.headers.set('Access-Control-Allow-Origin', '*');
     response.headers.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
     response.headers.set('Access-Control-Allow-Headers', 'Content-Type');
     response.headers.set('Access-Control-Allow-Credentials', 'true');
