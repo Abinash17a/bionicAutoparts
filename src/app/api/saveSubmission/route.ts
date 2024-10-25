@@ -14,12 +14,17 @@ export async function POST(req: NextRequest) {
       zipCode,
       searchedPartFormatted,
       createdAt: new Date(),
-      status: 'Pending', // Default status set to 'Pending'
+      status: 'Pending',
     });
 
-    return NextResponse.json({ message: 'Data saved successfully!', id: docRef.id });
+    const response = NextResponse.json({ message: 'Data saved successfully!', id: docRef.id });
+    response.headers.set('Access-Control-Allow-Origin', 'https://www.bionicsautoparts.com');
+    response.headers.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type');
+
+    return response;
   } catch (error) {
-    console.error('Error adding document:------------------- ', error);
+    console.error('Error adding document: ', error);
     return NextResponse.json({ error: 'Error saving data' }, { status: 500 });
   }
 }
