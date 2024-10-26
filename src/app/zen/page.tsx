@@ -41,7 +41,6 @@ const Admin = () => {
       localStorage.setItem('isLoggedIn', 'true'); // Persist login status
       fetchData();
       resetLogoutTimer();
-      setFetchInterval(setInterval(fetchData, 30 * 1000)); // Fetch every 15 seconds
       setPassword('');
     } catch (error: any) {
       setError(error.message);
@@ -93,10 +92,10 @@ const fetchData = async () => {
     setLoading(true);
     auth.signOut()
       .then(() => {
-        toast.info('Logged out due to inactivity.');
+        toast.info('Logged out ');
         setIsLoggedIn(false);
         setUserData([]);
-        localStorage.removeItem('isLoggedIn'); // Clear login status
+        localStorage.removeItem('isLoggedIn'); 
         if (logoutTimer) clearTimeout(logoutTimer);
         if (fetchInterval) clearInterval(fetchInterval);
       })

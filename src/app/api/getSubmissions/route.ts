@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { collection, getDocs, query, orderBy, getDocsFromServer } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
 
 export async function GET() {
@@ -8,7 +8,7 @@ export async function GET() {
     const submissionsRef = collection(db, 'submissions');
     const q = query(submissionsRef, orderBy('createdAt', 'desc'));
 
-    const querySnapshot = await getDocs(q);
+    const querySnapshot = await getDocsFromServer(q);
 
     const submissions = querySnapshot.docs.map(doc => ({
       id: doc.id,
