@@ -20,6 +20,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+      <script async src="https://www.googletagmanager.com/gtag/js?id=AW-16746690398"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'AW-16746690398');
+            `,
+          }}
+        />
       <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
       </head>
       <body className="flex flex-col min-h-screen font-sans">
