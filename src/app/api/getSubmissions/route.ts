@@ -5,7 +5,6 @@ import { db } from '../../lib/firebase';
 export const revalidate = 1; // Revalidate API every 1 seconds
 
 export async function GET() {
-  console.log("GET request received");
 
   try {
     const submissionsRef = collection(db, 'submissions');
@@ -17,7 +16,6 @@ export async function GET() {
       id: doc.id,
       ...doc.data(),
     }));
-    console.log("Fetched submissions in route:", submissions);
 
     return NextResponse.json({ submissions });
   } catch (error) {

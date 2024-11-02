@@ -14,7 +14,7 @@ export async function POST(req:any) {
 
   let mailOptions = {
     from: `"${name}" <${email}>`, 
-    to: 'abichhetri977@gmail.com', 
+    to: 'testuser7@gmail.com', 
     subject: 'New Contact Form Submission',
     text: `You have a new message from ${name} (${email}): \n\n${message}`,
   };

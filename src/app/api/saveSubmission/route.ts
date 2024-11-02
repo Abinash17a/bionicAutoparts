@@ -4,7 +4,6 @@ import { collection, addDoc } from 'firebase/firestore';
 
 export async function POST(req: NextRequest) {
   const { name, contact, email, zipCode, searchedPartFormatted } = await req.json();
-  console.log("The searched part:", searchedPartFormatted);
 
   try {
     const docRef = await addDoc(collection(db, 'submissions'), {
