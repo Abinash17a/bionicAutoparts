@@ -1,6 +1,6 @@
 "use client";
+
 import * as React from 'react';
-import { usePathname } from 'next/navigation'; // Correct hook for Next.js App Router
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -11,9 +11,10 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
-export default function Navbar() {
-  const pathname = usePathname(); // Get the current path
+export default function Header() {
+  const pathname = usePathname();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -24,41 +25,75 @@ export default function Navbar() {
     setAnchorEl(null);
   };
 
-  // Function to apply styles based on the active route (removing underline)
+  const navItems = [
+    { title: 'Home', path: '/' },
+    { title: 'About', path: '/about-us' },
+    { title: 'Contact', path: '/contact' },
+  ];
+
   const linkStyle = (path: string) => ({
-    textDecoration: 'none', // No underline
-    color: pathname === path ? '#FFDD00' : '#FFFFFF', // Yellow if active, white otherwise
-    fontWeight: pathname === path ? 'bold' : 'normal', // Bold if active
+    color: pathname === path ? '#DC5F00' : '#EEEEEE',
+    fontWeight: pathname === path ? 'bold' : 'normal',
+    position: 'relative',
+    textDecoration: 'none',
+    padding: '6px 0',
+    margin: '0 16px',
+    '&::before, &::after': {
+      content: '""',
+      position: 'absolute',
+      left: 0,
+      right: 0,
+      height: '2px',
+      backgroundColor: '#DC5F00',
+      transform: 'scaleX(0)',
+      transition: 'transform 0.3s ease',
+    },
+    '&::before': {
+      top: 0,
+    },
+    '&::after': {
+      bottom: 0,
+    },
+    '&:hover::before, &:hover::after': {
+      transform: 'scaleX(1)',
+    },
   });
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="sticky" sx={{ backgroundColor: '#1D4E89', zIndex: 1100 }}>
-        <Toolbar>
-          <Link href="/" style={{ color: 'inherit', textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
-            <img 
-              src="/logo1.png" 
-              alt="Bionics Auto Parts Logo" 
-              style={{ height: '60px', marginRight: '10px' }} 
-            />
-            <Typography variant="h6" component="div" sx={{ fontWeight: 'bold', fontSize: '1.5rem' }}>
-              Bionics Auto Parts
-            </Typography>
-          </Link>
+      {/* Header */}
+      <AppBar position="static" sx={{ backgroundColor: '#CF0A0A', zIndex: 1100 }}>
+        <Toolbar sx={{ justifyContent: 'center' }}>
+          <Typography variant="h4" component="div" sx={{ 
+            fontWeight: 'bold', 
+            color: '#EEEEEE',
+            textAlign: 'center',
+            padding: '12px 0',
+          }}>
+            Bionics Autoparts
+          </Typography>
+        </Toolbar>
+      </AppBar>
 
-          <Box sx={{ flexGrow: 1 }} />
-
+      {/* Navbar */}
+      <AppBar position="sticky" sx={{ backgroundColor: '#000000', zIndex: 1100 }}>
+        <Toolbar sx={{ justifyContent: 'center' }}>
           {/* Links for Large Screens */}
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <Link href="/" style={linkStyle('/')}>
-              <Button color="inherit" sx={{ fontSize: '1rem', fontWeight: '600' }}>Home</Button>
-            </Link>
-            <Link href="/about-us" style={linkStyle('/about-us')}>
-              <Button color="inherit" sx={{ fontSize: '1rem', fontWeight: '600' }}>About Us</Button>
-            </Link>
-            <Link href="/contact" style={linkStyle('/contact')}>
-              <Button color="inherit" sx={{ fontSize: '1rem', fontWeight: '600' }}>Contact</Button>
-            </Link>
+          <Box sx={{ display: { xs: 'none', md: 'flex' }, justifyContent: 'center', width: '100%' }}>
+            {navItems.map((link) => (
+              <Link key={link.title} href={link.path} passHref>
+                <Button 
+                  color="inherit" 
+                  sx={{ 
+                    ...linkStyle(link.path),
+                    fontSize: '1rem', 
+                    fontWeight: '600',
+                  }}
+                >
+                  {link.title}
+                </Button>
+              </Link>
+            ))}
           </Box>
 
           {/* Hamburger Icon for Mobile */}
@@ -67,7 +102,15 @@ export default function Navbar() {
             edge="start"
             color="inherit"
             aria-label="menu"
-            sx={{ display: { xs: 'flex', md: 'none' }, mr: 2 }}
+            sx={{ 
+              display: { xs: 'flex', md: 'none' }, 
+              position: 'absolute',
+              right: 16,
+              color: '#EEEEEE',
+              '&:hover': {
+                backgroundColor: 'rgba(220, 95, 0, 0.1)',
+              },
+            }}
             onClick={handleMenu}
           >
             <MenuIcon />
@@ -78,16 +121,28 @@ export default function Navbar() {
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
             onClose={handleClose}
+            PaperProps={{
+              sx: {
+                backgroundColor: '#000000',
+                color: '#EEEEEE',
+              }
+            }}
           >
-            <MenuItem onClick={handleClose}>
-              <Link href="/" style={{color:'#000000'}}>Home</Link>
-            </MenuItem>
-            <MenuItem onClick={handleClose}>
-              <Link href="/about-us" style={{color:'#000000'}}>About Us</Link>
-            </MenuItem>
-            <MenuItem onClick={handleClose}>
-              <Link href="/contact" style={{color:'#000000'}}>Contact</Link>
-            </MenuItem>
+            {navItems.map((link) => (
+              <MenuItem 
+                key={link.title} 
+                onClick={handleClose}
+                sx={{
+                  '&:hover': {
+                    backgroundColor: 'rgba(220, 95, 0, 0.1)',
+                  },
+                }}
+              >
+                <Link href={link.path} passHref style={linkStyle(link.path)}>
+                  {link.title}
+                </Link>
+              </MenuItem>
+            ))}
           </Menu>
         </Toolbar>
       </AppBar>

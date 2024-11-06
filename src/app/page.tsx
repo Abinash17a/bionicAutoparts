@@ -52,11 +52,36 @@ export default function Home() {
   }, [year, make, model, part]);
 
   const images = [
-    { src: '/carouselImages/caro1.jpg', alt: 'Car Parts' },
-    { src: '/carouselImages/caro2.jpg', alt: 'Car Parts' },
-    { src: '/carouselImages/caro3.jpg', alt: 'Car Parts' },
-    { src: '/carouselImages/caro4.jpg', alt: 'Car Parts' },
-    { src: '/carouselImages/caro5.jpg', alt: 'Car Parts' }
+    {
+      src: '/carouselImages/caro1.jpg',
+      alt: 'Car Parts',
+      title: 'High-Quality Car Parts',
+      description: 'Explore our wide selection of premium car parts for all makes and models.'
+    },
+    {
+      src: '/carouselImages/caro2.jpg',
+      alt: 'Car Parts',
+      title: 'Durable and Reliable',
+      description: 'Our parts are built to last, ensuring your car runs smoothly.'
+    },
+    {
+      src: '/carouselImages/caro3.jpg',
+      alt: 'Car Parts',
+      title: 'Affordable Prices',
+      description: 'Get the best quality at the most competitive prices in the market.'
+    },
+    {
+      src: '/carouselImages/caro4.jpg',
+      alt: 'Car Parts',
+      title: 'Fast Shipping',
+      description: 'We deliver quickly so you can get back on the road as soon as possible.'
+    },
+    {
+      src: '/carouselImages/caro5.jpg',
+      alt: 'Car Parts',
+      title: 'Customer Satisfaction',
+      description: 'Join thousands of satisfied customers who trust our parts.'
+    }
   ];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -76,6 +101,12 @@ export default function Home() {
       prevIndex === images.length - 1 ? 0 : prevIndex + 1
     );
   };
+  useEffect(() => {
+    const interval = setInterval(() => {
+      handleNext();
+    }, 3000); // Change image every 3 seconds
+    return () => clearInterval(interval); // Clear interval on component unmount
+  }, [currentImageIndex]);
 
   useEffect(() => {
     if (searchedPart) {
@@ -102,7 +133,7 @@ export default function Home() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-     setisSubmitClicked(!isSubmitClicked)
+    setisSubmitClicked(!isSubmitClicked)
 
     try {
       const response = await fetch('/api/saveSubmission', {
@@ -145,45 +176,56 @@ export default function Home() {
     <div
       className="min-h-screen"
       style={{
-        backgroundImage: "url('/mainpagebg.jpg')", // Replace with your image path
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundAttachment: 'fixed',
       }}
     >
+       <div className="relative w-full h-[700px]">
+        <Image
+          src={images[currentImageIndex].src}
+          alt={images[currentImageIndex].alt}
+          layout="fill"
+          objectFit="cover"
+          className="rounded-b-lg shadow-2xl"
+        />
+        <div className="absolute inset-0 bg-black bg-opacity-40 rounded-b-lg" />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white z-10 w-full max-w-4xl px-6">
+          <h2 className="text-4xl md:text-5xl font-extrabold mb-4 drop-shadow-lg">
+            {images[currentImageIndex].title}
+          </h2>
+          <p className="text-xl md:text-2xl font-medium drop-shadow-md">
+            {images[currentImageIndex].description}
+          </p>
+        </div>
+        <button
+          onClick={handlePrev}
+          className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white bg-opacity-20 text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:bg-opacity-30 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
+          aria-label="Previous Image"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <button
+          onClick={handleNext}
+          className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white bg-opacity-20 text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:bg-opacity-30 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
+          aria-label="Next Image"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
       <section className="container mx-auto px-6 py-8 bg-white bg-opacity-95">
         <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} closeOnClick pauseOnHover draggable />
         {/* Top section divided into two parts */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Left side: Image carousel */}
-          <div className="bg-white-500 p-8 rounded-md">
-            <div className="carousel relative">
-              <Image
-                src={images[currentImageIndex].src}
-                alt={images[currentImageIndex].alt}
-                width={500}
-                height={300}
-                className="rounded-md w-full"
-              />
-              <button
-                onClick={handlePrev}
-                className="absolute top-1/2 left-0 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
-              >
-                ❮
-              </button>
-
-              <button
-                onClick={handleNext}
-                className="absolute top-1/2 right-0 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
-              >
-                ❯
-              </button>
-            </div>
-          </div>
-
-          {/* Right side: Form section */}
-          <div className="bg-white p-8 rounded-md shadow-md">
-            <h2 className="text-2xl font-bold mb-4">Find the Parts You Need</h2>
+        <div className="w-full">
+          {/* Form section */}
+          <div className="bg-white p-8 rounded-md shadow-md mt-8 mx-4 md:mx-auto md:w-1/2">
+            <h2 className="text-2xl font-bold mb-4 text-center">
+              Find the Parts You Need
+            </h2>
             <form className="space-y-4">
               <div>
                 <label htmlFor="year" className="block text-gray-700">Year</label>
@@ -205,7 +247,7 @@ export default function Home() {
                 <select
                   id="make"
                   value={make}
-                  onChange={handleMakeChange}
+                  onChange={(e) => setMake(e.target.value)}
                   className="block w-full mt-1 p-2 border border-gray-300 rounded-md"
                 >
                   <option value="">Select Make</option>
@@ -222,10 +264,10 @@ export default function Home() {
                   value={model}
                   onChange={(e) => setModel(e.target.value)}
                   className="block w-full mt-1 p-2 border border-gray-300 rounded-md"
-                  disabled={!make} // Disable if no make is selected
+                  disabled={!make}
                 >
                   <option value="">Select Model</option>
-                  {make && initialData.models[make]?.map((mod: any) => (
+                  {make && initialData.models[make]?.map((mod) => (
                     <option key={mod} value={mod}>{mod}</option>
                   ))}
                 </select>
@@ -249,8 +291,8 @@ export default function Home() {
               <button
                 type="button"
                 onClick={() => {
-                  setModalVisible(true)
-                  handleSearch()
+                  setModalVisible(true);
+                  handleSearch();
                 }}
                 className="w-full bg-blue-500 text-white py-2 rounded-md mt-4 font-bold"
               >

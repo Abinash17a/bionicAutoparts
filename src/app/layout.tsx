@@ -6,9 +6,13 @@ import Navbar from "./components/Navbar";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import CarCompanySlider from "./components/Companyslider";
+import Header from "./components/Header";
 
 export const metadata: Metadata = {
   title: "Bionics Autoparts",
+  icons: {
+    icon: "/favicon.png",  
+  },
 };
 
 export default function RootLayout({
