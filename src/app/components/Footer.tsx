@@ -5,7 +5,7 @@ import { Box, Container, Typography, Grid, Link, IconButton } from '@mui/materia
 
 export default function Footer() {
   return (
-    <Box sx={{ backgroundColor: '#000000', color: '#EEEEEE', py: 6 }}>
+    <Box sx={{ backgroundColor: '#023047', color: '#8ecae6', py: 6 }}>
       <Container maxWidth="lg">
         <Grid container spacing={4} justifyContent="space-between">
           {/* Left side with logo and description */}
@@ -17,17 +17,17 @@ export default function Footer() {
               height={150}
               style={{ marginBottom: '16px' }}
             />
-            <Typography variant="h6" fontWeight="bold" color="#DC5F00" gutterBottom>
+            <Typography variant="h6" fontWeight="bold" color="#ffb703" gutterBottom>
               Bionics Auto Parts
             </Typography>
-            <Typography variant="body2" align="center">
+            <Typography variant="body2" align="center" color="#8ecae6">
               Providing quality auto parts since 2020. Your reliable partner for all automotive needs.
             </Typography>
           </Grid>
 
           {/* Quick Links */}
           <Grid item xs={12} sm={6} md={4}>
-            <Typography variant="subtitle1" fontWeight="bold" mb={2} color="#CF0A0A">
+            <Typography variant="subtitle1" fontWeight="bold" mb={2} color="#ffb703">
               Quick Links
             </Typography>
             <Box component="ul" sx={{ paddingLeft: '0', listStyleType: 'none' }}>
@@ -39,7 +39,7 @@ export default function Footer() {
                     underline="hover"
                     sx={{ 
                       '&:hover': { 
-                        color: '#DC5F00',
+                        color: '#fb8500',
                         transition: 'color 0.3s ease'
                       }
                     }}
@@ -53,20 +53,20 @@ export default function Footer() {
 
           {/* Contact Us */}
           <Grid item xs={12} sm={6} md={4}>
-            <Typography variant="subtitle1" fontWeight="bold" mb={2} color="#CF0A0A">
+            <Typography variant="subtitle1" fontWeight="bold" mb={2} color="#ffb703">
               Contact Us
             </Typography>
-            <Typography variant="body2" mb={1}>
-              Email: <Link href="mailto:parts@bionicsautoparts.com" color="inherit" underline="hover">parts@bionicsautoparts.com</Link>
+            <Typography variant="body2" mb={1} color="#8ecae6">
+              Email: <Link href="mailto:parts@bionicsautoparts.com" color="inherit" underline="hover" sx={{ '&:hover': { color: '#fb8500' } }}>parts@bionicsautoparts.com</Link>
             </Typography>
-            <Typography variant="body2" mb={1}>
+            <Typography variant="body2" mb={1} color="#8ecae6">
               Phone: +1 617-390-7248
             </Typography>
-            <Typography variant="body2" mb={1}>
+            <Typography variant="body2" mb={1} color="#8ecae6">
               Address: 123 Auto Street, Car City, CC 12345
             </Typography>
             <Box mt={2}>
-              <Typography variant="subtitle2" fontWeight="bold" mb={1} color="#DC5F00">
+              <Typography variant="subtitle2" fontWeight="bold" mb={1} color="#ffb703">
                 Follow Us
               </Typography>
               <Box>
@@ -82,9 +82,9 @@ export default function Footer() {
                     target="_blank"
                     rel="noopener noreferrer"
                     sx={{ 
-                      color: '#EEEEEE', 
+                      color: '#8ecae6', 
                       '&:hover': { 
-                        color: '#DC5F00',
+                        color: '#fb8500',
                         transform: 'translateY(-3px)',
                         transition: 'all 0.3s ease'
                       }
@@ -99,7 +99,7 @@ export default function Footer() {
         </Grid>
 
         {/* Footer copyright */}
-        <Typography variant="body2" align="center" mt={6} sx={{ borderTop: '1px solid #333', paddingTop: 3 }}>
+        <Typography variant="body2" align="center" mt={6} sx={{ borderTop: '1px solid #219ebc', paddingTop: 3 }}>
           &copy; {new Date().getFullYear()} Bionics Auto Parts. All rights reserved.
         </Typography>
       </Container>

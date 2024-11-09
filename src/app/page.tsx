@@ -59,19 +59,19 @@ export default function Home() {
       description: 'Explore our wide selection of premium car parts for all makes and models.'
     },
     {
-      src: '/carouselImages/caro2.jpg',
+      src: '/carouselImages/caro2_01.jpg',
       alt: 'Car Parts',
       title: 'Durable and Reliable',
       description: 'Our parts are built to last, ensuring your car runs smoothly.'
     },
     {
-      src: '/carouselImages/caro3.jpg',
+      src: '/carouselImages/caro3_01.jpg',
       alt: 'Car Parts',
       title: 'Affordable Prices',
       description: 'Get the best quality at the most competitive prices in the market.'
     },
     {
-      src: '/carouselImages/caro4.jpg',
+      src: '/carouselImages/caro4_01.jpg',
       alt: 'Car Parts',
       title: 'Fast Shipping',
       description: 'We deliver quickly so you can get back on the road as soon as possible.'
@@ -81,7 +81,7 @@ export default function Home() {
       alt: 'Car Parts',
       title: 'Customer Satisfaction',
       description: 'Join thousands of satisfied customers who trust our parts.'
-    }
+    },
   ];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -176,129 +176,130 @@ export default function Home() {
     <div
       className="min-h-screen"
       style={{
+        // backgroundImage: "url('/mainpagebg.jpg')",
+        backgroundColor:"#023047",
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundAttachment: 'fixed',
       }}
     >
-       <div className="relative w-full h-[700px]">
-        <Image
-          src={images[currentImageIndex].src}
-          alt={images[currentImageIndex].alt}
-          layout="fill"
-          objectFit="cover"
-          className="rounded-b-lg shadow-2xl"
-        />
-        <div className="absolute inset-0 bg-black bg-opacity-40 rounded-b-lg" />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white z-10 w-full max-w-4xl px-6">
-          <h2 className="text-4xl md:text-5xl font-extrabold mb-4 drop-shadow-lg">
-            {images[currentImageIndex].title}
-          </h2>
-          <p className="text-xl md:text-2xl font-medium drop-shadow-md">
-            {images[currentImageIndex].description}
-          </p>
-        </div>
-        <button
-          onClick={handlePrev}
-          className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white bg-opacity-20 text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:bg-opacity-30 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
-          aria-label="Previous Image"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
-        <button
-          onClick={handleNext}
-          className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white bg-opacity-20 text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:bg-opacity-30 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
-          aria-label="Next Image"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
-      </div>
-      <section className="container mx-auto px-6 py-8 bg-white bg-opacity-95">
+     <section className="w-full px-6 py-16 bg-white bg-opacity-100">
         <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} closeOnClick pauseOnHover draggable />
         {/* Top section divided into two parts */}
         <div className="w-full">
-          {/* Form section */}
-          <div className="bg-white p-8 rounded-md shadow-md mt-8 mx-4 md:mx-auto md:w-1/2">
-            <h2 className="text-2xl font-bold mb-4 text-center">
-              Find the Parts You Need
-            </h2>
-            <form className="space-y-4">
-              <div>
-                <label htmlFor="year" className="block text-gray-700">Year</label>
-                <select
-                  id="year"
-                  value={year}
-                  onChange={(e) => setYear(e.target.value)}
-                  className="block w-full mt-1 p-2 border border-gray-300 rounded-md"
-                >
-                  <option value="">Select Year</option>
-                  {initialData.years.map((y) => (
-                    <option key={y} value={y}>{y}</option>
-                  ))}
-                </select>
+          <div className="flex flex-col md:flex-row md:space-x-6 w-full h-auto">
+            {/* Carousel Section */}
+            <div className="relative w-full md:w-1/2 h-[500px] md:h-auto">
+              <Image
+                src={images[currentImageIndex].src}
+                alt={images[currentImageIndex].alt}
+                layout="fill"
+                objectFit="cover"
+                className="rounded-lg shadow-2xl"
+              />
+              <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg" />
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white z-10 w-full max-w-lg px-4">
+                <h2 className="text-4xl md:text-5xl font-extrabold mb-4 drop-shadow-lg">
+                  {images[currentImageIndex].title}
+                </h2>
+                <p className="text-lg md:text-2xl font-medium drop-shadow-md">
+                  {images[currentImageIndex].description}
+                </p>
               </div>
-
-              <div>
-                <label htmlFor="make" className="block text-gray-700">Make</label>
-                <select
-                  id="make"
-                  value={make}
-                  onChange={(e) => setMake(e.target.value)}
-                  className="block w-full mt-1 p-2 border border-gray-300 rounded-md"
-                >
-                  <option value="">Select Make</option>
-                  {initialData.makes.map((m) => (
-                    <option key={m} value={m}>{m}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label htmlFor="model" className="block text-gray-700">Model</label>
-                <select
-                  id="model"
-                  value={model}
-                  onChange={(e) => setModel(e.target.value)}
-                  className="block w-full mt-1 p-2 border border-gray-300 rounded-md"
-                  disabled={!make}
-                >
-                  <option value="">Select Model</option>
-                  {make && initialData.models[make]?.map((mod) => (
-                    <option key={mod} value={mod}>{mod}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label htmlFor="part" className="block text-gray-700">Part</label>
-                <select
-                  id="part"
-                  value={part}
-                  onChange={(e) => setPart(e.target.value)}
-                  className="block w-full mt-1 p-2 border border-gray-300 rounded-md"
-                >
-                  <option value="">Select Part</option>
-                  {initialData.parts.map((p) => (
-                    <option key={p} value={p}>{p}</option>
-                  ))}
-                </select>
-              </div>
-
+              {/* Navigation Buttons */}
               <button
-                type="button"
-                onClick={() => {
-                  setModalVisible(true);
-                  handleSearch();
-                }}
-                className="w-full bg-blue-500 text-white py-2 rounded-md mt-4 font-bold"
+                onClick={handlePrev}
+                className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white bg-opacity-20 text-white p-2 rounded-full shadow-lg hover:bg-opacity-30 hover:scale-110 focus:outline-none"
+                aria-label="Previous Image"
               >
-                Search Part
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+                </svg>
               </button>
-            </form>
+              <button
+                onClick={handleNext}
+                className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white bg-opacity-20 text-white p-2 rounded-full shadow-lg hover:bg-opacity-30 hover:scale-110 focus:outline-none"
+                aria-label="Next Image"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Form Section */}
+            <div className="flex flex-col w-full md:w-1/2 bg-white bg-opacity-10 p-6 rounded-lg shadow-lg">
+              <h2 className="text-2xl font-bold mb-4 text-[#219ebc]">Find the Parts You Need</h2>
+              <form className="space-y-4">
+                <div>
+                  <label htmlFor="year" className="block font-medium text-[#219ebc]">Year</label>
+                  <select
+                    id="year"
+                    value={year}
+                    onChange={(e) => setYear(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#219ebc] focus:border-[#219ebc]"
+                  >
+                    <option value="">Select Year</option>
+                    {initialData.years.map((y) => (
+                      <option key={y} value={y}>{y}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label htmlFor="make" className="block font-medium text-[#219ebc]">Make</label>
+                  <select
+                    id="make"
+                    value={make}
+                    onChange={(e) => setMake(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#219ebc] focus:border-[#219ebc]"
+                  >
+                    <option value="">Select Make</option>
+                    {initialData.makes.map((m) => (
+                      <option key={m} value={m}>{m}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label htmlFor="model" className="block font-medium text-[#219ebc]">Model</label>
+                  <select
+                    id="model"
+                    value={model}
+                    onChange={(e) => setModel(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#219ebc] focus:border-[#219ebc]"
+                    disabled={!make}
+                  >
+                    <option value="">Select Model</option>
+                    {make && initialData.models[make]?.map((mod) => (
+                      <option key={mod} value={mod}>{mod}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label htmlFor="part" className="block font-medium text-[#219ebc]">Part</label>
+                  <select
+                    id="part"
+                    value={part}
+                    onChange={(e) => setPart(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#219ebc] focus:border-[#219ebc]"
+                  >
+                    <option value="">Select Part</option>
+                    {initialData.parts.map((p) => (
+                      <option key={p} value={p}>{p}</option>
+                    ))}
+                  </select>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setModalVisible(true);
+                    handleSearch();
+                  }}
+                  className="w-full bg-[#219ebc] text-white p-2 rounded-md hover:bg-[#8ecae6] transition"
+                >
+                  Search Part
+                </button>
+              </form>
+            </div>
           </div>
         </div>
 
@@ -377,33 +378,36 @@ export default function Home() {
             </div>
           </div>
         )}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mt-16 px-6 lg:px-20">
           {/* Left side: Writing */}
-          <div className="p-10 rounded-md">
-            <h2 className="text-2xl font-bold mb-6">More Information About Car Parts</h2>
-            <p className="mb-6">
+          <div className="p-8 lg:p-10 rounded-lg bg-white shadow-lg">
+            <h2 className="text-2xl lg:text-3xl font-bold mb-4 text-gray-900">
+              More Information About Car Parts
+            </h2>
+            <p className="text-gray-700 leading-relaxed mb-6">
               At our store, you will find a wide range of car parts for every model and make. Whether you are looking for engine components, body parts, or interior accessories, we have it all.
             </p>
-            <p className="mt-4">
+            <p className="text-gray-700 leading-relaxed mb-8">
               Our team is dedicated to providing you with the best options to maintain and upgrade your vehicle. Get the parts you need at competitive prices and with fast shipping.
             </p>
-            <h2 className="text-2xl font-bold mb-6">Shipping and Returns</h2>
-            <p className="mb-6">
-              Shipping Policy
-              We can ship to virtually any address in the world. Note that there are restrictions on some products, and some products cannot be shipped to international destinations.
 
-              When you place an order, we will estimate shipping and delivery dates for you based on the availability of your items and the shipping options you choose.
+            <h2 className="text-2xl lg:text-3xl font-bold mb-4 text-gray-900">Shipping and Returns</h2>
+            <p className="text-gray-700 leading-relaxed mb-6">
+              <strong>Shipping Policy:</strong> We can ship to virtually any address in the world. Note that there are restrictions on some products, and some products cannot be shipped internationally.
             </p>
-            <h2 className="text-2xl font-bold mb-6">Returns Policy</h2>
-            <p className="mt-4">
-              If you need to return an item, you may call or text  +1 617-390-7248, email  auth@bionicsautoparts.com, or chat us on this website.
-              We take pride in our timely and efficient return process. We want to make sure you are taken care of every step of the way, even after the transaction is completed if needed. Please keep in mind that while we may refund your credit card within 1-2 days of the part being returned, it may take the credit card processor an additional 3-5 business days to actually process that refund to your card.
+            <p className="text-gray-700 leading-relaxed mb-6">
+              When you place an order, we will estimate shipping and delivery dates for you based on item availability and selected shipping options.
+            </p>
+
+            <h2 className="text-2xl lg:text-3xl font-bold mb-4 text-gray-900">Returns Policy</h2>
+            <p className="text-gray-700 leading-relaxed mb-6">
+              If you need to return an item, you may call or text +1 617-390-7248, email auth@bionicsautoparts.com, or chat with us here. Our goal is to provide a smooth and efficient return process. Note that while refunds are issued within 1-2 days of return, the credit card processor may take an additional 3-5 days to process.
             </p>
             <p className="mt-4">
               <a
                 href="/files/warranty.pdf"
                 target="_blank"
-                className="text-blue-600 underline hover:text-blue-800"
+                className="text-blue-600 underline hover:text-blue-800 font-semibold"
                 rel="noopener noreferrer"
               >
                 Terms and Conditions (PDF)
@@ -411,127 +415,118 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-6 p-10 rounded-md">
-            <Image
-              src="/mainpage1.jpg"
-              alt="Car Part 1"
-              width={250}
-              height={150}
-              className="rounded-md w-full"
-            />
-            <Image
-              src="/mainpage2.jpg"
-              alt="Car Part 2"
-              width={250}
-              height={150}
-              className="rounded-md w-full"
-            />
-            <Image
-              src="/mainpage3.jpg"
-              alt="Car Part 3"
-              width={250}
-              height={150}
-              className="rounded-md w-full"
-            />
-            <Image
-              src="/mainpage4.jpg"
-              alt="Car Part 4"
-              width={250}
-              height={150}
-              className="rounded-md w-full"
-            />
+          {/* Right side: Images */}
+          <div className="grid grid-cols-2 gap-6">
+            {["/mainpage1.jpg", "/mainpage2.jpg", "/mainpage3.jpg", "/mainpage4.jpg"].map((src, index) => (
+              <Image
+                key={index}
+                src={src}
+                alt={`Car Part ${index + 1}`}
+                width={250}
+                height={150}
+                className="rounded-md w-full transform transition-transform duration-300 hover:scale-105 shadow-lg"
+              />
+            ))}
           </div>
         </div>
 
-        <div className="mt-12">
-          <h2 className="text-3xl font-bold text-center mb-8">Explore Our Car Parts</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <div className="mt-16 px-6 lg:px-20">
+          <h2 className="text-3xl font-bold text-center mb-10 text-gray-900">Explore Our Car Parts</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Card 1 */}
-            <div className="bg-white p-6 rounded-md shadow-md flex flex-col h-full">
-              <div className="h-60 overflow-hidden">
+            <div className="card-container">
+              <div className="image-wrapper">
                 <Image
                   src="/cardmpageengine.jpg"
-                  alt="Part 1"
+                  alt="Engine Parts"
                   width={500}
                   height={300}
-                  className="object-cover rounded-md w-full h-full"
+                  className="object-cover rounded-t-lg w-full h-full"
                 />
               </div>
-              <h3 className="text-xl font-bold mt-4">Engine Parts</h3>
-              <p className="text-gray-700 mt-2 flex-grow">
-                Browse a wide selection of high-performance engine components that will keep your vehicle running smoothly.
-              </p>
+              <div className="card-content">
+                <h3 className="text-xl font-bold text-gray-900">Engine Parts</h3>
+                <p className="text-gray-600 mt-2 flex-grow">
+                  Browse a wide selection of high-performance engine components that will keep your vehicle running smoothly.
+                </p>
+              </div>
             </div>
 
             {/* Card 2 */}
-            <div className="bg-white p-6 rounded-md shadow-md flex flex-col h-full">
-              <div className="h-60 overflow-hidden">
+            <div className="card-container">
+              <div className="image-wrapper">
                 <Image
                   src="/cardinteriormpage.jpg"
-                  alt="Part 2"
+                  alt="Body Parts"
                   width={500}
                   height={300}
-                  className="object-cover rounded-md w-full h-full"
+                  className="object-cover rounded-t-lg w-full h-full"
                 />
               </div>
-              <h3 className="text-xl font-bold mt-4">Body Parts</h3>
-              <p className="text-gray-700 mt-2 flex-grow">
-                Find everything from bumpers to fenders to give your car a fresh new look.
-              </p>
+              <div className="card-content">
+                <h3 className="text-xl font-bold text-gray-900">Body Parts</h3>
+                <p className="text-gray-600 mt-2 flex-grow">
+                  Find everything from bumpers to fenders to give your car a fresh new look.
+                </p>
+              </div>
             </div>
 
             {/* Card 3 */}
-            <div className="bg-white p-6 rounded-md shadow-md flex flex-col h-full">
-              <div className="h-60 overflow-hidden">
+            <div className="card-container">
+              <div className="image-wrapper">
                 <Image
                   src="/cardcarpartsmpage.jpg"
-                  alt="Part 3"
+                  alt="Interior Accessories"
                   width={500}
                   height={300}
-                  className="object-cover rounded-md w-full h-full"
+                  className="object-cover rounded-t-lg w-full h-full"
                 />
               </div>
-              <h3 className="text-xl font-bold mt-4">Interior Accessories</h3>
-              <p className="text-gray-700 mt-2 flex-grow">
-                Upgrade your car's interior with stylish and functional accessories.
-              </p>
+              <div className="card-content">
+                <h3 className="text-xl font-bold text-gray-900">Interior Accessories</h3>
+                <p className="text-gray-600 mt-2 flex-grow">
+                  Upgrade your car's interior with stylish and functional accessories.
+                </p>
+              </div>
             </div>
           </div>
         </div>
 
 
         {/* Testimonials Section */}
-        <div className="mt-16">
-          <h2 className="text-3xl font-bold text-center mb-8">What Our Customers Say</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="mt-16 px-6 lg:px-20">
+          <h2 className="text-3xl font-bold text-center mb-12 text-gray-900">What Our Customers Say</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Testimonial 1 */}
-            <div className="bg-white p-6 rounded-md shadow-md text-center">
+            <div className="testimonial-card">
               <p className="text-gray-700 italic">
                 "I recently purchased a part for my project, and I couldn't be more satisfied. The quality is outstanding, and it fits perfectly. The ordering process was smooth, and it arrived on time. Highly recommend this part to anyone in need!"
               </p>
-              <p className="text-blue-500 font-bold mt-4">- Jay</p>
-              <p className="text-blue-500 font-bold mt-4">-Ford F350-</p>
+              <p className="text-blue-500 font-semibold mt-4">- Jay</p>
+              <p className="text-gray-500 font-medium mt-1">Ford F350</p>
             </div>
 
             {/* Testimonial 2 */}
-            <div className="bg-white p-6 rounded-md shadow-md text-center">
+            <div className="testimonial-card">
               <p className="text-gray-700 italic">
                 "I found the exact part I needed in no time! The service was quick and reliable, making my repair process so much easier."
               </p>
-              <p className="text-blue-500 font-bold mt-4">- Brenda</p>
-              <p className="text-blue-500 font-bold mt-4">-Dodge Charger-</p>
+              <p className="text-blue-500 font-semibold mt-4">- Brenda</p>
+              <p className="text-gray-500 font-medium mt-1">Dodge Charger</p>
             </div>
 
             {/* Testimonial 3 */}
-            <div className="bg-white p-6 rounded-md shadow-md text-center">
+            <div className="testimonial-card">
               <p className="text-gray-700 italic">
-                "An excellent service when it comes to "Used car spare parts"."
+                "An excellent service when it comes to 'Used car spare parts'."
               </p>
-              <p className="text-blue-500 font-bold mt-4">- Damien</p>
-              <p className="text-blue-500 font-bold mt-4">-Chevy S10-</p>
+              <p className="text-blue-500 font-semibold mt-4">- Damien</p>
+              <p className="text-gray-500 font-medium mt-1">Chevy S10</p>
             </div>
           </div>
         </div>
+
       </section>
     </div>
   );
