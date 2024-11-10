@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
@@ -47,7 +47,7 @@ export default function Header() {
     <Box sx={{ flexGrow: 1 }}>
       {/* Header */}
       <AppBar position="static" sx={{ backgroundColor: '#023047' }}>
-        <Toolbar sx={{ justifyContent: 'space-between' }}>
+        <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
           {/* Logo on the left */}
           <Typography
             variant="h4"
@@ -56,10 +56,20 @@ export default function Header() {
               fontWeight: 'bold',
               color: '#ffb703',
               textAlign: 'left',
+              display: { xs: 'none', md: 'block' }, // Hide on mobile
             }}
           >
             Bionics Autoparts
           </Typography>
+
+          {/* Centered Logo */}
+          <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
+            <img
+              src="/bbb_trust_logo.png" // Replace with your logo image path
+              alt="BBB Trust Logo"
+              style={{ height: '40px', objectFit: 'contain' }} // Adjust height as needed
+            />
+          </Box>
 
           {/* Links for Large Screens */}
           <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>

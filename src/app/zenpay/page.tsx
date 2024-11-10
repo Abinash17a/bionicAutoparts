@@ -1,4 +1,5 @@
-'use client';
+"use client";
+
 import React, { useEffect, useState } from 'react';
 import './styles.css';
 import { db } from '../lib/firebase';
@@ -30,9 +31,13 @@ export default function PaymentsPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState<User | null>(null);
+  const [isClient, setIsClient] = useState(false); // Add client-only state
   const auth = getAuth();
 
-  // Fetch Payments data from Firestore
+  useEffect(() => {
+    setIsClient(true); // Set client-only state on mount
+  }, []);
+
   useEffect(() => {
     const fetchPayments = async () => {
       try {
@@ -55,7 +60,6 @@ export default function PaymentsPage() {
     }
   }, [isAuthenticated, user]);
 
-  // Filter payments based on search query
   useEffect(() => {
     const lowercasedQuery = searchQuery.toLowerCase();
     const filtered = payments.filter((payment) =>
@@ -66,7 +70,6 @@ export default function PaymentsPage() {
     setFilteredPayments(filtered);
   }, [searchQuery, payments]);
 
-  // Firebase Auth State Observer
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setIsAuthenticated(!!user);
@@ -75,7 +78,6 @@ export default function PaymentsPage() {
     return () => unsubscribe();
   }, [auth]);
 
-  // Handle login form submission
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -88,7 +90,6 @@ export default function PaymentsPage() {
     }
   };
 
-  // Log out the current user
   const handleLogout = async () => {
     await signOut(auth);
     setIsAuthenticated(false);
@@ -96,7 +97,6 @@ export default function PaymentsPage() {
     toast.info('You have logged out.');
   };
 
-  // Handle sorting
   const handleSortChange = () => {
     const sortedPayments = [...filteredPayments].sort((a, b) => {
       const amountA = parseFloat(a.amount);
@@ -107,7 +107,8 @@ export default function PaymentsPage() {
     setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
   };
 
-  // Conditional rendering for payments data
+  if (!isClient) return null; // Render nothing on the server
+
   if (loading && !isAuthenticated) {
     return (
       <div className="login-container">
@@ -135,7 +136,6 @@ export default function PaymentsPage() {
     );
   }
 
-  // Show unauthorized message if user is not authorized
   if (user && user.email !== authorizedEmail) {
     return (
       <div className="unauthorized-container">
