@@ -270,7 +270,7 @@ export default function Home() {
                     disabled={!make}
                   >
                     <option value="">Select Model</option>
-                    {make && initialData.models[make]?.map((mod) => (
+                    {make && initialData.models[make]?.map((mod:any) => (
                       <option key={mod} value={mod}>{mod}</option>
                     ))}
                   </select>

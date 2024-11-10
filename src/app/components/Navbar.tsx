@@ -50,18 +50,21 @@ export default function Header() {
         <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
           {/* Logo and Name */}
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography
-              variant="h5"
-              component="div"
-              sx={{
-                fontWeight: 'bold',
-                color: '#ffb703',
-                display: { xs: 'block', md: 'block' },
-                mr: 2,
-              }}
-            >
-              Bionics Autoparts
-            </Typography>
+            <Link href="/" passHref>
+              <Typography
+                variant="h5"
+                component="a"
+                sx={{
+                  fontWeight: 'bold',
+                  color: '#ffb703',
+                  display: { xs: 'block', md: 'block' },
+                  mr: 2,
+                  cursor: 'pointer',
+                }}
+              >
+                Bionics Autoparts
+              </Typography>
+            </Link>
             <img
               src="/bbb_trust_logo.png" // Replace with your logo image path
               alt="BBB Trust Logo"

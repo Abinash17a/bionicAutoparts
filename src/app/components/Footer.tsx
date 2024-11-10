@@ -31,7 +31,7 @@ export default function Footer() {
               Quick Links
             </Typography>
             <Box component="ul" sx={{ paddingLeft: '0', listStyleType: 'none' }}>
-              {['Home', 'About Us', 'Contact', 'Products', 'FAQ'].map((item) => (
+              {['About Us', 'Contact',].map((item) => (
                 <Box component="li" key={item} mb={1}>
                   <Link 
                     href={`/${item.toLowerCase().replace(' ', '-')}`} 
@@ -63,7 +63,7 @@ export default function Footer() {
               Phone: +1 617-390-7248
             </Typography>
             <Typography variant="body2" mb={1} color="#8ecae6">
-              Address: 123 Auto Street, Car City, CC 12345
+            6332 Deep Canyon Dr,Beverly Hills,CA 90210
             </Typography>
             <Box mt={2}>
               <Typography variant="subtitle2" fontWeight="bold" mb={1} color="#ffb703">
