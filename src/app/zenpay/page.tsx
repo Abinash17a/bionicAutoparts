@@ -4,8 +4,8 @@ import './styles.css';
 import { db } from '../lib/firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, User } from 'firebase/auth';
-import { toast } from 'react-toastify'; 
-import 'react-toastify/dist/ReactToastify.css'; 
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface Payment {
   amount: string;
@@ -29,14 +29,11 @@ export default function PaymentsPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isClient, setIsClient] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const auth = getAuth();
 
   // Fetch Payments data from Firestore
   useEffect(() => {
-    setIsClient(true); // Ensure client-side rendering only
-
     const fetchPayments = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, 'payments'));
@@ -61,7 +58,7 @@ export default function PaymentsPage() {
   // Filter payments based on search query
   useEffect(() => {
     const lowercasedQuery = searchQuery.toLowerCase();
-    const filtered = payments.filter((payment) => 
+    const filtered = payments.filter((payment) =>
       payment.firstName.toLowerCase().includes(lowercasedQuery) ||
       payment.lastName.toLowerCase().includes(lowercasedQuery) ||
       payment.orderId.toLowerCase().includes(lowercasedQuery)
