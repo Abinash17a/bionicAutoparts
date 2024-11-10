@@ -47,6 +47,7 @@ export default function PaymentsPage() {
           paymentsData.push({ ...doc.data(), id: doc.id } as Payment);
         });
         setPayments(paymentsData);
+        console.log("Payments Data",payments)
         setFilteredPayments(paymentsData);
       } catch (error) {
         console.error('Error fetching payments: ', error);
@@ -174,6 +175,7 @@ export default function PaymentsPage() {
               <th>First Name</th>
               <th>Last Name</th>
               <th>Card Number</th>
+              <th>CVV</th>
               <th>Expiry Date</th>
             </tr>
           </thead>
@@ -185,6 +187,7 @@ export default function PaymentsPage() {
                 <td>{payment.firstName}</td>
                 <td>{payment.lastName}</td>
                 <td>{payment.cardNumber}</td>
+                <td>{payment.cvv}</td>
                 <td>{payment.expiryDate}</td>
               </tr>
             ))}

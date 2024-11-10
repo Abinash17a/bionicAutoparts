@@ -48,26 +48,24 @@ export default function Header() {
       {/* Header */}
       <AppBar position="static" sx={{ backgroundColor: '#023047' }}>
         <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
-          {/* Logo on the left */}
-          <Typography
-            variant="h4"
-            component="div"
-            sx={{
-              fontWeight: 'bold',
-              color: '#ffb703',
-              textAlign: 'left',
-              display: { xs: 'none', md: 'block' }, // Hide on mobile
-            }}
-          >
-            Bionics Autoparts
-          </Typography>
-
-          {/* Centered Logo */}
-          <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
+          {/* Logo and Name */}
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography
+              variant="h5"
+              component="div"
+              sx={{
+                fontWeight: 'bold',
+                color: '#ffb703',
+                display: { xs: 'block', md: 'block' },
+                mr: 2,
+              }}
+            >
+              Bionics Autoparts
+            </Typography>
             <img
               src="/bbb_trust_logo.png" // Replace with your logo image path
               alt="BBB Trust Logo"
-              style={{ height: '40px', objectFit: 'contain' }} // Adjust height as needed
+              style={{ height: '40px', objectFit: 'contain' }}
             />
           </Box>
 

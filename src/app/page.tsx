@@ -177,19 +177,19 @@ export default function Home() {
       className="min-h-screen"
       style={{
         // backgroundImage: "url('/mainpagebg.jpg')",
-        backgroundColor:"#023047",
+        backgroundColor: "#023047",
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundAttachment: 'fixed',
       }}
     >
-     <section className="w-full px-6 py-16 bg-white bg-opacity-100">
+      <section className="w-full px-6 py-16 bg-white bg-opacity-100">
         <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} closeOnClick pauseOnHover draggable />
         {/* Top section divided into two parts */}
         <div className="w-full">
           <div className="flex flex-col md:flex-row md:space-x-6 w-full h-auto">
             {/* Carousel Section */}
-            <div className="relative w-full md:w-1/2 h-[500px] md:h-auto">
+            <div className="relative w-full h-[300px] md:w-1/2 md:h-[500px]">
               <Image
                 src={images[currentImageIndex].src}
                 alt={images[currentImageIndex].alt}
@@ -198,30 +198,31 @@ export default function Home() {
                 className="rounded-lg shadow-2xl"
               />
               <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg" />
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white z-10 w-full max-w-lg px-4">
-                <h2 className="text-4xl md:text-5xl font-extrabold mb-4 drop-shadow-lg">
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white z-10 w-full max-w-lg px-2 md:px-4">
+                <h2 className="text-3xl md:text-5xl font-extrabold mb-2 md:mb-4 drop-shadow-lg">
                   {images[currentImageIndex].title}
                 </h2>
-                <p className="text-lg md:text-2xl font-medium drop-shadow-md">
+                <p className="text-base md:text-2xl font-medium drop-shadow-md">
                   {images[currentImageIndex].description}
                 </p>
               </div>
-              {/* Navigation Buttons */}
+
+              {/* Navigation Buttons - visible only on medium screens and above */}
               <button
                 onClick={handlePrev}
-                className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white bg-opacity-20 text-white p-2 rounded-full shadow-lg hover:bg-opacity-30 hover:scale-110 focus:outline-none"
+                className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-white bg-opacity-20 text-white p-1 md:p-2 rounded-full shadow-lg hover:bg-opacity-30 hover:scale-110 focus:outline-none hidden md:block"
                 aria-label="Previous Image"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
                 </svg>
               </button>
               <button
                 onClick={handleNext}
-                className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white bg-opacity-20 text-white p-2 rounded-full shadow-lg hover:bg-opacity-30 hover:scale-110 focus:outline-none"
+                className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-white bg-opacity-20 text-white p-1 md:p-2 rounded-full shadow-lg hover:bg-opacity-30 hover:scale-110 focus:outline-none hidden md:block"
                 aria-label="Next Image"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
                 </svg>
               </button>
