@@ -1,0 +1,141 @@
+/* General styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  body {
+    background-color: #f4f7fa;
+    color: #333;
+    line-height: 1.5;
+  }
+  
+  /* Login page container */
+  .login-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  /* Login form */
+  .login-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .input-field {
+    margin-bottom: 15px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .input-field:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  .login-button {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .login-button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Unauthorized message container */
+  .unauthorized-container {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .unauthorized-container p {
+    color: #f44336;
+  }
+  
+  .logout-button {
+    margin-top: 15px;
+    padding: 8px 16px;
+    background-color: #ff5722;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .logout-button:hover {
+    background-color: #e64a19;
+  }
+  
+  .loading-container {
+    text-align: center;
+    font-size: 18px;
+    padding: 40px;
+  }
+  
+  /* Payments Table */
+  .payments-container {
+    padding: 20px;
+    margin: 20px;
+  }
+  
+  .payments-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0; /* Adds margin to the table */
+    padding: 0 20px; /* Adds padding to the sides of the table */
+  }
+  
+  .payments-table th,
+  .payments-table td {
+    padding: 12px 15px; /* Adds padding inside each table cell */
+    border: 1px solid #ddd; /* Adds border to each table cell */
+    text-align: left;
+  }
+  
+  .payments-table th {
+    background-color: #f4f4f4; /* Optional: Adds background color to the table header */
+    font-weight: bold;
+  }
+  
+  /* Controls */
+  .controls-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .search-input {
+    width: 60%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .sort-button {
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .sort-button:hover {
+    background-color: #218838;
+  }
+  

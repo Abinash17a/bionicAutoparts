@@ -1,3 +1,5 @@
+import React from 'react';
+
 export default function AboutUs() {
   return (
     <div
@@ -10,22 +12,22 @@ export default function AboutUs() {
       }}
     >
       {/* Section with the content */}
-      <section className="container mx-auto px-6 py-8 bg-white bg-opacity-95 rounded-lg ">
+      <section className="container mx-auto px-6 py-8 bg-white rounded-lg text-[#333333]">
         {/* Header */}
-        <h1 className="text-4xl font-bold text-center mb-4" style={{ color: '#788AA3' }}>
+        <h1 className="text-4xl font-bold text-center mb-4 text-[#4A90E2]">
           About Us
         </h1>
-        <p className="mt-2 text-center text-lg" style={{ color: '#2E3A59' }}>
+        <p className="mt-2 text-center text-lg text-[#555555]">
           We are the best car parts provider in the industry!
         </p>
 
         <div className="flex flex-col md:flex-row mt-8">
           {/* Left Side: About the Company */}
           <div className="w-full md:w-1/2 mb-8 md:mb-0">
-            <h2 className="text-3xl font-bold" style={{ color: '#2E3A59' }}>
+            <h2 className="text-3xl font-bold text-[#4A90E2]">
               About Our Company
             </h2>
-            <p className="mt-4 text-lg" style={{ color: '#788AA3' }}>
+            <p className="mt-4 text-lg text-[#333333]">
               Our Huge Inventory and Computerized Search Network. We encourage you to contact us at
               any time that you are looking for used auto parts. Our inventory is organized and
               coded, so we can look up parts for you in seconds on our computers. We also have
@@ -39,18 +41,17 @@ export default function AboutUs() {
             <img
               src="/aboutusmain.jpg"
               alt="About Us"
-              className="w-full h-auto rounded-lg shadow-lg border-2"
-              style={{ borderColor: '#788AA3' }}
+              className="w-full h-auto rounded-lg shadow-lg border-2 border-[#4A90E2]"
             />
           </div>
         </div>
 
         {/* Mission Statement */}
         <div className="mt-12 text-center">
-          <h2 className="text-3xl font-bold" style={{ color: '#788AA3' }}>
+          <h2 className="text-3xl font-bold text-[#4A90E2]">
             Our Mission
           </h2>
-          <p className="mt-4 text-lg" style={{ color: '#2E3A59' }}>
+          <p className="mt-4 text-lg text-[#333333]">
             Our mission is to provide the best quality auto parts at competitive prices while
             ensuring customer satisfaction through our dedicated service.
           </p>
@@ -58,21 +59,15 @@ export default function AboutUs() {
 
         {/* Fancy Bottom Section */}
         <div
-          className="mt-12 text-center p-6 rounded-lg shadow-lg"
-          style={{ backgroundColor: '#2E3A59', color: '#D1D4E0' }}
+          className="mt-12 text-center p-6 rounded-lg shadow-lg bg-[#f0f0f0] text-[#333333]"
         >
-          <h2 className="text-2xl font-bold">Join Our Community!</h2>
-          <p className="mt-4">
+          <h2 className="text-2xl font-bold text-[#4A90E2]">Join Our Community!</h2>
+          <p className="mt-4 text-[#555555]">
             Sign up for our newsletter and stay updated with the latest news, promotions, and tips
             for maintaining your vehicle. Together, we can keep your car running smoothly!
           </p>
           <button
-            className="mt-4 px-4 py-2 rounded-lg font-semibold transition duration-300"
-            style={{
-              backgroundColor: '#D1D4E0',
-              color: '#2E3A59',
-              border: '1px solid #788AA3',
-            }}
+            className="mt-4 px-4 py-2 rounded-lg font-semibold transition duration-300 bg-[#4A90E2] text-[#FFFFFF] hover:bg-[#357ABD] hover:text-[#FFFFFF]"
           >
             Subscribe Now
           </button>

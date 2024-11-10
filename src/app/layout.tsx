@@ -9,6 +9,9 @@ import CarCompanySlider from "./components/Companyslider";
 
 export const metadata: Metadata = {
   title: "Bionics Autoparts",
+  icons: {
+    icon: "/favicon.png",  
+  },
 };
 
 export default function RootLayout({
