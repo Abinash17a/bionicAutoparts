@@ -1,11 +1,20 @@
+"use client";
+
 import React from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function AboutUs() {
+  const router = useRouter();
+
+  const goToHomePage = () => {
+    router.push('/'); // Redirect to the homepage
+  };
+
   return (
     <div
       className="min-h-screen"
       style={{
-        backgroundImage: "url('/bgimagev8fsi.jpg')", // Replace with your image path
+        backgroundImage: "url('/bgimagev8fsi.jpg')",
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundAttachment: 'fixed',
@@ -34,6 +43,19 @@ export default function AboutUs() {
               access to the Computerized Search Network that is connected to over affiliated
               recycling centers.
             </p>
+            <p className="mt-4 text-lg text-[#333333]">
+              With years of experience in the auto parts industry, we pride ourselves on offering
+              top-quality used and new parts for all makes and models of vehicles. Our knowledgeable
+              staff is always ready to assist you in finding exactly what you need. Whether you're a
+              mechanic, car enthusiast, or everyday driver, we are committed to delivering
+              excellence in every interaction.
+            </p>
+            <p className="mt-4 text-lg text-[#333333]">
+              At our company, sustainability and customer satisfaction go hand in hand. We believe
+              in recycling and reusing auto parts to reduce waste and protect the environment, while
+              ensuring our customers get the best value for their money. We aim to build long-term
+              relationships with our customers by consistently exceeding their expectations.
+            </p>
           </div>
 
           {/* Right Side: Large Image */}
@@ -48,9 +70,7 @@ export default function AboutUs() {
 
         {/* Mission Statement */}
         <div className="mt-12 text-center">
-          <h2 className="text-3xl font-bold text-[#4A90E2]">
-            Our Mission
-          </h2>
+          <h2 className="text-3xl font-bold text-[#4A90E2]">Our Mission</h2>
           <p className="mt-4 text-lg text-[#333333]">
             Our mission is to provide the best quality auto parts at competitive prices while
             ensuring customer satisfaction through our dedicated service.
@@ -61,15 +81,17 @@ export default function AboutUs() {
         <div
           className="mt-12 text-center p-6 rounded-lg shadow-lg bg-[#f0f0f0] text-[#333333]"
         >
-          <h2 className="text-2xl font-bold text-[#4A90E2]">Join Our Community!</h2>
+          <h2 className="text-2xl font-bold text-[#4A90E2]">Let’s Go Back Home and Buy Parts!</h2>
           <p className="mt-4 text-[#555555]">
-            Sign up for our newsletter and stay updated with the latest news, promotions, and tips
-            for maintaining your vehicle. Together, we can keep your car running smoothly!
+            Explore our wide selection of high-quality auto parts at unbeatable prices. Head back to
+            our homepage to find the perfect part for your vehicle and enjoy a seamless shopping
+            experience.
           </p>
           <button
+            onClick={goToHomePage}
             className="mt-4 px-4 py-2 rounded-lg font-semibold transition duration-300 bg-[#4A90E2] text-[#FFFFFF] hover:bg-[#357ABD] hover:text-[#FFFFFF]"
           >
-            Subscribe Now
+            Go to Home
           </button>
         </div>
       </section>

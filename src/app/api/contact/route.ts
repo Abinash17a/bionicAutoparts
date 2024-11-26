@@ -1,28 +1,29 @@
-import nodemailer from 'nodemailer';
+// app/api/contact/route.js
+import { db } from  '../../lib/firebase';
+import { collection, addDoc } from "firebase/firestore";
 
-export async function POST(req:any) {
-  const { name, email, message } = await req.json();
-
-  
-  let transporter = nodemailer.createTransport({
-    service: 'Gmail', 
-    auth: {
-      user: process.env.EMAIL_USER, 
-      pass: process.env.EMAIL_PASS, 
-    },
-  });
-
-  let mailOptions = {
-    from: `"${name}" <${email}>`, 
-    to: 'testuser7@gmail.com', 
-    subject: 'New Contact Form Submission',
-    text: `You have a new message from ${name} (${email}): \n\n${message}`,
-  };
+export async function POST(request:any) {
+  const { name, email, message } = await request.json();
 
   try {
-    await transporter.sendMail(mailOptions);
-    return new Response(JSON.stringify({ success: true, message: 'Message sent successfully!' }), { status: 200 });
-  } catch (error) {
-    return new Response(JSON.stringify({ success: false, message: 'Failed to send message', error }), { status: 500 });
+    // Reference to your Firebase Firestore collection
+    const contactCollection = collection(db, "contactMessages");
+
+    // Add the form data to Firebase
+    await addDoc(contactCollection, {
+      name,
+      email,
+      message,
+      timestamp: new Date(),
+    });
+
+    return new Response(JSON.stringify({ message: "Message sent successfully!" }), {
+      status: 200,
+    });
+  } catch (error:any) {
+    return new Response(
+      JSON.stringify({ message: "Error sending message", error: error.message }),
+      { status: 500 }
+    );
   }
 }

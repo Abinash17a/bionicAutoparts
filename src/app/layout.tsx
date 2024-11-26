@@ -10,7 +10,7 @@ import CarCompanySlider from "./components/Companyslider";
 export const metadata: Metadata = {
   title: "Bionics Autoparts",
   icons: {
-    icon: "/favicon.png",  
+    icon: "/favicon.png",
   },
 };
 
@@ -22,25 +22,31 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-      <script async src="https://www.googletagmanager.com/gtag/js?id=AW-16746690398"></script>
+        <title>Nationwide Salvage Yards | Affordable Used Auto Parts Online - Bionics Auto Parts</title>
+        <meta name="description" content="Find top-quality used auto parts at unbeatable prices with Bionics Auto Parts! Serving all 50 U.S. states, we offer affordable recycled car parts, rare components, and nationwide shipping. Shop online for sustainable, budget-friendly solutions today." />
+        <meta name="keywords" content="nationwide salvage yards, used auto parts online, affordable car parts, recycled auto parts, eco-friendly car parts, salvage yards near me, car parts for all states, rare auto parts, Bionics Auto Parts, sustainable car repair solutions" />
+        <meta name="robots" content="index, follow" />
+        <meta name="author" content="Bionics Auto Parts" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script async src="https://www.googletagmanager.com/gtag/js?id=AW-16746690398"></script>
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'AW-16746690398');
-            `,
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'AW-16746690398');
+      `,
           }}
         />
-      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
       </head>
       <body className="flex flex-col min-h-screen font-sans">
         <Navbar />
         <main className="flex-grow">
           {children}
         </main>
-        <CarCompanySlider/>
+        <CarCompanySlider />
         <Footer />
       </body>
 
