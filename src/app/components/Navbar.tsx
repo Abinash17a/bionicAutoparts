@@ -29,6 +29,7 @@ export default function Header() {
     { title: 'Home', path: '/' },
     { title: 'About', path: '/about-us' },
     { title: 'Contact', path: '/contact' },
+    { title: 'Blogs', path: '/blogs' },
   ];
 
   const linkStyle = (path: string) => ({
@@ -132,3 +133,4 @@ export default function Header() {
     </Box>
   );
 }
+
