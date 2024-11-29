@@ -46,21 +46,21 @@ export const blogs = [
 
             **Drive smarter. Drive greener. Drive with Bionics Auto Parts.**
         `,
-        image: "https://www.zfgarage.com/cdn/shop/files/zfgarage_profile_24aaec01-47dc-43e2-afdc-09fa4c617c23.jpg?v=1683804788",
+        image: "/blogs/b1.svg",
         date: "Nov 19, 2024",
     },
     {
         "id": 2,
         "title": "The Ultimate Guide to Finding Quality Used Auto Parts",
         "description": "When your car needs a replacement part, heading to a salvage yard near you can be a cost-effective and eco-friendly solution. Salvage yards, also known as junkyards or auto recyclers, offer a treasure trove of used OEM parts at a fraction of the cost of buying new ones. But how do you find the best salvage yards, and what should you know before making a visit? Here’s a comprehensive guide to get you started.\n\n**What Is a Salvage Yard?**\n\nA salvage yard is a facility where damaged, abandoned, or end-of-life vehicles are dismantled, and their usable parts are sold. These parts often include engines, transmissions, body panels, and even smaller components like mirrors and door handles. The rest of the car is either sold as scrap metal or recycled.\n\nTypes of Salvage Yards:\n\n- **Pick-and-Pull Yards**: You bring your tools, find the car you need, and remove the parts yourself. These yards are typically more affordable but require a bit of mechanical knowledge.\n\n- **Full-Service Salvage Yards**: The staff removes the parts for you. This option costs a bit more but is convenient if you're unsure how to remove specific components.\n\n- **Online Salvage Yards**: Many salvage yards now have websites where you can search for parts, check availability, and even arrange shipping.\n\n**Why Choose Salvage Yards for Auto Parts?**\n\n- **Cost Savings**: Used OEM parts from salvage yards can save you up to 50-75% compared to buying new parts.\n\n- **OEM Quality**: Original Equipment Manufacturer (OEM) parts ensure proper fit and performance, unlike aftermarket alternatives that might not meet the same standards.\n\n- **Eco-Friendly**: Reusing auto parts reduces waste and minimizes the environmental impact of manufacturing new components.\n\n**How to Find the Best Salvage Yards Near You:**\n\n- **Search Online**: Use keywords like “salvage yards near me” or “junkyards near me” on Google. Websites like BionicsAutoParts.com specialize in used OEM parts and allow you to search their inventory online.\n\n- **Check Reviews**: Look at customer reviews on Google or Yelp to gauge the yard's reputation. Reliable salvage yards are transparent about their pricing and offer guarantees on parts.\n\n- **Call Ahead**: Contact the yard to confirm if they have the part you need and inquire about their return policies.\n\n- **Visit Local Forums or Groups**: Automotive enthusiast forums often have recommendations for trusted local salvage yards.\n\nTips for a Successful Salvage Yard Visit:\n\n- **Bring the Right Tools**: If you’re visiting a pick-and-pull yard, ensure you have basic tools like wrenches, screwdrivers, and pliers.\n\n- **Know Your Part Number**: Double-check your vehicle’s make, model, and part number to avoid purchasing the wrong item.\n\n- **Inspect the Part**: Examine the part thoroughly for wear and damage.\n\n- **Negotiate**: Many salvage yards are open to negotiation, especially if you’re buying multiple parts.\n\n**When to Consider Online Salvage Options:**\n\nIf local yards don’t have what you need or you prefer shopping from home, online platforms like BionicsAutoParts.com can be a game-changer. These websites offer:\n\n- **Wide Inventory Access**: Access parts from multiple salvage yards in one place.\n\n- **Detailed Search Features**: Filter by make, model, year, and part type.",
-        "image": "/images/electric-cars.jpg",
+        "image": "/blogs/b2.svg",
         "date": "Nov 12, 2024"
     },
     {
         "id": 3,
         "title": "Everything You Need to Know About Used OEM Parts",
         "description": "Unlock the Power of Used OEM Parts with BionicsAutoParts.com\n\nWhen it comes to repairing or maintaining your vehicle, choosing the right parts can make all the difference. While the market offers an abundance of aftermarket options, seasoned car enthusiasts, mechanics, and budget-conscious vehicle owners know the value of used OEM parts. At BionicsAutoParts.com, we specialize in providing high-quality, affordable OEM used auto parts to ensure your vehicle performs just as the manufacturer intended.\n\n**What Are OEM Parts and Why Are They Important?**\n\nOEM, or Original Equipment Manufacturer, parts are created by the same manufacturer that designed your vehicle. Unlike aftermarket alternatives, which are generic and may not offer an exact fit, OEM parts are built to meet the precise specifications of your car.\n\nUsed OEM parts are pre-owned but carefully salvaged and tested to ensure their quality and reliability. They provide the same performance and durability as new OEM parts but at a much lower cost.\n\n**Benefits of Choosing Used OEM Parts**\n\n1. **Perfect Fit and Function**: Used OEM parts are made to seamlessly integrate with your vehicle’s systems, ensuring consistent performance without the need for modifications or adjustments.\n\n2. **Cost Savings Without Compromise**: Brand-new OEM parts can be expensive, particularly for older or rare models. Used OEM parts allow you to enjoy the same quality and reliability while keeping your repair or maintenance costs under control.\n\n3. **Eco-Friendly Solution**: Choosing used parts isn’t just good for your wallet; it’s good for the environment. By reusing perfectly functional components, you’re helping reduce waste and the demand for new manufacturing, contributing to a more sustainable planet.\n\n4. **Availability of Rare Components**: For discontinued models or vintage vehicles, finding new OEM parts can be nearly impossible. Used OEM parts offer a practical solution, keeping your prized car on the road.\n\n5. **Long-Lasting Durability**: OEM parts are designed to last, and even when pre-owned, they often retain a significant portion of their lifespan. When purchased from a trusted supplier like Bionics Auto Parts, you can rest assured you’re getting a part that performs like new.\n\n**The Bionics Auto Parts Advantage**\n\nAt BionicsAutoParts.com, we don’t just sell parts—we deliver peace of mind. Here’s what sets us apart:\n\n- **Vast Selection**: Our extensive inventory includes OEM parts for a wide range of makes and models, from everyday vehicles to luxury and specialty cars.\n- **Quality Assurance**: Every part undergoes rigorous testing and inspection to ensure it meets OEM standards.\n- **Affordable Pricing**: Save big without sacrificing quality or performance.\n- **Easy Navigation**: Our website is designed to make finding the right part quick and hassle-free.\n- **Exceptional Support**: Not sure what you need? Our knowledgeable team is here to help.\n\n**Why Not Aftermarket Parts?**\n\nWhile aftermarket parts might seem like a bargain, they often come with hidden risks:\n\n- **Imperfect Fit**: Generic designs may lead to improper fit, requiring additional modifications.\n- **Shortened Lifespan**: Lower-quality materials often wear out faster, leading to more frequent replacements.\n- **Potential Compatibility Issues**: Aftermarket parts may not integrate seamlessly with your vehicle’s existing systems, causing performance issues.\n\nBy choosing used OEM parts, you eliminate these uncertainties and ensure your vehicle operates at its best.\n\n**How to Shop for Used OEM Parts**\n\nShopping for the right part doesn’t have to be overwhelming. Here’s how to get started:\n\n- **Know Your Vehicle’s Details**: Have your car’s make, model, year, and VIN on hand for accurate matching.\n- **Reference Part Numbers**: Cross-check part numbers to ensure compatibility.\n- **Choose a Trusted Seller**: Opt for reputable suppliers like Bionics Auto Parts, who offer quality assurance and excellent customer service.\n\n**Ready to Get Started?**\n\nAt BionicsAutoParts.com, we’re committed to helping you find the perfect OEM used parts for your vehicle. Whether you’re repairing a daily driver, restoring a classic car, or performing a DIY upgrade, our extensive inventory and expert team make it easy to get the job done right.\n\nDon’t settle for less when it comes to your car’s performance and reliability. Explore our inventory today and experience the unbeatable quality and value of used OEM parts. Let’s get your vehicle back on the road, running like new!",
-        "image": "/images/classic-car.jpg",
+        "image": "/blogs/b3.svg",
         "date": "Nov 5, 2024"
     },
     {
@@ -110,7 +110,7 @@ export const blogs = [
     Skip the guesswork and shop confidently for your GM parts. At BionicsAutoParts.com, we combine quality, affordability, and convenience to keep your GM running smoothly.
 
     Start your search today and experience the difference!`,
-        image: "/images/hybrid-cars.jpg",
+        image: "/blogs/b4.svg",
         date: "Oct 28, 2024",
     },
     {
@@ -134,7 +134,7 @@ export const blogs = [
 
     **Why Choose BionicsAutoParts.com?**
     At BionicsAutoParts.com, we provide high-quality, inspected OEM (Original Equipment Manufacturer) parts for vehicles of all makes and models. Our parts are sourced from trusted suppliers, ensuring that you receive the best value. We offer fast, affordable shipping and a hassle-free return policy. With our competitive prices and exceptional customer service, you can trust us for all your auto part needs.`,
-        image: "/images/winter-driving.jpg",
+        image: "/blogs/b5.svg",
         date: "Oct 21, 2024",
     },
     {
@@ -154,7 +154,7 @@ export const blogs = [
             "   A reputable seller will often offer a warranty on used parts. This ensures that you’re covered in case the part doesn’t function as expected. We offer warranties on many of our parts, giving you peace of mind when shopping with us.\n\n" +
             "**Why OEM Matters:**\n\n" +
             "OEM parts provide the best fit, performance, and longevity because they are built to the exact specifications of the original part. Aftermarket parts, on the other hand, might not offer the same level of quality or compatibility. If you want your car to perform like it did when it was new, using genuine OEM parts is the best choice.",
-        "image": "/images/road-trip.jpg",
+        "image": "/blogs/b6.svg",
         "date": "Oct 14, 2024"
     },
     {
@@ -181,7 +181,7 @@ export const blogs = [
     **Why Choose BionicsAutoParts.com for Recycled Parts?**
 
     At BionicsAutoParts.com, we specialize in eco-friendly, recycled auto parts that meet the highest standards of quality. We carefully inspect and test each part before offering it for sale, ensuring that you receive a reliable, cost-effective solution for your car’s repair or upgrade.`,
-        image: "/images/family-cars.jpg",
+        image: "/blogs/b7.svg",
         date: "Oct 7, 2024",
     },
     {
@@ -264,7 +264,7 @@ export const blogs = [
     When shopping for used auto parts online, choosing a reputable website is essential for ensuring quality and compatibility. Whether you’re looking for OEM parts or certified recycled components, platforms like BionicsAutoParts.com, LKQ.com, Car-Part.com, and others offer a range of options to meet your vehicle repair needs.
 
     By choosing the right online store, you can save money, get high-quality parts, and have your car running like new. If you're looking for trusted, affordable, and genuine parts, visit BionicsAutoParts.com today for a seamless shopping experience.`,
-        image: "/images/sports-cars.jpg",
+        image: "/blogs/b8.svg",
         date: "Sep 30, 2024"
     },
     {
@@ -309,7 +309,7 @@ export const blogs = [
 
             Many used auto parts are tested for functionality before being listed for sale. BionicsAutoParts.com ensures that all parts are thoroughly inspected and tested to meet the highest standards of quality and reliability. If you're buying from other platforms, make sure they offer similar testing.
         `,
-        image: "/images/car-maintenance.jpg",
+        image: "/blogs/b9.svg",
         date: "Sep 23, 2024"
     },
     {
@@ -391,7 +391,7 @@ export const blogs = [
 
             Visit BionicsAutoParts.com today for all your auto parts needs!
         `,
-        image: "/images/self-driving-cars.jpg",
+        image: "/blogs/b10.svg",
         date: "Sep 16, 2024"
     },
 ];

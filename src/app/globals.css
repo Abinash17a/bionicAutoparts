@@ -2,10 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Matanya';
+  src: url('/fonts/Matanya.woff2') format('woff2'),
+       url('/fonts/Matanya.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
 
 body {
     body {
-      font-family: 'Poppins', sans-serif; 
+      font-family: 'Poppins', sans-serif;
       margin: 0;
       padding: 0;
       box-sizing: border-box;
@@ -22,11 +29,11 @@ body {
     max-width: 600px;
     margin: 0 auto;
   }
-  
+
   .form-container:hover {
     transform: translateY(-5px);
   }
-  
+
   .form-title {
     color: #333;
     font-size: 1.75rem;
@@ -34,13 +41,13 @@ body {
     margin-bottom: 1.5rem;
     text-align: center;
   }
-  
+
   .form-label {
     color: #555;
     font-weight: 500;
     margin-bottom: 0.5rem;
   }
-  
+
   .form-select {
     width: 100%;
     padding: 0.75rem;
@@ -49,12 +56,12 @@ body {
     transition: border-color 0.2s ease;
     background: #fafafa;
   }
-  
+
   .form-select:focus {
     border-color: #0070f3;
     outline: none;
   }
-  
+
   .search-button {
     width: 100%;
     background-color: #0070f3;
@@ -65,11 +72,10 @@ body {
     text-align: center;
     transition: background-color 0.3s ease;
   }
-  
+
   .search-button:hover {
     background-color: #005bb5;
   }
-
 
 .modal-overlay {
   position: fixed;
@@ -247,3 +253,4 @@ body {
     font-size: 1rem;
   }
 }
+

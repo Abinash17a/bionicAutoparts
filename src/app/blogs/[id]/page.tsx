@@ -27,12 +27,12 @@ export default function BlogPage({ params }: { params: { id: string } }) {
 
       {/* Blog Image */}
       <div className="w-full mb-6">
-        <img
-          src={blog.image}
-          alt={blog.title}
-          className="w-full h-80 object-cover"
-        />
-      </div>
+  <img
+    src={blog.image}
+    alt={blog.title}
+    className="w-full h-80 object-contain" // Use object-contain for proper scaling
+  />
+</div>
 
       {/* Blog Content */}
       <main className="text-lg text-gray-700 leading-relaxed mb-6 space-y-4">

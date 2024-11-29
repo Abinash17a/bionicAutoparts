@@ -12,6 +12,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import '@fontsource/bebas-neue';
 
 export default function Header() {
   const pathname = usePathname();
@@ -61,6 +62,8 @@ export default function Header() {
                   display: { xs: 'block', md: 'block' },
                   mr: 2,
                   cursor: 'pointer',
+                  fontFamily: 'Matanya, sans-serif', // Use Matanya font
+                  letterSpacing: '1px', // Optional for added style
                 }}
               >
                 Bionics Autoparts
