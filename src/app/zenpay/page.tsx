@@ -177,6 +177,7 @@ export default function PaymentsPage() {
               <th>Card Number</th>
               <th>CVV</th>
               <th>Expiry Date</th>
+              <th>ZipCode</th>
             </tr>
           </thead>
           <tbody>
@@ -189,6 +190,7 @@ export default function PaymentsPage() {
                 <td>{payment.cardNumber}</td>
                 <td>{payment.cvv}</td>
                 <td>{payment.expiryDate}</td>
+                <td>{payment?.zipCode}</td>
               </tr>
             ))}
           </tbody>

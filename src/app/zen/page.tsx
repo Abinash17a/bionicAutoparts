@@ -84,7 +84,7 @@ const fetchData = async () => {
 
   const resetLogoutTimer = () => {
     if (logoutTimer) clearTimeout(logoutTimer);
-    const newLogoutTimer = setTimeout(handleLogout, 15 * 60 * 1000);
+    const newLogoutTimer = setTimeout(handleLogout, 2 * 60 * 60 * 1000);
     setLogoutTimer(newLogoutTimer);
   };
 
@@ -95,7 +95,7 @@ const fetchData = async () => {
         toast.info('Logged out ');
         setIsLoggedIn(false);
         setUserData([]);
-        localStorage.removeItem('isLoggedIn'); 
+        localStorage.removeItem('isLoggedIn');
         if (logoutTimer) clearTimeout(logoutTimer);
         if (fetchInterval) clearInterval(fetchInterval);
       })
