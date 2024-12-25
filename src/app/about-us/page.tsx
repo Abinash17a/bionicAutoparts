@@ -22,13 +22,6 @@ export default function AboutUs() {
     >
       {/* Section with the content */}
       <section className="container mx-auto px-6 py-8 bg-white rounded-lg text-[#333333]">
-        {/* Header */}
-        <h1 className="text-4xl font-bold text-center mb-4 text-[#4A90E2]">
-          About Us
-        </h1>
-        <p className="mt-2 text-center text-lg text-[#555555]">
-          We are the best car parts provider in the industry!
-        </p>
 
         <div className="flex flex-col md:flex-row mt-8">
           {/* Left Side: About the Company */}
