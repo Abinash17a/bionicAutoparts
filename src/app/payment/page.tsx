@@ -129,7 +129,7 @@ export default function PaymentPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-blue-100 flex items-center justify-center p-4">
+    <div className="min-h-1/6 bg-gradient-to-b from-blue-50 to-blue-100 flex items-center justify-center p-4">
       <div className="bg-white rounded-lg shadow-xl w-full max-w-lg">
         <div className="p-8">
           <h1 className="text-2xl font-bold text-center text-blue-700 mb-2">Payment Details</h1>

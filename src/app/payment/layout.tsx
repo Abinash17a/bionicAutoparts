@@ -4,7 +4,7 @@ export default function PaymentLayout({
     children: React.ReactNode
   }) {
     return (
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-6">
         {children}
       </div>
     )
