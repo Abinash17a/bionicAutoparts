@@ -28,14 +28,14 @@ export default function RootLayout({
         <meta name="robots" content="index, follow" />
         <meta name="author" content="Bionics Auto Parts" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <script async src="https://www.googletagmanager.com/gtag/js?id=AW-16746690398"></script>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-SC89HBDB7N"></script>
         <script
           dangerouslySetInnerHTML={{
             __html: `
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'AW-16746690398');
+        gtag('config', ''G-SC89HBDB7N');
       `,
           }}
         />

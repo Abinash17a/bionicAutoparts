@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '../../lib/firebase';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, query, where, getDocs } from 'firebase/firestore';
 
 function generateCustomId(length = 6) {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -15,11 +15,25 @@ function generateCustomId(length = 6) {
 export async function POST(req: NextRequest) {
   const { name, contact, email, zipCode, searchedPartFormatted } = await req.json();
 
-
-  const orderId = generateCustomId(6);
-
   try {
-    const docRef = await addDoc(collection(db, 'submissions'), {
+    // Check if there's an existing order with the same contact
+    const ordersRef = collection(db, 'submissions');
+    const q = query(ordersRef, where('contact', '==', contact));
+    const querySnapshot = await getDocs(q);
+
+    let orderId;
+
+    if (!querySnapshot.empty) {
+      // If an order with the same contact exists, get its orderId
+      const existingOrder = querySnapshot.docs[0].data();
+      orderId = existingOrder.orderId;
+    } else {
+      // Generate a new orderId if no matching order is found
+      orderId = generateCustomId(6);
+    }
+
+    // Add the new order data
+    const docRef = await addDoc(ordersRef, {
       name,
       contact,
       email,
