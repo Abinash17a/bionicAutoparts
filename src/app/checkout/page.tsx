@@ -6,7 +6,6 @@ import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { db } from '../lib/firebase'
 import { collection, addDoc } from 'firebase/firestore'
-import { Package, Calendar, Mail, Car } from 'lucide-react'
 
 interface FormData {
   orderId: string
@@ -31,9 +30,9 @@ export default function PaymentPage() {
     expiryDate: '',
     zipCode: '',
   })
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
   const [showModal, setShowModal] = useState(false)
-  const [userData, setUserData] = useState<any[]>([]);
+
   const [orderData, setOrderData] = useState<any[]>([]);
 
   const router = useRouter()
