@@ -30,6 +30,7 @@ export default function PaymentPage() {
     expiryDate: '',
     zipCode: '',
   })
+  const [isSubmit, setisSubmited] = useState(false);
   const [loading] = useState(false);
   const [showModal, setShowModal] = useState(false)
 
@@ -42,31 +43,6 @@ export default function PaymentPage() {
   }, [])
 
   if (!isMounted) return null;
-
-  // const fetchData = async () => {
-  //   setLoading(true);
-  //   try {
-  //     const response = await fetch(`/api/getSubmissions?timestamp=${new Date().getTime()}`);
-  //     const data = await response.json();
-  //     console.log("data in fetch in zen",data)
-  //     if (response.ok) {
-  //       const sortedData = (data.submissions || []).sort((a:any, b:any) => {
-  //         const dateA = a.createdAt?.seconds ? new Date(a.createdAt.seconds * 1000) : new Date();
-  //         const dateB = b.createdAt?.seconds ? new Date(b.createdAt.seconds * 1000) : new Date();
-  //         return dateB.getTime() - dateA.getTime();
-  //       });
-
-  //       setUserData(sortedData);
-  //       console.log("Fetched Data:", sortedData);
-  //     } else {
-  //       console.error('Error fetching user data:', data.message);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error:', error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
   const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
@@ -86,7 +62,6 @@ export default function PaymentPage() {
     } else if (name === 'orderId') {
       // Format order ID to be alphanumeric only
       const formattedValue = value.replace(/[^a-zA-Z0-9]/g, '');
-      console.log("orderId", formattedValue);
       setFormData((prevData) => ({ ...prevData, [name]: formattedValue }));
 
       if (formattedValue.length === 6) {
@@ -102,7 +77,6 @@ export default function PaymentPage() {
               return dateB.getTime() - dateA.getTime();
             });
             setOrderData(sortedData);
-            console.log("Fetched Data:", sortedData);
           } else {
             console.error('Error fetching user data:', data.message);
           }
@@ -160,6 +134,7 @@ export default function PaymentPage() {
     }
 
     try {
+      setisSubmited(true);
       await addDoc(collection(db, 'payments'), formData)
       toast.success('Payment will be processed soon!', { position: 'top-center', autoClose: 3000 })
 
@@ -178,7 +153,10 @@ export default function PaymentPage() {
     } catch (error) {
       console.error('Error adding document: ', error)
       toast.error('Failed to save payment details.', { position: 'top-center', autoClose: 3000 })
+    }finally {
+      setisSubmited(false); // Re-enable the button
     }
+
   }
 
   const handleModalClose = () => {
@@ -309,9 +287,11 @@ export default function PaymentPage() {
             </div>
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-300"
+              className={`w-full bg-blue-600 text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-300 ${isSubmit ? "cursor-not-allowed bg-blue-400 pointer-events-none" : "hover:bg-blue-700"
+                }`}
+              disabled={isSubmit}
             >
-              Submit Payment
+              {isSubmit ? "Processing..." : "Submit Payment"}
             </button>
           </form>
         </div>

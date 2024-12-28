@@ -25,7 +25,7 @@ const Admin = () => {
       setIsLoggedIn(true);
       fetchData(); // Fetch data if already logged in
       resetLogoutTimer();
-      setFetchInterval(setInterval(fetchData, 30 * 1000)); // Fetch every 15 seconds
+      setFetchInterval(setInterval(fetchData, 4 * 60 * 1000)); // Fetch every 4 minutes
     }
   }, []);
 

@@ -6,7 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import initialData from './data/initialData';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/navigation';
-
+import { FaShippingFast, FaCarSide, FaTools, FaHandHoldingUsd, FaTruck, FaPhoneAlt, FaUndoAlt, FaClock, FaFilePdf, FaCalendarAlt } from "react-icons/fa";
 
 interface DataType {
   years: string[];
@@ -187,7 +187,7 @@ export default function Home() {
         <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} closeOnClick pauseOnHover draggable />
         {/* Top section divided into two parts */}
         <div className="w-full">
-          <div className="flex flex-col md:flex-row md:space-x-6 w-full h-auto">
+          <div className="flex flex-col md:flex-row md:space-x-6 w-full h-auto lg:px-20">
             {/* Carousel Section */}
             <div className="relative w-full h-[300px] md:w-1/2 md:h-[500px]">
               <Image
@@ -270,7 +270,7 @@ export default function Home() {
                     disabled={!make}
                   >
                     <option value="">Select Model</option>
-                    {make && initialData.models[make]?.map((mod:any) => (
+                    {make && initialData.models[make]?.map((mod: any) => (
                       <option key={mod} value={mod}>{mod}</option>
                     ))}
                   </select>
@@ -381,40 +381,67 @@ export default function Home() {
         )}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mt-16 px-6 lg:px-20">
           {/* Left side: Writing */}
-          <div className="p-8 lg:p-10 rounded-lg bg-white">
-            <h2 className="text-2xl lg:text-3xl font-bold mb-4 text-gray-900">
+          <div className="p-6 sm:p-8 lg:p-10 rounded-lg">
+            {/* Section: Car Parts Information */}
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 tracking-wide mb-6 flex items-center">
+              <FaCarSide className="mr-2 text-[#219ebc] text-4xl sm:text-3xl lg:text-4xl" />
               More Information About Car Parts
             </h2>
             <p className="text-gray-700 leading-relaxed mb-6">
+              <FaTools className="inline-block text-[#219ebc] text-lg sm:text-xl mr-2" />
               At our store, you will find a wide range of car parts for every model and make. Whether you are looking for engine components, body parts, or interior accessories, we have it all.
             </p>
             <p className="text-gray-700 leading-relaxed mb-8">
+              <FaHandHoldingUsd className="inline-block text-[#219ebc] text-lg sm:text-xl mr-2" />
               Our team is dedicated to providing you with the best options to maintain and upgrade your vehicle. Get the parts you need at competitive prices and with fast shipping.
             </p>
 
-            <h2 className="text-2xl lg:text-3xl font-bold mb-4 text-gray-900">Shipping and Returns</h2>
+            <hr className="border-t border-gray-300 my-8" />
+
+            {/* Section: Shipping and Returns */}
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 tracking-wide mb-6 flex items-center">
+              <FaShippingFast className="mr-2 text-[#219ebc] text-2xl sm:text-3xl lg:text-4xl" />
+              Shipping and Returns
+            </h2>
             <p className="text-gray-700 leading-relaxed mb-6">
+              <FaTruck className="inline-block text-[#219ebc] text-lg sm:text-xl mr-2" />
               <strong>Shipping Policy:</strong> We can ship to virtually any address in the world. Note that there are restrictions on some products, and some products cannot be shipped internationally.
             </p>
             <p className="text-gray-700 leading-relaxed mb-6">
+              <FaCalendarAlt className="inline-block text-[#219ebc] text-lg sm:text-xl mr-2" />
               When you place an order, we will estimate shipping and delivery dates for you based on item availability and selected shipping options.
             </p>
 
-            <h2 className="text-2xl lg:text-3xl font-bold mb-4 text-gray-900">Returns Policy</h2>
+            <hr className="border-t border-gray-300 my-8" />
+
+            {/* Section: Returns Policy */}
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 tracking-wide mb-6 flex items-center">
+              <FaUndoAlt className="mr-2 text-[#219ebc] text-2xl sm:text-3xl lg:text-4xl" />
+              Returns Policy
+            </h2>
             <p className="text-gray-700 leading-relaxed mb-6">
-              If you need to return an item, you may call or text +1 617-390-7248, email auth@bionicsautoparts.com, or chat with us here. Our goal is to provide a smooth and efficient return process. Note that while refunds are issued within 1-2 days of return, the credit card processor may take an additional 3-5 days to process.
+              <FaPhoneAlt className="inline-block text-[#219ebc] text-lg sm:text-xl mr-2" />
+              If you need to return an item, you may call or text +1 617-390-7248, email auth@bionicsautoparts.com, or chat with us here. Our goal is to provide a smooth and efficient return process.
+            </p>
+            <p className="text-gray-700 leading-relaxed mb-6">
+              <FaClock className="inline-block text-[#219ebc] text-lg sm:text-xl mr-2" />
+              Note that while refunds are issued within 1-2 days of return, the credit card processor may take an additional 3-5 days to process.
             </p>
             <p className="mt-4">
               <a
                 href="/files/warranty.pdf"
+                className="bg-[#219ebc] text-white text-sm sm:text-base py-2 px-3 sm:py-3 sm:px-5 rounded hover:bg-blue-800 transition-all inline-flex items-center"
                 target="_blank"
-                className="text-blue-600 underline hover:text-blue-800 font-semibold"
                 rel="noopener noreferrer"
               >
+                <FaFilePdf className="inline-block text-white text-lg sm:text-xl mr-2" />
                 Terms and Conditions (PDF)
               </a>
             </p>
           </div>
+
+
+
 
           {/* Right side: Images */}
           <div className="grid grid-cols-2 gap-6">
@@ -430,6 +457,7 @@ export default function Home() {
             ))}
           </div>
         </div>
+
 
 
         <div className="mt-16 px-6 lg:px-20">

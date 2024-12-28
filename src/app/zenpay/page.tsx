@@ -35,7 +35,7 @@ export default function PaymentsPage() {
   const auth = getAuth();
 
   useEffect(() => {
-    setIsClient(true); // Set client-only state on mount
+    setIsClient(true);
   }, []);
 
   useEffect(() => {
