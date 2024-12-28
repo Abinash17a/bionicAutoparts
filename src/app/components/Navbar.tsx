@@ -55,7 +55,6 @@ export default function Header() {
             <Link href="/" passHref>
               <Typography
                 variant="h5"
-                component="a"
                 sx={{
                   fontWeight: 'bold',
                   color: '#ffb703',
@@ -64,6 +63,7 @@ export default function Header() {
                   cursor: 'pointer',
                   fontFamily: 'Matanya, sans-serif', // Use Matanya font
                   letterSpacing: '1px', // Optional for added style
+                  textDecoration: 'none',
                 }}
               >
                 Bionics Autoparts

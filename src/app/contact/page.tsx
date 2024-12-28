@@ -20,7 +20,7 @@ export default function Contact() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     setIsLoading(true);
-  
+
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
@@ -29,7 +29,7 @@ export default function Contact() {
         },
         body: JSON.stringify(formData),
       });
-  
+
       if (response.ok) {
         const responseData = await response.json();
         setResponseMessage(responseData.message);
@@ -45,7 +45,7 @@ export default function Contact() {
       setIsLoading(false);
     }
   };
-  
+
 
   return (
     <div

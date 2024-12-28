@@ -360,8 +360,8 @@ export default function Home() {
                 <div className="mt-6 space-y-4">
                   <button
                     type="submit"
-                    className={`w-full py-3 rounded-md font-bold transition duration-300 
-        ${isSubmitClicked ? 'bg-gray-400' : 'bg-blue-600 hover:bg-blue-500'} 
+                    className={`w-full py-3 rounded-md font-bold transition duration-300
+        ${isSubmitClicked ? 'bg-gray-400' : 'bg-blue-600 hover:bg-blue-500'}
         text-white`}
                     disabled={isSubmitClicked}
                   >
@@ -381,7 +381,7 @@ export default function Home() {
         )}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mt-16 px-6 lg:px-20">
           {/* Left side: Writing */}
-          <div className="p-8 lg:p-10 rounded-lg bg-white shadow-lg">
+          <div className="p-8 lg:p-10 rounded-lg bg-white">
             <h2 className="text-2xl lg:text-3xl font-bold mb-4 text-gray-900">
               More Information About Car Parts
             </h2>
