@@ -7,7 +7,8 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import CarCompanySlider from "./components/Companyslider";
 import Script from "next/script";
-import { GoogleTagManager } from '@next/third-parties/google'
+import GoogleTagManager from "./components/GoogleTagManager";
+
 
 export const metadata: Metadata = {
   title: "Bionics Autoparts",
@@ -31,9 +32,20 @@ export default function RootLayout({
         <meta name="author" content="Bionics Auto Parts" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+        <script async src="https://www.googletagmanager.com/gtag/js?id=AW-16746690398"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'AW-16746690398');
+            `,
+          }}
+        />
       </head>
       <body className="flex flex-col min-h-screen font-sans">
-      <GoogleTagManager gtmId="AW-16746690398" />
+        <GoogleTagManager />
         <Navbar />
         <main className="flex-grow">{children}</main>
         <CarCompanySlider />
