@@ -1,6 +1,8 @@
 "use client";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Mail, Phone, MapPin, Send, MessageCircle, Clock, ArrowRight } from 'lucide-react';
 
 export default function Contact() {
   const router = useRouter();
@@ -13,11 +15,11 @@ export default function Contact() {
   const [responseMessage, setResponseMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
 
@@ -38,163 +40,172 @@ export default function Contact() {
         const errorData = await response.json();
         setResponseMessage(errorData.message || "An error occurred. Please try again.");
       }
-    } catch (error:any) {
-      console.log("Error occured",error)
+    } catch (error) {
+      console.log("Error occurred", error);
       setResponseMessage("An error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
-
   return (
     <div
-      className="relative min-h-screen bg-cover bg-center"
-      style={{ backgroundImage: "url('/mainbgengine.jpg')" }}
+      className="min-h-screen bg-cover bg-center bg-fixed "
+      style={{ backgroundImage: "url('/mainbgengine.jpg')", backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
     >
-      <section className="container mx-auto px-6 py-8 bg-white bg-opacity-90 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-center mb-6">Contact Us</h1>
-        <p className="mt-2 text-center">
-          Get in touch with us for any inquiries or support.
-        </p>
+      <div className="container mx-auto px-4 py-16">
+        {/* Hero Section */}
+        <section className="text-center mb-16">
+          <h1 className="text-4xl md:text-7xl font-bold text-white mb-4">Get in Touch</h1>
+          <p className="text-2xl text-white max-w-3xl mx-auto">
+            We're here to help with any questions, comments, or concerns you may have.
+          </p>
+        </section>
 
-        <div className="flex flex-col md:flex-row md:justify-between mt-8">
-          {/* Left Side: Get in Touch */}
-          <div className="w-full md:w-1/2 mb-8 md:mb-0">
-            <h2 className="text-2xl font-semibold">Get in Touch</h2>
-            <p className="mt-2">
-              We would love to hear from you! Please reach out with any
-              questions, comments, or concerns.
-            </p>
-            <form className="mt-4" onSubmit={handleSubmit}>
-              <div className="flex flex-col space-y-4">
+        <div className="grid md:grid-cols-2 gap-12">
+          {/* Contact Form */}
+          <div className="bg-white bg-opacity-90 p-8 rounded-lg shadow-lg">
+            <h2 className="text-2xl font-semibold text-blue-800 mb-6 flex items-center">
+              <MessageCircle className="mr-2" />
+              Send Us a Message
+            </h2>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                  Your Name
+                </label>
                 <input
                   type="text"
+                  id="name"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  placeholder="Your Name"
-                  className="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
+              </div>
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                  Your Email
+                </label>
                 <input
                   type="email"
+                  id="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder="Your Email"
-                  className="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
+              </div>
+              <div>
+                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
+                  Your Message
+                </label>
                 <textarea
+                  id="message"
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
-                  placeholder="Your Message"
-                  className="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring focus:ring-blue-500"
                   rows={4}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
-                />
-                <button
-                  type="submit"
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300 ease-in-out"
-                  disabled={isLoading}
-                >
-                  {isLoading ? "Sending..." : "Send Message"}
-                </button>
+                ></textarea>
               </div>
+              <button
+                type="submit"
+                className="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300 ease-in-out flex items-center justify-center"
+                disabled={isLoading}
+              >
+                {isLoading ? "Sending..." : "Send Message"}
+                <Send className="ml-2 h-4 w-4" />
+              </button>
             </form>
             {responseMessage && (
               <p className="mt-4 text-center text-gray-600">{responseMessage}</p>
             )}
           </div>
 
-          {/* Right Side: Contact Information */}
-          <div className="w-full md:w-1/2 md:pl-8">
-            <h2 className="text-2xl font-semibold">Contact Information</h2>
-            <ul className="mt-4 space-y-2">
-              <li>
-                <strong>Shipping & Tracking:</strong>{" "}
-                <a
-                  href="mailto:auth@bionicsautoparts.com"
-                  className="text-blue-600"
-                >
-                  auth@bionicsautoparts.com
-                </a>
-              </li>
-              <li>
-                <strong>Email for Parts Needs:</strong>{" "}
-                <a
-                  href="mailto:parts@bionicsautoparts.com"
-                  className="text-blue-600"
-                >
-                  parts@bionicsautoparts.com
-                </a>
-              </li>
-              <li>
-                <strong>Invoice Queries:</strong>{" "}
-                <a
-                  href="mailto:invoice@bionicsautoparts.com"
-                  className="text-blue-600"
-                >
-                  invoice@bionicsautoparts.com
-                </a>
-              </li>
-              <li>
-                <strong>Support:</strong>{" "}
-                <a
-                  href="mailto:support@bionicsautoparts.com"
-                  className="text-blue-600"
-                >
-                  support@bionicsautoparts.com
-                </a>
-              </li>
-              <li>
-                <strong>Phone:</strong>{" "}
-                <a href="tel:+16173907248" className="text-blue-600">
-                  +1 617-390-7248
-                </a>
-                ,{" "}
-                <a href="tel:+16174656087" className="text-blue-600">
-                  +1 617-465-6087
-                </a>
-              </li>
-              <li>
-                <strong>Office Address:</strong> 6322 Deep Canyon Dr
-              </li>
-            </ul>
+          {/* Contact Information */}
+          <div className="bg-white bg-opacity-90 p-8 rounded-lg shadow-lg">
+            <h2 className="text-2xl font-semibold text-blue-800 mb-6 flex items-center">
+              <Phone className="mr-2" />
+              Contact Information
+            </h2>
+            <div className="space-y-6">
+              <div className="flex items-start">
+                <Mail className="h-6 w-6 text-blue-600 mr-3" />
+                <div>
+                  <h3 className="font-semibold">Email</h3>
+                  <p><a href="mailto:auth@bionicsautoparts.com" className="text-blue-600 hover:underline">auth@bionicsautoparts.com</a> (Shipping & Tracking)</p>
+                  <p><a href="mailto:parts@bionicsautoparts.com" className="text-blue-600 hover:underline">parts@bionicsautoparts.com</a> (Parts Needs)</p>
+                  <p><a href="mailto:invoice@bionicsautoparts.com" className="text-blue-600 hover:underline">invoice@bionicsautoparts.com</a> (Invoice Queries)</p>
+                  <p><a href="mailto:support@bionicsautoparts.com" className="text-blue-600 hover:underline">support@bionicsautoparts.com</a> (Support)</p>
+                </div>
+              </div>
+              <div className="flex items-start">
+                <Phone className="h-6 w-6 text-blue-600 mr-3" />
+                <div>
+                  <h3 className="font-semibold">Phone</h3>
+                  <p><a href="tel:+16173907248" className="text-blue-600 hover:underline">+1 617-390-7248</a></p>
+                  <p><a href="tel:+16174656087" className="text-blue-600 hover:underline">+1 617-465-6087</a></p>
+                </div>
+              </div>
+              <div className="flex items-start">
+                <MapPin className="h-6 w-6 text-blue-600 mr-3" />
+                <div>
+                  <h3 className="font-semibold">Address</h3>
+                  <p>6322 Deep Canyon Dr</p>
+                </div>
+              </div>
+              <div className="flex items-start">
+                <Clock className="h-6 w-6 text-blue-600 mr-3" />
+                <div>
+                  <h3 className="font-semibold">Business Hours</h3>
+                  <p>Monday - Friday: 9:00 AM - 5:00 PM</p>
+                  <p>Saturday: 10:00 AM - 2:00 PM</p>
+                  <p>Sunday: Closed</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Google Maps Section */}
-        <div className="mt-12 pb-8">
-          <h2 className="text-2xl font-semibold text-center">Find Us Here</h2>
-          <div className="mt-4 bg-gray-100 rounded-lg shadow-md overflow-hidden">
+        <section className="mt-16 bg-white bg-opacity-90 p-8 rounded-lg shadow-lg">
+          <h2 className="text-3xl font-bold text-blue-900 text-center mb-8 flex items-center justify-center">
+            <MapPin className="mr-2" />
+            Find Us Here
+          </h2>
+          <div className="rounded-lg overflow-hidden shadow-lg">
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.8354345093743!2d-122.41941548468034!3d37.77492927975969!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80858064fcd0d755%3A0xe019c88c141f8f72!2s6322%20Deep%20Canyon%20Dr!5e0!3m2!1sen!2sus!4v1642998001515!5m2!1sen!2sus"
               width="100%"
-              height="300"
+              height="400"
               style={{ border: 0 }}
               allowFullScreen
               loading="lazy"
               title="Google Map of Deep Canyon Dr"
             ></iframe>
           </div>
-          <p className="text-center mt-4 text-gray-600">
-            Visit us for all your needs!
-          </p>
-        </div>
+        </section>
 
-        {/* Buy Our Parts Button */}
-        <div className="text-center mt-8">
+        {/* Call to Action */}
+        <section className="text-center mt-16 bg-white bg-opacity-90 p-8 rounded-lg shadow-lg">
+          <h2 className="text-3xl font-bold text-blue-800 mb-4">Ready to Find Your Part?</h2>
+          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+            Explore our wide selection of high-quality auto parts at unbeatable prices.
+          </p>
           <button
             onClick={() => router.push("/")}
-            className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition duration-300 ease-in-out"
+            className="inline-flex items-center px-6 py-3 rounded-full text-lg font-semibold bg-green-600 text-white hover:bg-green-700 transition duration-300 ease-in-out"
           >
             Buy Our Parts
+            <ArrowRight className="ml-2 h-5 w-5" />
           </button>
-        </div>
-      </section>
+        </section>
+      </div>
     </div>
   );
 }
+

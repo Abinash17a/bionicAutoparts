@@ -11,7 +11,7 @@ export async function GET(req: any) {
     const orderId = searchParams.get('orderId');
 
     // Reference the 'submissions' collection
-    const submissionsRef = collection(db, 'submissions');
+    const submissionsRef = collection(db, 'submissionsv2');
 
     // Create the query, filtering only by 'orderId' if provided
     let q;

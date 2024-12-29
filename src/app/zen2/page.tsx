@@ -53,7 +53,7 @@ const Admin = () => {
 const fetchData = async () => {
   setLoading(true);
   try {
-    const response = await fetch(`/api/getSubmissions?timestamp=${new Date().getTime()}`);
+    const response = await fetch(`/api/getSubmissionsv2?timestamp=${new Date().getTime()}`);
     const data = await response.json();
     if (response.ok) {
       const sortedData = (data.submissions || []).sort((a:any, b:any) => {
@@ -104,7 +104,7 @@ const fetchData = async () => {
 
   const handleStatusChange = async (submissionId: string, status: string) => {
     try {
-      const response = await fetch('/api/updateSubmissionStatus', {
+      const response = await fetch('/api/updateSubmissionStatus2', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: submissionId, status }),

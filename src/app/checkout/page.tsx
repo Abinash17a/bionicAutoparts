@@ -67,22 +67,36 @@ export default function PaymentPage() {
       if (formattedValue.length === 6) {
         // Fetch data when orderId is exactly 6 characters
         try {
-          const response = await fetch(`/api/getSubmissions?orderId=${formattedValue}&timestamp=${new Date().getTime()}`);
-          const data = await response.json();
+          // Fetch data from both collections
+          const responseSubmissions = await fetch(`/api/getSubmissions?collection=submissions&orderId=${formattedValue}&timestamp=${new Date().getTime()}`);
+          const responseSubmissionsV2 = await fetch(`/api/getSubmissions?collection=submissionsv2&orderId=${formattedValue}&timestamp=${new Date().getTime()}`);
 
-          if (response.ok) {
-            const sortedData = (data.submissions || []).sort((a: any, b: any) => {
+          // Parse responses
+          const dataSubmissions = await responseSubmissions.json();
+          const dataSubmissionsV2 = await responseSubmissionsV2.json();
+
+          if (responseSubmissions.ok && responseSubmissionsV2.ok) {
+            // Combine and sort results
+            const combinedData = [...(dataSubmissions.submissions || []), ...(dataSubmissionsV2.submissions || [])].sort((a: any, b: any) => {
               const dateA = a.createdAt?.seconds ? new Date(a.createdAt.seconds * 1000) : new Date();
               const dateB = b.createdAt?.seconds ? new Date(b.createdAt.seconds * 1000) : new Date();
               return dateB.getTime() - dateA.getTime();
             });
-            setOrderData(sortedData);
+
+            setOrderData(combinedData);
           } else {
-            console.error('Error fetching user data:', data.message);
+            // Log errors for either collection
+            if (!responseSubmissions.ok) {
+              console.error('Error fetching submissions:', dataSubmissions.message);
+            }
+            if (!responseSubmissionsV2.ok) {
+              console.error('Error fetching submissionsv2:', dataSubmissionsV2.message);
+            }
           }
         } catch (error) {
-          console.error('Error:', error);
+          console.error('Error fetching data:', error);
         }
+
       } else {
         // Clear orderData when orderId is not exactly 6 characters
         setOrderData([]);
