@@ -159,6 +159,7 @@ export default function Home() {
         setZipCode('');
         handleModalClose();
         setisSubmitClicked(false);
+
         router.push('/confirmation');
 
       } else {
@@ -379,84 +380,93 @@ export default function Home() {
             </div>
           </div>
         )}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mt-16 px-6 lg:px-20">
-          {/* Left side: Writing */}
-          <div className="p-6 sm:p-8 lg:p-10 rounded-lg">
-            {/* Section: Car Parts Information */}
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 tracking-wide mb-6 flex items-center">
-              <FaCarSide className="mr-2 text-[#219ebc] text-4xl sm:text-3xl lg:text-4xl" />
-              More Information About Car Parts
-            </h2>
-            <p className="text-gray-700 leading-relaxed mb-6">
-              <FaTools className="inline-block text-[#219ebc] text-lg sm:text-xl mr-2" />
-              At our store, you will find a wide range of car parts for every model and make. Whether you are looking for engine components, body parts, or interior accessories, we have it all.
-            </p>
-            <p className="text-gray-700 leading-relaxed mb-8">
-              <FaHandHoldingUsd className="inline-block text-[#219ebc] text-lg sm:text-xl mr-2" />
-              Our team is dedicated to providing you with the best options to maintain and upgrade your vehicle. Get the parts you need at competitive prices and with fast shipping.
-            </p>
+        <div className="min-h-screen bg-gradient-to-b from-blue-50 to-blue-100 py-16 px-6 lg:px-20">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-7xl mx-auto">
+            {/* Left side: Information */}
+            <div className="p-8 lg:p-12 bg-white shadow-lg rounded-lg">
+              {/* Car Parts Information */}
+              <h2 className="text-3xl lg:text-4xl font-bold text-gray-800 tracking-wide mb-6 flex items-center">
+                <FaCarSide className="mr-3 text-blue-500 text-4xl" />
+                Explore Car Parts
+              </h2>
+              <p className="text-gray-700 text-lg leading-relaxed mb-6">
+                <FaTools className="inline-block text-blue-500 text-xl mr-3" />
+                Discover a comprehensive range of car parts for every make and model. From engine components to stylish accessories, we’ve got you covered.
+              </p>
+              <p className="text-gray-700 text-lg leading-relaxed mb-6">
+                <FaHandHoldingUsd className="inline-block text-blue-500 text-xl mr-3" />
+                Affordable prices, high-quality parts, and fast shipping options make maintaining and upgrading your vehicle easier than ever.
+              </p>
 
-            <hr className="border-t border-gray-300 my-8" />
+              {/* Divider */}
+              <hr className="border-t border-gray-300 my-8" />
 
-            {/* Section: Shipping and Returns */}
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 tracking-wide mb-6 flex items-center">
-              <FaShippingFast className="mr-2 text-[#219ebc] text-2xl sm:text-3xl lg:text-4xl" />
-              Shipping and Returns
-            </h2>
-            <p className="text-gray-700 leading-relaxed mb-6">
-              <FaTruck className="inline-block text-[#219ebc] text-lg sm:text-xl mr-2" />
-              <strong>Shipping Policy:</strong> We can ship to virtually any address in the world. Note that there are restrictions on some products, and some products cannot be shipped internationally.
-            </p>
-            <p className="text-gray-700 leading-relaxed mb-6">
-              <FaCalendarAlt className="inline-block text-[#219ebc] text-lg sm:text-xl mr-2" />
-              When you place an order, we will estimate shipping and delivery dates for you based on item availability and selected shipping options.
-            </p>
+              {/* Shipping and Returns */}
+              <h2 className="text-3xl lg:text-4xl font-bold text-gray-800 tracking-wide mb-6 flex items-center">
+                <FaShippingFast className="mr-3 text-blue-500 text-4xl" />
+                Shipping & Returns
+              </h2>
+              <p className="text-gray-700 text-lg leading-relaxed mb-6">
+                <FaTruck className="inline-block text-blue-500 text-xl mr-3" />
+                <strong>Shipping:</strong> We deliver worldwide. Some restrictions apply, and international shipping may vary based on location.
+              </p>
+              <p className="text-gray-700 text-lg leading-relaxed mb-6">
+                <FaCalendarAlt className="inline-block text-blue-500 text-xl mr-3" />
+                <strong>Delivery Times:</strong> Estimated delivery dates are provided based on availability and selected shipping options.
+              </p>
 
-            <hr className="border-t border-gray-300 my-8" />
+              {/* Divider */}
+              <hr className="border-t border-gray-300 my-8" />
 
-            {/* Section: Returns Policy */}
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 tracking-wide mb-6 flex items-center">
-              <FaUndoAlt className="mr-2 text-[#219ebc] text-2xl sm:text-3xl lg:text-4xl" />
-              Returns Policy
-            </h2>
-            <p className="text-gray-700 leading-relaxed mb-6">
-              <FaPhoneAlt className="inline-block text-[#219ebc] text-lg sm:text-xl mr-2" />
-              If you need to return an item, you may call or text +1 617-390-7248, email auth@bionicsautoparts.com, or chat with us here. Our goal is to provide a smooth and efficient return process.
-            </p>
-            <p className="text-gray-700 leading-relaxed mb-6">
-              <FaClock className="inline-block text-[#219ebc] text-lg sm:text-xl mr-2" />
-              Note that while refunds are issued within 1-2 days of return, the credit card processor may take an additional 3-5 days to process.
-            </p>
-            <p className="mt-4">
-              <a
-                href="/files/warranty.pdf"
-                className="bg-[#219ebc] text-white text-sm sm:text-base py-2 px-3 sm:py-3 sm:px-5 rounded hover:bg-blue-800 transition-all inline-flex items-center"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <FaFilePdf className="inline-block text-white text-lg sm:text-xl mr-2" />
-                Terms and Conditions (PDF)
-              </a>
-            </p>
-          </div>
+              {/* Returns Policy */}
+              <h2 className="text-3xl lg:text-4xl font-bold text-gray-800 tracking-wide mb-6 flex items-center">
+                <FaUndoAlt className="mr-3 text-blue-500 text-4xl" />
+                Easy Returns
+              </h2>
+              <p className="text-gray-700 text-lg leading-relaxed mb-6">
+                <FaPhoneAlt className="inline-block text-blue-500 text-xl mr-3" />
+                Contact us at +1 617-390-7248, email auth@bionicsautoparts.com, or chat live for assistance with returns.
+              </p>
+              <p className="text-gray-700 text-lg leading-relaxed mb-6">
+                <FaClock className="inline-block text-blue-500 text-xl mr-3" />
+                Refunds are processed within 1-2 business days. However, credit card processing may take an additional 3-5 days.
+              </p>
+              <p>
+                <a
+                  href="/files/warranty.pdf"
+                  className="bg-blue-500 text-white py-3 px-6 rounded-lg inline-flex items-center hover:bg-blue-600 transition-all"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FaFilePdf className="mr-2 text-lg" />
+                  Terms and Conditions (PDF)
+                </a>
+              </p>
+            </div>
 
-
-
-
-          {/* Right side: Images */}
-          <div className="grid grid-cols-2 gap-6">
-            {["/mainpage1.jpg", "/mainpage2.jpg", "/mainpage3.jpg", "/mainpage4.jpg"].map((src, index) => (
-              <Image
-                key={index}
-                src={src}
-                alt={`Car Part ${index + 1}`}
-                width={250}
-                height={150}
-                className="rounded-md w-full transform transition-transform duration-300 hover:scale-105 shadow-lg"
-              />
-            ))}
+            {/* Right side: Image Gallery */}
+            <div className="grid grid-cols-2 gap-6">
+              {["/mainpage1.jpg", "/mainpage2.jpg", "/mainpage3.jpg", "/mainpage4.jpg"].map((src, index) => (
+                <div
+                  key={index}
+                  className="relative rounded-lg overflow-hidden shadow-lg transform hover:scale-105 transition duration-300"
+                >
+                  <Image
+                    src={src}
+                    alt={`Car Part ${index + 1}`}
+                    width={300}
+                    height={200}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center text-white font-semibold text-xl opacity-0 hover:opacity-100 transition duration-300">
+                    View Part {index + 1}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
+
 
 
 

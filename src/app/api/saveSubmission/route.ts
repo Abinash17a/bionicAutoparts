@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '../../lib/firebase';
 import { collection, addDoc, query, where, getDocs, doc, getDoc, updateDoc, setDoc } from 'firebase/firestore';
-
+import nodemailer from 'nodemailer';
 function generateCustomId(length = 6) {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let result = '';
@@ -14,19 +14,12 @@ function generateCustomId(length = 6) {
 
 async function getCounterValue() {
   const counterRef = doc(db, 'counters', 'submissionCounter');
-  console.log("counterRef", counterRef);
   try {
     const counterDoc = await getDoc(counterRef);
-
     if (!counterDoc.exists()) {
-      console.log("Counter document does not exist. Initializing...");
-      console.log("Attempting to create submissionCounter...");
       await setDoc(counterRef, { count: 0 });
-      console.log("submissionCounter created successfully.");
       return 0;
     }
-
-    console.log("Counter document found:", counterDoc.data());
     return counterDoc.data().count;
   } catch (error) {
     console.error("Error retrieving counter:", error);
@@ -38,67 +31,150 @@ async function updateCounter(counterValue: any) {
   const counterRef = doc(db, 'counters', 'submissionCounter');
   try {
     await updateDoc(counterRef, { count: counterValue });
-    console.log("Counter updated to:", counterValue);
   } catch (error) {
     console.error("Error updating counter:", error);
     throw error;
   }
 }
+let targetCollection: string ='';
+async function getRandomCollection(): Promise<string> {
+  try {
+    let counter = await getCounterValue();
+    counter++;
 
-async function getRandomCollection() {
-  let counter = await getCounterValue();
-  console.log("Counter value initialized or retrieved:", counter);
-  counter++; // Increment the counter for each submission
+    const collection = counter % 10 <= 2 ? 'submissionsv2' : 'submissions';
+    targetCollection = collection;
+    console.log("Target collection updated to:", targetCollection);
 
-  // Determine the target collection based on the counter
-  const targetCollection = counter % 10 <= 2 ? 'submissionsv2' : 'submissions';
+    await updateCounter(counter);
 
-  // Update the counter in Firestore
-  await updateCounter(counter);
+    return collection;
+  } catch (error) {
+    console.error("Error determining the target collection:", error);
+    throw error;
+  }
+}
+console.log("target collection is",targetCollection);
+async function sendEmail(
+  name: string,
+  contact: string,
+  email: string,
+  zipCode: string,
+  searchedPartFormatted: string,
+  orderId: string,
+  targetCollection: string
+) {
+  try {
+    const transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_APP_PASSWORD,
+      },
+      debug: true,
+      logger: true,
+    });
 
-  return targetCollection;
+    const getMailOptions = (target: string) => {
+      if (target === undefined) {
+        throw new Error("Target collection is undefined. Cannot proceed with mail options.");
+      }
+
+      const recipientEmail =
+        target === 'submissions'
+          ? 'johnsmith.row52@gmail.com'
+          : 'kintonny540@gmail.com';
+
+      const subjectPrefix =
+        target === 'submissions'
+          ? 'New Submission Notification'
+          : 'Exclusive New Submission Notification';
+
+      return {
+        from: process.env.EMAIL_USER,
+        to: recipientEmail,
+        subject: `${subjectPrefix} ${orderId}`,
+        html: `
+          <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
+            <h2 style="color: #007BFF; text-align: center;">${subjectPrefix}</h2>
+            <p style="font-size: 16px;">Kindly review and assist in confirming the availability and pricing of the requested part. Let’s ensure we respond promptly to the customer:</p>
+            <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+              <tr>
+                <td style="font-weight: bold; padding: 8px; border: 1px solid #ddd;">Name:</td>
+                <td style="padding: 8px; border: 1px solid #ddd;">${name}</td>
+              </tr>
+              <tr>
+                <td style="font-weight: bold; padding: 8px; border: 1px solid #ddd;">Contact:</td>
+                <td style="padding: 8px; border: 1px solid #ddd;">${contact}</td>
+              </tr>
+              <tr>
+                <td style="font-weight: bold; padding: 8px; border: 1px solid #ddd;">Email:</td>
+                <td style="padding: 8px; border: 1px solid #ddd;">${email}</td>
+              </tr>
+              <tr>
+                <td style="font-weight: bold; padding: 8px; border: 1px solid #ddd;">Zip Code:</td>
+                <td style="padding: 8px; border: 1px solid #ddd;">${zipCode}</td>
+              </tr>
+              <tr>
+                <td style="font-weight: bold; padding: 8px; border: 1px solid #ddd;">Part:</td>
+                <td style="padding: 8px; border: 1px solid #ddd;">${searchedPartFormatted}</td>
+              </tr>
+            </table>
+            <p style="font-size: 14px; color: #555;">This is an automated notification. If you have any questions, please contact support.</p>
+            <footer style="margin-top: 20px; text-align: center; font-size: 14px; color: #888;">
+              &copy; ${new Date().getFullYear()} American Dismantling. All rights reserved.
+            </footer>
+          </div>
+        `,
+      };
+    };
+    console.log("target collection is in before mail",targetCollection);
+
+
+    const mailOptions = getMailOptions(targetCollection);
+
+    await transporter.sendMail(mailOptions);
+    console.log('Email sent successfully.');
+  } catch (error: any) {
+    console.error('Error sending email:', error);
+
+    // Add more error context if available
+    if (error.response) {
+      console.error('SMTP Response:', error.response);
+    }
+
+    if (error.code) {
+      console.error('Error Code:', error.code);
+    }
+  }
 }
 
 export async function POST(req: NextRequest) {
   const { name, contact, email, zipCode, searchedPartFormatted } = await req.json();
 
   try {
-    // Reference both submissions collections
     const submissionsRef = collection(db, 'submissions');
     const submissionsV2Ref = collection(db, 'submissionsv2');
 
-    // Query to check if the contact exists in 'submissions'
     const querySubmissions = query(submissionsRef, where('contact', '==', contact));
     const submissionsSnapshot = await getDocs(querySubmissions);
 
-    // Query to check if the contact exists in 'submissionsv2'
     const querySubmissionsV2 = query(submissionsV2Ref, where('contact', '==', contact));
     const submissionsV2Snapshot = await getDocs(querySubmissionsV2);
 
     let orderId: string;
 
-    // Check if contact exists in either collection
     if (!submissionsSnapshot.empty) {
-      // Fetch the first matching document's orderId from submissions
       orderId = submissionsSnapshot.docs[0].data().orderId;
-      console.log("Existing orderId found in submissions:", orderId);
     } else if (!submissionsV2Snapshot.empty) {
-      // Fetch the first matching document's orderId from submissionsv2
       orderId = submissionsV2Snapshot.docs[0].data().orderId;
-      console.log("Existing orderId found in submissionsv2:", orderId);
     } else {
-      // If no matching contact exists, generate a new orderId
       orderId = generateCustomId(6);
-      console.log("No existing orderId found. Generated new orderId:", orderId);
     }
 
-    // Randomly assign the target collection
     const targetCollection = await getRandomCollection();
-    console.log("Randomly selected collection:", targetCollection);
-
     const targetRef = collection(db, targetCollection);
 
-    // Add the new order data
     const docRef = await addDoc(targetRef, {
       name,
       contact,
@@ -110,6 +186,13 @@ export async function POST(req: NextRequest) {
       orderId,
     });
 
+    // Send email notification
+    if(targetCollection === 'submissions') {
+    await sendEmail(name, contact, email, zipCode,searchedPartFormatted,orderId,targetCollection);
+    }
+    if(targetCollection === 'submissionsv2') {
+      await sendEmail(name, contact, email, zipCode,searchedPartFormatted,orderId,targetCollection);
+      }
     const response = NextResponse.json({
       message: `Data saved successfully in ${targetCollection}!`,
       id: docRef.id,
@@ -126,4 +209,3 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Error saving data' }, { status: 500 });
   }
 }
-
