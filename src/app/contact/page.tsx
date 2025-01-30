@@ -137,25 +137,34 @@ export default function Contact() {
                 <Mail className="h-6 w-6 text-blue-600 mr-3" />
                 <div>
                   <h3 className="font-semibold">Email</h3>
-                  <p><a href="mailto:auth@bionicsautoparts.com" className="text-blue-600 hover:underline">auth@bionicsautoparts.com</a> (Shipping & Tracking)</p>
+                  <p><a href="mailto:auth@bionicsautoparts.com" className="text-blue-600 hover:underline">Scott@bionicsautoparts.com</a> (Shipping & Tracking,Invoice Queries)
+                  </p>
                   <p><a href="mailto:parts@bionicsautoparts.com" className="text-blue-600 hover:underline">parts@bionicsautoparts.com</a> (Parts Needs)</p>
-                  <p><a href="mailto:invoice@bionicsautoparts.com" className="text-blue-600 hover:underline">invoice@bionicsautoparts.com</a> (Invoice Queries)</p>
-                  <p><a href="mailto:support@bionicsautoparts.com" className="text-blue-600 hover:underline">support@bionicsautoparts.com</a> (Support)</p>
+                  <p><a href="mailto:invoice@bionicsautoparts.com" className="text-blue-600 hover:underline">bionicsautoparts@usa.com</a> (For all of the above)</p>
+                  <p><a href="mailto:support@bionicsautoparts.com" className="text-blue-600 hover:underline">john@bionicsautoparts.com</a> (Support)</p>
                 </div>
               </div>
               <div className="flex items-start">
                 <Phone className="h-6 w-6 text-blue-600 mr-3" />
-                <div>
-                  <h3 className="font-semibold">Phone</h3>
+                <h3 className="font-semibold pr-8">Phone</h3>
+                <div className="pr-8">
+                  {/* <h3 className="font-semibold">Phone</h3> */}
                   <p><a href="tel:+16173907248" className="text-blue-600 hover:underline">+1 617-390-7248</a></p>
                   <p><a href="tel:+16174656087" className="text-blue-600 hover:underline">+1 617-465-6087</a></p>
+                  <p>Howard St #1, Quincy, MA 02169</p>
+                </div>
+                <div className="pl-8">
+                  {/* <h3 className="font-semibold">Phone</h3> */}
+                  <p><a href="tel:+16173907248" className="text-blue-600 hover:underline">+1 773 773 9035</a></p>
+                  <p><a href="tel:+16174656087" className="text-blue-600 hover:underline">+1 872-465-0393</a></p>
+                  <p>W North Ave, Chicago, IL 60639</p>
                 </div>
               </div>
               <div className="flex items-start">
                 <MapPin className="h-6 w-6 text-blue-600 mr-3" />
                 <div>
                   <h3 className="font-semibold">Address</h3>
-                  <p>6322 Deep Canyon Dr</p>
+                  <p>6332 Deep Canyon Dr,Beverly Hills,CA 90210</p>
                 </div>
               </div>
               <div className="flex items-start">

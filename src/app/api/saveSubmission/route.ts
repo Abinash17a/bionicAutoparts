@@ -82,8 +82,8 @@ async function sendEmail(
 
       const recipientEmail =
         target === 'submissions'
-          ? 'johnsmith.row52@gmail.com'
-          : 'kintonny540@gmail.com';
+          ? 'goodaleaudrey94@gmail.com'
+          : 'niko.amparts@gmail.com';
 
       const subjectPrefix =
         target === 'submissions'
