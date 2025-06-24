@@ -73,19 +73,19 @@ export default function AboutUs() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-blue-600 mb-2">39+</div>
+              <div className="text-4xl md:text-5xl font-bold text-blue-600 mb-2">10+</div>
               <div className="text-gray-600 font-medium">Years of Excellence</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-green-600 mb-2">200+</div>
+              <div className="text-4xl md:text-5xl font-bold text-green-600 mb-2">27+</div>
               <div className="text-gray-600 font-medium">Partner Centers</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-purple-600 mb-2">1M+</div>
+              <div className="text-4xl md:text-5xl font-bold text-purple-600 mb-2">+6000</div>
               <div className="text-gray-600 font-medium">Parts Delivered</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-orange-600 mb-2">98%</div>
+              <div className="text-4xl md:text-5xl font-bold text-orange-600 mb-2">86%</div>
               <div className="text-gray-600 font-medium">Customer Satisfaction</div>
             </div>
           </div>
@@ -125,7 +125,7 @@ export default function AboutUs() {
               <div className="relative">
                 <div className="aspect-square rounded-3xl overflow-hidden shadow-2xl">
                   <Image
-                    src="/carouselImages/herosection.jpg"
+                    src="/aboutusmain.jpg"
                     alt="Our facility"
                     width={500}
                     height={500}
