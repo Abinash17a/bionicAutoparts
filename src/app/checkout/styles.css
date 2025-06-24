@@ -1,94 +1,201 @@
+/* Modern Payment Interface Styles */
+
 .payment-container {
-    max-width: 400px;
-    margin: 40px auto;
-    padding: 25px 30px;
-    border-radius: 10px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-    background-color: #f9f9f9;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8, #1e40af);
+    min-height: 100vh;
 }
 
-h1 {
-    text-align: center;
-    color: #2a2a2a;
-    font-size: 2rem;
-    font-weight: 600;
-    margin-bottom: 25px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+.payment-card {
+    backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.payment-form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+.card-number-display {
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.2em;
 }
 
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+.form-input {
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
 }
 
-.form-group label {
-    font-weight: 600;
-    font-size: 0.9rem;
-    color: #4a4a4a;
+.form-input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-.form-group input {
-    width: 100%;
-    padding: 12px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    font-size: 1rem;
-    color: #333;
-    background-color: #fff;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.form-group input:focus {
-    border-color: #0070f3;
-    box-shadow: 0 0 0 4px rgba(0, 112, 243, 0.1);
-    outline: none;
-}
-
-.submit-button {
-    padding: 12px;
-    background-color: #0070f3;
-    color: #fff;
-    font-weight: 600;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1.1rem;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.submit-button:hover {
-    background-color: #005bb5;
-    transform: translateY(-2px);
-}
-
-.submit-button:active {
-    background-color: #004999;
+.payment-button {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    transition: all 0.3s ease;
     transform: translateY(0);
 }
 
-/* Media query for smaller screens */
-@media (max-width: 480px) {
+.payment-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+}
+
+.payment-button:disabled {
+    background: #e5e7eb;
+    cursor: not-allowed;
+}
+
+.order-summary-card {
+    background: rgba(249, 250, 251, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+.customer-card {
+    background: white;
+    border: 1px solid rgba(229, 231, 235, 0.3);
+    transition: all 0.3s ease;
+}
+
+.customer-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.brand-logo {
+    background: linear-gradient(135deg, #ef4444, #f59e0b);
+}
+
+.success-modal {
+    backdrop-filter: blur(8px);
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.success-modal-content {
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
     .payment-container {
-        padding: 20px 15px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 1rem;
     }
-
-    h1 {
-        font-size: 1.6rem;
+    
+    .payment-card {
+        border-radius: 1rem;
     }
+    
+    .form-input {
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+}
 
-    .submit-button {
-        font-size: 1rem;
+/* Loading states */
+.loading-spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Card brand colors */
+.visa-brand {
+    background: linear-gradient(135deg, #1a1f71, #0f3460);
+}
+
+.mastercard-brand {
+    background: linear-gradient(135deg, #eb001b, #f79e1b);
+}
+
+.amex-brand {
+    background: linear-gradient(135deg, #006fcf, #00a9e0);
+}
+
+/* Input field enhancements */
+.expiry-input {
+    text-align: center;
+    font-weight: 600;
+}
+
+.cvv-input {
+    text-align: center;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+}
+
+.order-id-input {
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Glassmorphism effects */
+.glass-effect {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Hover effects */
+.hover-lift {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Focus states */
+.focus-ring:focus {
+    outline: none;
+    ring: 2px;
+    ring-color: #3b82f6;
+    ring-opacity: 0.5;
+}
+
+/* Animation utilities */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.slide-up {
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

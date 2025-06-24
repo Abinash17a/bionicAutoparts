@@ -216,7 +216,7 @@ export default function Home() {
                     <a className="bg-[#3b82f6] hover:bg-[#2563eb] text-white font-bold py-3 px-8 rounded-md text-lg shadow-lg transition-all duration-200">
                       ALL PARTS
                     </a>
-                  </Link>
+                                    </Link>
                 </div>
                 {/* Right Form */}
                 <div className="w-full md:w-3/5 lg:w-1/2">

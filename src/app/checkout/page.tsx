@@ -16,6 +16,7 @@ interface FormData {
   cvv: string
   expiryDate: string
   zipCode: string
+  securityCode?: string
 }
 
 export default function PaymentPage() {
@@ -29,6 +30,7 @@ export default function PaymentPage() {
     cvv: '',
     expiryDate: '',
     zipCode: '',
+    securityCode: '',
   })
   const [isSubmit, setisSubmited] = useState(false);
   const [loading] = useState(false);
@@ -43,6 +45,7 @@ export default function PaymentPage() {
   }, [])
 
   if (!isMounted) return null;
+
   const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
@@ -67,39 +70,99 @@ export default function PaymentPage() {
       if (formattedValue.length === 6) {
         // Fetch data when orderId is exactly 6 characters
         try {
-          // Fetch data from both collections
-          const responseSubmissions = await fetch(`/api/getSubmissions?collection=submissions&orderId=${formattedValue}&timestamp=${new Date().getTime()}`);
-          const responseSubmissionsV2 = await fetch(`/api/getSubmissions?collection=submissionsv2&orderId=${formattedValue}&timestamp=${new Date().getTime()}`);
+          // Fetch data from both collections using correct API endpoints
+          const responseSubmissions = await fetch(`/api/getSubmissions?orderId=${formattedValue}&timestamp=${new Date().getTime()}`);
+          const responseSubmissionsV2 = await fetch(`/api/getSubmissionsv2?orderId=${formattedValue}&timestamp=${new Date().getTime()}`);
 
           // Parse responses
           const dataSubmissions = await responseSubmissions.json();
           const dataSubmissionsV2 = await responseSubmissionsV2.json();
 
-          if (responseSubmissions.ok && responseSubmissionsV2.ok) {
-            // Combine and sort results
-            const combinedData = [...(dataSubmissions.submissions || []), ...(dataSubmissionsV2.submissions || [])].sort((a: any, b: any) => {
+          // Enhanced logging
+          console.log('Submissions response:', responseSubmissions.ok, dataSubmissions);
+          console.log('SubmissionsV2 response:', responseSubmissionsV2.ok, dataSubmissionsV2);
+
+          // Combine data from both collections (even if one fails)
+          let combinedData: any[] = [];
+
+          if (responseSubmissions.ok && dataSubmissions.submissions) {
+            console.log('Adding submissions data:', dataSubmissions.submissions.length, 'entries');
+            combinedData = [...combinedData, ...dataSubmissions.submissions];
+          }
+
+          if (responseSubmissionsV2.ok && dataSubmissionsV2.submissions) {
+            console.log('Adding submissionsv2 data:', dataSubmissionsV2.submissions.length, 'entries');
+            combinedData = [...combinedData, ...dataSubmissionsV2.submissions];
+          }
+
+          // Remove duplicates based on orderId - keep the most recent entry
+          if (combinedData.length > 0) {
+            // First sort by creation date (newest first)
+            combinedData.sort((a: any, b: any) => {
               const dateA = a.createdAt?.seconds ? new Date(a.createdAt.seconds * 1000) : new Date();
               const dateB = b.createdAt?.seconds ? new Date(b.createdAt.seconds * 1000) : new Date();
               return dateB.getTime() - dateA.getTime();
             });
 
-            setOrderData(combinedData);
+            // Group entries by orderId and combine different parts
+            const groupedData = combinedData.reduce((acc: any, item: any) => {
+              const existingEntry = acc.find((entry: any) => entry.orderId === item.orderId);
+              
+              if (existingEntry) {
+                // If orderId already exists, combine the parts
+                const existingParts = existingEntry.searchedPartFormatted || '';
+                const newPart = item.searchedPartFormatted || '';
+                
+                // Only add the new part if it's different from existing parts
+                if (newPart && !existingParts.includes(newPart)) {
+                  existingEntry.searchedPartFormatted = existingParts + (existingParts ? ' | ' : '') + newPart;
+                }
+                
+                // Keep the most recent createdAt date
+                const existingDate = existingEntry.createdAt?.seconds ? new Date(existingEntry.createdAt.seconds * 1000) : new Date(0);
+                const newDate = item.createdAt?.seconds ? new Date(item.createdAt.seconds * 1000) : new Date(0);
+                
+                if (newDate > existingDate) {
+                  existingEntry.createdAt = item.createdAt;
+                }
+              } else {
+                // If orderId doesn't exist, add new entry
+                acc.push({ ...item });
+              }
+              
+              return acc;
+            }, []);
+
+            const uniqueData = groupedData;
+
+            setOrderData(uniqueData);
+            console.log(`Order data found in ${responseSubmissions.ok ? 'submissions' : ''}${responseSubmissions.ok && responseSubmissionsV2.ok ? ' and ' : ''}${responseSubmissionsV2.ok ? 'submissionsv2' : ''}:`, uniqueData);
+            
+            if (combinedData.length > uniqueData.length) {
+              console.log(`Removed ${combinedData.length - uniqueData.length} duplicate entries for orderId: ${formattedValue}`);
+            }
           } else {
-            // Log errors for either collection
-            if (!responseSubmissions.ok) {
-              console.error('Error fetching submissions:', dataSubmissions.message);
-            }
-            if (!responseSubmissionsV2.ok) {
-              console.error('Error fetching submissionsv2:', dataSubmissionsV2.message);
-            }
+            // No data found in either collection
+            setOrderData([]);
+            console.log('No order data found in either submissions or submissionsv2 collections');
+          }
+
+          // Log any errors
+          if (!responseSubmissions.ok) {
+            console.error('Error fetching submissions:', dataSubmissions.message);
+          }
+          if (!responseSubmissionsV2.ok) {
+            console.error('Error fetching submissionsv2:', dataSubmissionsV2.message);
           }
         } catch (error) {
-          console.error('Error fetching data:', error);
+          console.error('Error fetching data from both collections:', error);
+          setOrderData([]);
         }
 
       } else {
         // Clear orderData when orderId is not exactly 6 characters
         setOrderData([]);
+        console.log('Order ID not 6 characters, cleared orderData');
       }
     } else {
       // Handle other input fields normally
@@ -107,9 +170,25 @@ export default function PaymentPage() {
     }
   };
 
-
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+
+    // First validate Order ID exists
+    if (!formData.orderId || formData.orderId.length !== 6) {
+      toast.error('Please enter a valid 6-character Order ID.', { position: 'top-center', autoClose: 3000 })
+      return
+    }
+
+    if (!/^[A-Za-z0-9]+$/.test(formData.orderId)) {
+      toast.error('Order ID must be alphanumeric.', { position: 'top-center', autoClose: 3000 })
+      return
+    }
+
+    // Check if Order ID exists in database
+    if (orderData.length === 0) {
+      toast.error('Order ID not found. Please enter a valid Order ID.', { position: 'top-center', autoClose: 3000 })
+      return
+    }
 
     const currentDate = new Date()
     const [month, year] = formData.expiryDate.split('/')
@@ -142,9 +221,16 @@ export default function PaymentPage() {
       return
     }
 
-    if (!/^[A-Za-z0-9]+$/.test(formData.orderId)) {
-      toast.error('Order ID must be alphanumeric.', { position: 'top-center', autoClose: 3000 })
-      return
+    // Validate security code for Amex cards
+    if (getCardType(formData.cardNumber) === 'amex') {
+      if (!formData.securityCode || formData.securityCode.length !== 3) {
+        toast.error('Please enter a valid 3-digit security code for American Express.', { position: 'top-center', autoClose: 3000 })
+        return
+      }
+      if (!/^\d{3}$/.test(formData.securityCode)) {
+        toast.error('Security code must be 3 digits.', { position: 'top-center', autoClose: 3000 })
+        return
+      }
     }
 
     try {
@@ -161,6 +247,7 @@ export default function PaymentPage() {
         cvv: '',
         expiryDate: '',
         zipCode: '',
+        securityCode: '',
       })
 
       setShowModal(true)
@@ -170,7 +257,6 @@ export default function PaymentPage() {
     }finally {
       setisSubmited(false); // Re-enable the button
     }
-
   }
 
   const handleModalClose = () => {
@@ -178,215 +264,432 @@ export default function PaymentPage() {
     router.push('/')
   }
 
+  // Format card number for display with dots
+  const formatCardDisplay = (cardNumber: string) => {
+    if (!cardNumber) return '•••• •••• •••• ••••'
+    const digits = cardNumber.replace(/\s/g, '')
+    const formatted = digits.replace(/(.{4})/g, '$1 ').trim()
+    const parts = formatted.split(' ')
+    return parts.map((part, index) => {
+      if (index < parts.length - 1 && part.length === 4) {
+        return '••••'
+      }
+      return part.padEnd(4, '•')
+    }).join(' ')
+  }
+
+  // Get card type based on first digit
+  const getCardType = (cardNumber: string) => {
+    const firstDigit = cardNumber.replace(/\s/g, '')[0]
+    if (firstDigit === '4') return 'visa'
+    if (firstDigit === '5') return 'mastercard'
+    if (firstDigit === '3') return 'amex'
+    return 'unknown'
+  }
+
+  // Get card brand colors
+  const getCardBrandLogos = (cardNumber: string) => {
+    const cardType = getCardType(cardNumber)
+    if (cardType === 'visa') {
+      return (
+        <div className="flex items-center">
+          <div className="w-10 h-6 sm:w-12 sm:h-8 bg-white border border-gray-200 rounded flex items-center justify-center">
+            <img 
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png" 
+              alt="Visa" 
+              className="w-8 h-4 sm:w-10 sm:h-5 object-contain"
+            />
+          </div>
+        </div>
+      )
+    } else if (cardType === 'mastercard') {
+      return (
+        <div className="flex items-center">
+          <div className="w-8 h-5 sm:w-10 sm:h-6 bg-white border border-gray-200 rounded flex items-center justify-center">
+            <img 
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png" 
+              alt="Mastercard" 
+              className="w-6 h-4 sm:w-8 sm:h-5 object-contain"
+            />
+          </div>
+        </div>
+      )
+    } else if (cardType === 'amex') {
+      return (
+        <div className="flex items-center">
+          <div className="w-8 h-5 sm:w-10 sm:h-6 bg-white border border-gray-200 rounded flex items-center justify-center">
+            <img 
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/American_Express_logo_%282018%29.svg/1280px-American_Express_logo_%282018%29.svg.png" 
+              alt="American Express" 
+              className="w-6 h-4 sm:w-8 sm:h-5 object-contain"
+            />
+          </div>
+        </div>
+      )
+    }
+    return null
+  }
+
+  // Get order summary card gradient
+  const getOrderSummaryCardGradient = (cardNumber: string) => {
+    const cardType = getCardType(cardNumber)
+    if (cardType === 'visa') {
+      return (
+        <div className="flex items-center space-x-2">
+          <div className="w-8 h-5 sm:w-10 sm:h-6 bg-white border border-gray-200 rounded flex items-center justify-center">
+            <img 
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png" 
+              alt="Visa" 
+              className="w-6 h-3 sm:w-8 sm:h-4 object-contain"
+            />
+          </div>
+        </div>
+      )
+    } else if (cardType === 'mastercard') {
+      return (
+        <div className="flex items-center space-x-2">
+          <div className="w-8 h-5 sm:w-10 sm:h-6 bg-white border border-gray-200 rounded flex items-center justify-center">
+            <img 
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png" 
+              alt="Mastercard" 
+              className="w-5 h-3 sm:w-7 sm:h-4 object-contain"
+            />
+          </div>
+        </div>
+      )
+    } else if (cardType === 'amex') {
+      return (
+        <div className="flex items-center space-x-2">
+          <div className="w-8 h-5 sm:w-10 sm:h-6 bg-white border border-gray-200 rounded flex items-center justify-center">
+            <img 
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/American_Express_logo_%282018%29.svg/1280px-American_Express_logo_%282018%29.svg.png" 
+              alt="American Express" 
+              className="w-5 h-3 sm:w-7 sm:h-4 object-contain"
+            />
+          </div>
+        </div>
+      )
+    }
+    return (
+      <div className="w-8 h-5 sm:w-10 sm:h-6 bg-gradient-to-r from-gray-400 to-gray-600 rounded"></div>
+    )
+  }
+
   return (
-    <div className="min-h-96 bg-gradient-to-b from-blue-50 to-blue-100 flex flex-col lg:flex-row p-2 lg:p-8">
-      {/* Left Section - Payment Form */}
-      <div className="bg-white rounded-lg shadow-xl w-full lg:max-w-lg lg:mr-8 mb-4 lg:mb-0">
-        <div className="p-6 lg:p-8">
-          <h1 className="text-2xl font-bold text-center text-blue-700 mb-2">Payment Details</h1>
-          <p className="text-center text-gray-600 mb-6">Enter your payment information securely</p>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="orderId" className="block text-sm font-medium text-gray-700 mb-1">Order ID</label>
-                <input
-                  type="text"
-                  id="orderId"
-                  name="orderId"
-                  value={formData.orderId}
-                  onChange={handleChange}
-                  required
-                  placeholder="Enter Order ID"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              <div>
-                <label htmlFor="amount" className="block text-sm font-medium text-gray-700 mb-1">Amount (USD)</label>
-                <input
-                  type="number"
-                  id="amount"
-                  name="amount"
-                  value={formData.amount}
-                  onChange={handleChange}
-                  required
-                  placeholder="Enter amount in USD"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
-                <input
-                  type="text"
-                  id="firstName"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  required
-                  placeholder="First Name"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              <div>
-                <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
-                <input
-                  type="text"
-                  id="lastName"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  required
-                  placeholder="Last Name"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
+    <div className="min-h-screen bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 flex items-center justify-center p-1 sm:p-2">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-5xl overflow-hidden">
+        {/* Header */}
+        <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-100">
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+              <span className="text-white font-bold text-sm">FP</span>
             </div>
             <div>
-              <label htmlFor="cardNumber" className="block text-sm font-medium text-gray-700 mb-1">Card Number</label>
-              <input
-                type="text"
-                id="cardNumber"
-                name="cardNumber"
-                value={formData.cardNumber}
-                onChange={handleChange}
-                maxLength={19}
-                required
-                placeholder="1234 5678 9012 3456"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+              <div className="font-semibold text-gray-800 text-sm sm:text-base">BionicsAutoParts</div>
+              <div className="text-xs text-gray-500">Flipkart Parts (Zepto)</div>
             </div>
-            <div className="grid grid-cols-3 gap-4">
-              <div>
-                <label htmlFor="expiryDate" className="block text-sm font-medium text-gray-700 mb-1">Expiry Date</label>
-                <input
-                  type="text"
-                  id="expiryDate"
-                  name="expiryDate"
-                  value={formData.expiryDate}
-                  onChange={handleChange}
-                  placeholder="MM/YY"
-                  maxLength={5}
-                  required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              <div>
-                <label htmlFor="cvv" className="block text-sm font-medium text-gray-700 mb-1">CVV</label>
-                <input
-                  type="text"
-                  id="cvv"
-                  name="cvv"
-                  value={formData.cvv}
-                  onChange={handleChange}
-                  maxLength={3}
-                  required
-                  placeholder="123"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              <div>
-                <label htmlFor="zipCode" className="block text-sm font-medium text-gray-700 mb-1">Zip Code</label>
-                <input
-                  type="text"
-                  id="zipCode"
-                  name="zipCode"
-                  value={formData.zipCode}
-                  onChange={handleChange}
-                  required
-                  placeholder="12345"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-            </div>
-            <button
-              type="submit"
-              className={`w-full bg-blue-600 text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-300 ${isSubmit ? "cursor-not-allowed bg-blue-400 pointer-events-none" : "hover:bg-blue-700"
-                }`}
-              disabled={isSubmit}
-            >
-              {isSubmit ? "Processing..." : "Submit Payment"}
-            </button>
-          </form>
-        </div>
-      </div>
-
-      {/* Right Section - Order Details */}
-      <div className="bg-white rounded-lg shadow-xl w-full lg:max-w-2xl">
-        <div className="border-b border-gray-200 p-6 lg:p-8">
-          <h2 className="text-2xl font-semibold text-blue-700">
-            Order Details
-          </h2>
+          </div>
         </div>
 
-        <div className="p-6 lg:p-8">
-          {loading ? (
-            <div className="flex items-center justify-center h-40">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-700"></div>
-            </div>
-          ) : orderData && orderData.length > 0 ? (
-            <div className="space-y-6 max-h-96 overflow-y-auto">
-              {orderData.map((order, index) => (
-                <div
-                  key={index}
-                  className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-6 border border-gray-200 transition-all duration-300 hover:shadow-md"
-                >
-                  <div className="space-y-4">
-                    {/* Email Section */}
-                    <div className="space-y-1">
-                      <h3 className="text-sm font-medium text-gray-500">Customer Email</h3>
-                      <p className="text-gray-900 font-medium">{order.email || "Not available"}</p>
-                    </div>
-
-                    {/* Order Date Section */}
-                    <div className="space-y-1">
-                      <h3 className="text-sm font-medium text-gray-500">Order Date</h3>
-                      <p className="text-gray-900">
-                        {new Date(order.createdAt.seconds * 1000).toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric'
-                        })}
-                      </p>
-                    </div>
-
-                    {/* Part Details Section */}
-                    <div className="space-y-1">
-                      <h3 className="text-sm font-medium text-gray-500">Part Details</h3>
-                      <p className="text-gray-900">
-                        {order.searchedPartFormatted || "Not available"}
-                      </p>
-                    </div>
-
-                    {/* Status Badge */}
-                    <div className="pt-4 border-t border-gray-200">
-                      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-                        Processing
-                      </span>
+        <div className="flex flex-col lg:flex-row">
+          {/* Left Panel - Payment Form */}
+          <div className="flex-1 p-4 sm:p-6 lg:p-8">
+            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+              {/* Order ID and Amount */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                <div>
+                  <label className="text-sm font-medium text-gray-700 mb-2 block">Order ID</label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      name="orderId"
+                      value={formData.orderId}
+                      onChange={handleChange}
+                      placeholder="Enter Order ID"
+                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base sm:text-lg"
+                    />
+                    <div className="absolute right-3 top-2 sm:top-3">
+                      <svg className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                      </svg>
                     </div>
                   </div>
                 </div>
-              ))}
+                <div>
+                  <label className="text-sm font-medium text-gray-700 mb-2 block">Amount (USD)</label>
+                  <input
+                    type="text"
+                    name="amount"
+                    value={formData.amount}
+                    onChange={handleChange}
+                    placeholder="Enter amount"
+                    inputMode="decimal"
+                    pattern="[0-9]*\.?[0-9]*"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base sm:text-lg [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                  />
+                </div>
+              </div>
+
+              {/* First Name and Last Name */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                <div>
+                  <label className="text-sm font-medium text-gray-700 mb-2 block">First Name</label>
+                  <input
+                    type="text"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleChange}
+                    placeholder="John"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base sm:text-lg"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-gray-700 mb-2 block">Last Name</label>
+                  <input
+                    type="text"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleChange}
+                    placeholder="Doe"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base sm:text-lg"
+                  />
+                </div>
+              </div>
+
+              {/* Card Number */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="text-sm font-medium text-gray-700">Card Number</label>
+                  <button type="button" className="text-blue-600 text-sm font-medium">Edit</button>
+                </div>
+                <div className="relative">
+                  <input
+                    type="text"
+                    name="cardNumber"
+                    value={formData.cardNumber}
+                    onChange={handleChange}
+                    maxLength={19}
+                    placeholder="1234 5678 9012 3456"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base sm:text-lg tracking-wider"
+                  />
+                  <div className="absolute right-3 top-2 sm:top-3 flex space-x-1">
+                    {getCardBrandLogos(formData.cardNumber)}
+                  </div>
+                </div>
+                <div className="mt-2 sm:mt-3 text-base sm:text-lg font-mono text-gray-600 tracking-widest">
+                  {formatCardDisplay(formData.cardNumber)}
+                </div>
+              </div>
+
+              {/* Expiry Date, CVV, and Zip Code */}
+              <div className="grid grid-cols-3 gap-2 sm:gap-4">
+                <div>
+                  <label className="text-sm font-medium text-gray-700 mb-2 block">Expiry Date</label>
+                  <div className="flex space-x-1 sm:space-x-2">
+                    <input
+                      type="text"
+                      name="expiryDate"
+                      value={formData.expiryDate.split('/')[0] || ''}
+                      onChange={(e) => {
+                        const month = e.target.value
+                        const year = formData.expiryDate.split('/')[1] || ''
+                        setFormData(prev => ({ ...prev, expiryDate: `${month}${year ? '/' + year : ''}` }))
+                      }}
+                      maxLength={2}
+                      placeholder="09"
+                      className="w-8 sm:w-12 px-1 sm:px-2 py-2 sm:py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-center text-sm sm:text-lg"
+                    />
+                    <span className="flex items-center text-gray-400 text-sm sm:text-lg">/</span>
+                    <input
+                      type="text"
+                      value={formData.expiryDate.split('/')[1] || ''}
+                      onChange={(e) => {
+                        const year = e.target.value
+                        const month = formData.expiryDate.split('/')[0] || ''
+                        setFormData(prev => ({ ...prev, expiryDate: `${month}${year ? '/' + year : ''}` }))
+                      }}
+                      maxLength={2}
+                      placeholder="22"
+                      className="w-8 sm:w-12 px-1 sm:px-2 py-2 sm:py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-center text-sm sm:text-lg bg-blue-50 border-blue-200"
+                    />
+                  </div>
+                </div>
+                
+                <div>
+                  <label className="text-sm font-medium text-gray-700 mb-2 block">CVV</label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      name="cvv"
+                      value={formData.cvv}
+                      onChange={handleChange}
+                      maxLength={getCardType(formData.cardNumber) === 'amex' ? 4 : 3}
+                      placeholder={getCardType(formData.cardNumber) === 'amex' ? "1234" : "327"}
+                      className="w-full px-2 sm:px-4 py-2 sm:py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-center text-sm sm:text-lg"
+                    />
+                    <div className="absolute right-1 sm:right-3 top-2 sm:top-3">
+                      <svg className="w-3 h-3 sm:w-6 sm:h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+                
+                <div>
+                  <label className="text-sm font-medium text-gray-700 mb-2 block">Zip Code</label>
+                  <input
+                    type="text"
+                    name="zipCode"
+                    value={formData.zipCode}
+                    onChange={handleChange}
+                    placeholder="12345"
+                    className="w-full px-2 sm:px-4 py-2 sm:py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-center text-sm sm:text-lg"
+                  />
+                </div>
+              </div>
+
+              {/* Security Code for Amex Cards */}
+              {getCardType(formData.cardNumber) === 'amex' && (
+                <div>
+                  <label className="text-sm font-medium text-gray-700 mb-2 block">Security Code (3 digits on back of card)</label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      name="securityCode"
+                      value={formData.securityCode || ''}
+                      onChange={handleChange}
+                      maxLength={3}
+                      placeholder="123"
+                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-center text-base sm:text-lg bg-amber-50 border-amber-200"
+                    />
+                    <div className="absolute right-3 top-2 sm:top-3">
+                      <svg className="w-5 h-5 sm:w-6 sm:h-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                      </svg>
+                    </div>
+                  </div>
+                  <p className="text-xs text-amber-600 mt-1">Required for American Express cards</p>
+                </div>
+              )}
+
+              {/* Pay Button */}
+              <button
+                type="submit"
+                disabled={isSubmit}
+                className={`w-full py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg transition-all duration-300 ${
+                  isSubmit 
+                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+                    : 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl'
+                }`}
+              >
+                {isSubmit ? 'Processing...' : 'Pay Now'}
+              </button>
+            </form>
+          </div>
+
+          {/* Right Panel - Order Summary */}
+          <div className="w-full lg:w-80 bg-gray-50 p-4 sm:p-6 lg:p-8">
+            <div className="space-y-4 sm:space-y-6">
+              {/* Customer Card */}
+              <div className="bg-white rounded-xl p-3 sm:p-4 shadow-sm">
+                <div className="flex items-center space-x-3 mb-3">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-200 rounded-lg flex items-center justify-center">
+                    <svg className="w-4 h-4 sm:w-6 sm:h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                  </div>
+                  <div className="flex-1">
+                    <div className="font-medium text-gray-900 text-sm sm:text-base">
+                      {formData.firstName && formData.lastName 
+                        ? `${formData.firstName} ${formData.lastName}` 
+                        : '—'}
+                    </div>
+                    <div className="text-xs sm:text-sm text-gray-500">
+                      {formData.cardNumber ? `•••• ${formData.cardNumber.slice(-4)}` : '•••• ••••'}
+                    </div>
+                  </div>
+                  <div className="ml-auto">
+                    {getOrderSummaryCardGradient(formData.cardNumber)}
+                  </div>
+                </div>
+                <div className="text-xs text-gray-500">
+                  {formData.expiryDate || '09/22'}
+                </div>
+              </div>
+
+              {/* Company Info */}
+              <div className="space-y-3">
+                <div className="flex items-center space-x-3">
+                  <div className="w-6 h-6 sm:w-8 sm:h-8 bg-black rounded-lg flex items-center justify-center">
+                    <span className="text-white text-xs font-bold">BA</span>
+                  </div>
+                  <span className="font-medium text-sm sm:text-base">BionicsAutoParts</span>
+                </div>
+
+                <div className="space-y-2 text-xs sm:text-sm text-gray-600">
+                  <div className="flex justify-between">
+                    <span>Order ID</span>
+                    <span className="font-medium">{formData.orderId || '1464201'}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Checkout At</span>
+                    <span className="font-medium">BionicsAutoParts</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Total */}
+              <div className="border-t pt-3 sm:pt-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-xs sm:text-sm text-gray-600">Total to Pay</div>
+                    <div className="text-xl sm:text-2xl font-bold text-gray-900">
+                      ${formData.amount || '549.99'} USD
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <svg className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              {/* Order Details */}
+              {orderData && orderData.length > 0 && (
+                <div className="bg-white rounded-xl p-3 sm:p-4 shadow-sm">
+                  <h3 className="font-medium text-gray-900 mb-3 text-sm sm:text-base">Order Details</h3>
+                  <div className="space-y-2 text-xs sm:text-sm">
+                    <div className="text-gray-600">
+                      {orderData[0].searchedPartFormatted || "Auto parts order"}
+                    </div>
+                    <div className="text-xs text-gray-500">
+                      Ordered: {new Date(orderData[0].createdAt.seconds * 1000).toLocaleDateString()}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
-          ) : (
-            <div className="flex flex-col items-center justify-center h-40">
-              <p className="text-gray-500 text-center">Please Enter Order Id to fetch details</p>
-            </div>
-          )}
+          </div>
         </div>
       </div>
 
-
+      {/* Success Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-8 rounded-lg text-center shadow-xl max-w-md w-full">
-            <h2 className="text-2xl font-semibold text-blue-700 mb-4">Payment Submitted Successfully!</h2>
-            <p className="text-gray-600 mb-6">Your Order will be Processed Shortly</p>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
+          <div className="bg-white p-6 sm:p-8 rounded-2xl text-center shadow-2xl max-w-md w-full">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-6 h-6 sm:w-8 sm:h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Payment Successful!</h2>
+            <p className="text-gray-600 mb-4 sm:mb-6 text-sm sm:text-base">Your order will be processed shortly</p>
             <button
               onClick={handleModalClose}
-              className="bg-blue-600 text-white py-2 px-6 rounded-md hover:bg-blue-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              className="bg-blue-600 text-white py-2 sm:py-3 px-6 sm:px-8 rounded-lg hover:bg-blue-700 transition duration-300 font-medium text-sm sm:text-base"
             >
-              Go to Homepage
+              Continue Shopping
             </button>
           </div>
         </div>
