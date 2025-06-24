@@ -220,9 +220,9 @@ export const CarAboutSection = () => {
             >
               {[
                 { label: "Parts Available", value: "10,000+" },
-                { label: "Brands", value: "200+" },
-                { label: "Delivery Countries", value: "50+" },
-                { label: "Satisfied Customers", value: "25,000+" },
+                { label: "Brands", value: "30+" },
+                { label: "Delivery States", value: "50" },
+                { label: "Satisfied Customers", value: "6000+" },
               ].map((stat, index) => (
                 <div
                   key={index}

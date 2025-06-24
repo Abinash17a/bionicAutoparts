@@ -34,6 +34,82 @@ interface HomeFormProps {
   }
 }
 
+// Add a mapping from make to logo image path using local public/car-logos directory
+const makeLogos: Record<string, string> = {
+  AMC: "/car-logos/amc.png",
+  Acura: "/car-logos/acura.png",
+  ALFA: "/car-logos/alfa-romeo.png",
+  Aston_Martin: "/car-logos/aston-martin.png",
+  Audi: "/car-logos/audi.png",
+  Austin: "/car-logos/austin.png",
+  AutoCar: "/car-logos/autocar.png",
+  Avanti: "/car-logos/avanti.png",
+  BMW: "/car-logos/bmw.png",
+  Bentley: "/car-logos/bentley.png",
+  Buick: "/car-logos/buick.png",
+  Cadillac: "/car-logos/cadillac.png",
+  Chevy: "/car-logos/chevrolet.png",
+  Chrysler: "/car-logos/chrysler.png",
+  Citroen: "/car-logos/citroen.png",
+  Daewoo: "/car-logos/daewoo.png",
+  Daihatsu: "/car-logos/daihatsu.png",
+  Delorean: "/car-logos/delorean.png",
+  Dodge: "/car-logos/dodge.png",
+  Eagle: "/car-logos/eagle.png",
+  Ferrari: "/car-logos/ferrari.png",
+  Fiat: "/car-logos/fiat.png",
+  Fisker: "/car-logos/fisker.png",
+  Ford: "/car-logos/ford.png",
+  Genesis: "/car-logos/genesis.png",
+  GMC: "/car-logos/gmc.png",
+  Honda: "/car-logos/honda.png",
+  Hudson: "/car-logos/hudson.png",
+  Hummer: "/car-logos/hummer.png",
+  Hyundai: "/car-logos/hyundai.png",
+  Infiniti: "/car-logos/infiniti.png",
+  Isuzu: "/car-logos/isuzu.png",
+  Jaguar: "/car-logos/jaguar.png",
+  Jeep: "/car-logos/jeep.png",
+  Kia: "/car-logos/kia.png",
+  Lamborghini: "/car-logos/lamborghini.png",
+  LandRover: "/car-logos/land-rover.png",
+  Lexus: "/car-logos/lexus.png",
+  Lincoln: "/car-logos/lincoln.png",
+  Lotus: "/car-logos/lotus.png",
+  MG: "/car-logos/mg.png",
+  Maserati: "/car-logos/maserati.png",
+  Maybach: "/car-logos/maybach.png",
+  Mazda: "/car-logos/mazda.png",
+  McLaren: "/car-logos/mclaren.png",
+  MercedesBenz: "/car-logos/mercedes-benz.png",
+  Mercury: "/car-logos/mercury.png",
+  Mini: "/car-logos/mini.png",
+  Mitsubishi: "/car-logos/mitsubishi.png",
+  Nissan: "/car-logos/nissan.png",
+  Oldsmobile: "/car-logos/oldsmobile.png",
+  Plymouth: "/car-logos/plymouth.png",
+  Polestar: "/car-logos/polestar.png",
+  Pontiac: "/car-logos/pontiac.png",
+  Porsche: "/car-logos/porsche.png",
+  Ram: "/car-logos/ram.png",
+  Renault: "/car-logos/renault.png",
+  RollsRoyce: "/car-logos/rolls-royce.png",
+  Rover: "/car-logos/rover.png",
+  Saab: "/car-logos/saab.png",
+  Saturn: "/car-logos/saturn.png",
+  Subaru: "/car-logos/subaru.png",
+  Suzuki: "/car-logos/suzuki.png",
+  Tesla: "/car-logos/tesla.png",
+  Toyota: "/car-logos/toyota.png",
+  Triumph: "/car-logos/triumph.png",
+  Volkswagen: "/car-logos/volkswagen.png",
+  Volvo: "/car-logos/volvo.png",
+  Western: "/car-logos/western-star.png",
+  Willys: "/car-logos/willys.png",
+  Winnebago: "/car-logos/winnebago.png",
+  Yugo: "/car-logos/yugo.png",
+};
+
 export const HomeForm: React.FC<HomeFormProps> = ({
   year,
   setYear,
@@ -255,7 +331,18 @@ export const HomeForm: React.FC<HomeFormProps> = ({
                   </MenuItem>
                   {initialData.makes.map((m) => (
                     <MenuItem key={m} value={m}>
-                      {m}
+                      <span style={{ display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'space-between' }}>
+                        <span>{m}</span>
+                        {makeLogos[m] && (
+                          <Image
+                            src={makeLogos[m]}
+                            alt={m + ' logo'}
+                            width={32}
+                            height={32}
+                            style={{ marginLeft: 12, objectFit: 'contain', background: '#fff', borderRadius: 4 }}
+                          />
+                        )}
+                      </span>
                     </MenuItem>
                   ))}
                 </TextField>
