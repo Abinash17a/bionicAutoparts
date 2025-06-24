@@ -453,7 +453,7 @@ const initialData = {
         'Pontiac Sunfire', 'Pontiac Sunrunner', 'Pontiac Tempest', 'Pontiac Torrent',
         'Pontiac Trans Sport', 'Pontiac Van-Montana', 'Pontiac Ventura', 'Pontiac Vibe',
         'Pontiac Wave', 'Pontiac Other',
-  
+
       ],
       Porsche: [
         'Porsche 356', 'Porsche 911', 'Porsche 912', 'Porsche 914', 'Porsche 918', 'Porsche 924',
@@ -565,7 +565,7 @@ const initialData = {
       Yugo: [
         'Yugo',
       ],
-  
+
     },
     parts: [
       "A Pillar",
@@ -1245,3 +1245,6 @@ const initialData = {
     ],
   };
   export default initialData;
+
+  export const parts = initialData.parts;
+

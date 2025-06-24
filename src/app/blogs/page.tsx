@@ -2,10 +2,15 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { blogs } from "../data/blogsData"; // Import the data
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Search, ArrowRight } from "lucide-react";
 
 const Blogs = () => {
     // State to store the search input
     const [searchTerm, setSearchTerm] = useState("");
+    const [showNoResults, setShowNoResults] = useState(false);
 
     // Helper function to truncate text to a given word count
     const truncateText = (text: any, wordLimit: any) => {
@@ -22,69 +27,97 @@ const Blogs = () => {
         blog.description.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+    // Show no results animation
+    React.useEffect(() => {
+        setShowNoResults(searchTerm.length > 0 && filteredBlogs.length === 0);
+    }, [searchTerm, filteredBlogs.length]);
+
     return (
-        <div className="mx-auto mt-8 px-6 lg:px-8" style={{ maxWidth: '130rem' }}>
-            {/* Main Content Section with Blog Cards and Sidebar */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Main Blog Card Section */}
-                <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="mx-auto mt-8 px-4 sm:px-6 lg:px-8 max-w-screen-2xl">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                {/* Blog Cards Section */}
+                <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
                     {filteredBlogs.length > 0 ? (
-                        filteredBlogs.map((blog) => (
-                            <div
+                        filteredBlogs.map((blog, idx) => (
+                            <Card
                                 key={blog.id}
-                                className="bg-white shadow-lg rounded-lg overflow-hidden transform transition duration-300 hover:scale-105"
+                                className="group flex flex-col h-full shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-transparent hover:border-blue-500/60 bg-white animate-fade-in"
+                                style={{ animationDelay: `${idx * 60}ms` }}
                             >
-                                <img
-                                    src={blog.image}
-                                    alt={blog.title}
-                                    className="w-full h-48 object-cover rounded-t-lg"
-                                />
-                                <div className="p-6 space-y-4">
-                                    <h3 className="text-2xl font-bold text-gray-900">{blog.title}</h3>
-                                    <p className="text-sm text-gray-500">{blog.date}</p>
-                                    <p className="text-gray-700 text-lg">
-                                        {truncateText(blog.description, 20)}
-                                    </p>
-                                    <Link
-                                        href={`/blogs/${blog.id}`}
-                                        className="text-blue-500 hover:text-blue-700 hover:underline font-semibold"
-                                    >
-                                        Read More →
-                                    </Link>
+                                <div className="relative h-48 w-full overflow-hidden rounded-t-xl">
+                                    <img
+                                        src={blog.image}
+                                        alt={blog.title}
+                                        className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                                    />
                                 </div>
-                            </div>
+                                <CardContent className="flex flex-col flex-1 p-6 gap-3">
+                                    <CardTitle className="text-2xl font-bold text-gray-900 mb-1 line-clamp-2">
+                                        {blog.title}
+                                    </CardTitle>
+                                    <div className="text-xs text-gray-500 mb-1">{blog.date}</div>
+                                    <div className="text-gray-700 text-base flex-1 line-clamp-4">
+                                        {truncateText(blog.description, 24)}
+                                    </div>
+                                    <Button asChild variant="outline" className="mt-4 w-fit px-5 py-2 text-blue-600 border-blue-500 hover:bg-blue-50 hover:text-blue-800 transition">
+                                        <Link href={`/blogs/${blog.id}`}>
+                                            Read More <ArrowRight className="ml-2 w-4 h-4" />
+                                        </Link>
+                                    </Button>
+                                </CardContent>
+                            </Card>
                         ))
-                    ) : (
-                        <p className="text-gray-700 text-center text-xl">No blogs found.</p>
-                    )}
+                    ) : showNoResults ? (
+                        <div className="col-span-full flex flex-col items-center justify-center py-16 animate-fade-in">
+                            <Search className="w-16 h-16 text-blue-300 mb-4" />
+                            <div className="text-2xl font-semibold text-gray-700 mb-2">No blogs found</div>
+                            <div className="text-gray-500">Try a different search term or browse all blogs.</div>
+                        </div>
+                    ) : null}
                 </div>
 
-                {/* Sidebar with Search and Welcome Section */}
-                <div className="space-y-6 mt-8 lg:mt-0">
-                    {/* Search Section */}
-                    <div className="bg-white shadow-md p-6 rounded-lg">
-                        <h4 className="text-xl font-semibold mb-4">Search Blogs</h4>
-                        <input
+                {/* Sidebar */}
+                <div className="space-y-8 lg:sticky lg:top-24 h-fit animate-fade-in">
+                    <Card className="p-6">
+                        <CardHeader className="p-0 mb-4">
+                            <CardTitle className="text-xl font-semibold">Search Blogs</CardTitle>
+                        </CardHeader>
+                        <Input
                             type="text"
                             placeholder="Search blogs..."
                             value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)} // Update search term
-                            className="w-full border-2 border-gray-300 rounded-lg px-4 py-3 text-lg focus:outline-none focus:border-blue-500 transition duration-300"
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="mt-2"
                         />
-                    </div>
-
-                    {/* Welcome Section */}
-                    <div className="bg-white shadow-md p-6 rounded-lg">
-                        <h4 className="text-xl font-semibold mb-4">Hi there!</h4>
-                        <p className="text-gray-700 text-lg">
-                            Welcome to our car blogs section! Here you will find useful tips,
-                            reviews, and updates from the automobile world. Happy reading!
-                        </p>
-                    </div>
+                    </Card>
+                    <Card className="p-6">
+                        <CardHeader className="p-0 mb-4">
+                            <CardTitle className="text-xl font-semibold">Hi there!</CardTitle>
+                        </CardHeader>
+                        <div className="text-gray-700 text-base">
+                            Welcome to our car blogs section! Here you will find useful tips, reviews, and updates from the automobile world. Happy reading!
+                        </div>
+                    </Card>
                 </div>
             </div>
+            <style jsx global>{`
+                .animate-fade-in {
+                    animation: fadeInUp 0.7s cubic-bezier(0.23, 1, 0.32, 1) both;
+                }
+                @keyframes fadeInUp {
+                    0% {
+                        opacity: 0;
+                        transform: translateY(30px);
+                    }
+                    100% {
+                        opacity: 1;
+                        transform: none;
+                    }
+                }
+            `}</style>
         </div>
     );
 };
 
 export default Blogs;
+

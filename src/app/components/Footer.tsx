@@ -5,8 +5,8 @@ import { Box, Container, Typography, Grid, Link, IconButton } from '@mui/materia
 
 export default function Footer() {
   return (
-    <Box sx={{ backgroundColor: '#023047', color: '#8ecae6', py: 6 }}>
-      <Container maxWidth="lg">
+    <Box sx={{ backgroundColor: '#3b82f6', color: '#f1f5f9', py: 6 }}>
+      <Container maxWidth="xl">
         <Grid container spacing={4} justifyContent="space-between">
           {/* Left side with logo and description */}
           <Grid item xs={12} md={4} container alignItems="center" direction="column">
@@ -17,29 +17,29 @@ export default function Footer() {
               height={150}
               style={{ marginBottom: '16px' }}
             />
-            <Typography variant="h6" fontWeight="bold" color="#ffb703" gutterBottom>
+            <Typography variant="h6" fontWeight="bold" color="#fff" gutterBottom>
               Bionics Auto Parts
             </Typography>
-            <Typography variant="body2" align="center" color="#8ecae6">
+            <Typography variant="body2" align="center" color="#e0e7ef">
               Providing quality auto parts since 2020. Your reliable partner for all automotive needs.
             </Typography>
           </Grid>
 
           {/* Quick Links */}
           <Grid item xs={12} sm={6} md={4}>
-            <Typography variant="subtitle1" fontWeight="bold" mb={2} color="#ffb703">
+            <Typography variant="subtitle1" fontWeight="bold" mb={2} color="#bae6fd">
               Quick Links
             </Typography>
             <Box component="ul" sx={{ paddingLeft: '0', listStyleType: 'none' }}>
               {['About Us', 'Contact',].map((item) => (
                 <Box component="li" key={item} mb={1}>
-                  <Link 
-                    href={`/${item.toLowerCase().replace(' ', '-')}`} 
-                    color="inherit" 
+                  <Link
+                    href={`/${item.toLowerCase().replace(' ', '-')}`}
+                    color="#fff"
                     underline="hover"
-                    sx={{ 
-                      '&:hover': { 
-                        color: '#fb8500',
+                    sx={{
+                      '&:hover': {
+                        color: '#60a5fa',
                         transition: 'color 0.3s ease'
                       }
                     }}
@@ -53,20 +53,20 @@ export default function Footer() {
 
           {/* Contact Us */}
           <Grid item xs={12} sm={6} md={4}>
-            <Typography variant="subtitle1" fontWeight="bold" mb={2} color="#ffb703">
+            <Typography variant="subtitle1" fontWeight="bold" mb={2} color="#bae6fd">
               Contact Us
             </Typography>
-            <Typography variant="body2" mb={1} color="#8ecae6">
-              Email: <Link href="mailto:parts@bionicsautoparts.com" color="inherit" underline="hover" sx={{ '&:hover': { color: '#fb8500' } }}>parts@bionicsautoparts.com</Link>
+            <Typography variant="body2" mb={1} color="#e0e7ef">
+              Email: <Link href="mailto:parts@bionicsautoparts.com" color="#fff" underline="hover" sx={{ '&:hover': { color: '#60a5fa' } }}>parts@bionicsautoparts.com</Link>
             </Typography>
-            <Typography variant="body2" mb={1} color="#8ecae6">
+            <Typography variant="body2" mb={1} color="#e0e7ef">
               Phone: +1 617-390-7248
             </Typography>
-            <Typography variant="body2" mb={1} color="#8ecae6">
+            <Typography variant="body2" mb={1} color="#e0e7ef">
             6332 Deep Canyon Dr,Beverly Hills,CA 90210
             </Typography>
             <Box mt={2}>
-              <Typography variant="subtitle2" fontWeight="bold" mb={1} color="#ffb703">
+              <Typography variant="subtitle2" fontWeight="bold" mb={1} color="#bae6fd">
                 Follow Us
               </Typography>
               <Box>
@@ -76,15 +76,15 @@ export default function Footer() {
                   { icon: FaInstagram, url: 'https://instagram.com' },
                   { icon: FaLinkedin, url: 'https://linkedin.com' }
                 ].map((social, index) => (
-                  <IconButton 
+                  <IconButton
                     key={index}
-                    href={social.url} 
+                    href={social.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    sx={{ 
-                      color: '#8ecae6', 
-                      '&:hover': { 
-                        color: '#fb8500',
+                    sx={{
+                      color: '#e0e7ef',
+                      '&:hover': {
+                        color: '#60a5fa',
                         transform: 'translateY(-3px)',
                         transition: 'all 0.3s ease'
                       }
@@ -99,10 +99,11 @@ export default function Footer() {
         </Grid>
 
         {/* Footer copyright */}
-        <Typography variant="body2" align="center" mt={6} sx={{ borderTop: '1px solid #219ebc', paddingTop: 3 }}>
+        <Typography variant="body2" align="center" mt={6} sx={{ borderTop: '1px solid #60a5fa', paddingTop: 3, color: '#e0e7ef' }}>
           &copy; {new Date().getFullYear()} Bionics Auto Parts. All rights reserved.
         </Typography>
       </Container>
     </Box>
   );
 }
+

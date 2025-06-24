@@ -1,139 +1,256 @@
-'use client';
+"use client"
 
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import '@fontsource/bebas-neue';
+import * as React from "react"
+import Image from "next/image"
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  Typography,
+  Button,
+  IconButton,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Container,
+  useTheme,
+  useMediaQuery,
+} from "@mui/material"
+import { Menu as MenuIcon, Close as CloseIcon } from "@mui/icons-material"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
 
 export default function Header() {
-  const pathname = usePathname();
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const pathname = usePathname()
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"))
+  const [mobileOpen, setMobileOpen] = React.useState(false)
 
-  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen)
+  }
 
   const navItems = [
-    { title: 'Home', path: '/' },
-    { title: 'About', path: '/about-us' },
-    { title: 'Contact', path: '/contact' },
-    { title: 'Blogs', path: '/blogs' },
-  ];
+    { title: "Home", path: "/" },
+    { title: "About", path: "/about-us" },
+    { title: "Contact", path: "/contact" },
+    { title: "Blogs", path: "/blogs" },
+  ]
 
-  const linkStyle = (path: string) => ({
-    color: pathname === path ? '#ffb703' : '#8ecae6',
-    fontWeight: pathname === path ? 'bold' : 'normal',
-    position: 'relative',
-    textDecoration: 'none',
-    padding: '6px 0',
-    margin: '0 16px',
-    '&:hover': {
-      color: '#fb8500',
-    },
-  });
+  const isActive = (path: string) => pathname === path
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      {/* Header */}
-      <AppBar position="static" sx={{ backgroundColor: '#023047' }}>
-        <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
-          {/* Logo and Name */}
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Link href="/" passHref>
+    <AppBar
+      position="static"
+      elevation={4}
+      sx={{
+        backgroundColor: "#fff",
+        backgroundImage: "none",
+        borderBottom: "1px solid #e0e0e0",
+        fontFamily: "'Poppins', 'Inter', 'sans-serif'",
+      }}
+    >
+      <Container maxWidth={false}>
+        <Toolbar
+          sx={{
+            justifyContent: "space-between",
+            alignItems: "center",
+            py: { xs: 1, md: 1.5 },
+            minHeight: { xs: 64, md: 70 },
+            pl: { xs: 1, md: 3 },
+          }}
+        >
+          {/* Logo Section */}
+          <Link href="/" passHref style={{ textDecoration: "none" }}>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                cursor: "pointer",
+                transition: "transform 0.2s ease",
+                "&:hover": {
+                  transform: "scale(1.05)",
+                },
+                ml: -1,
+              }}
+            >
+              <Image
+                src="/logo1.png"
+                alt="Bionics Autoparts Logo"
+                width={64}
+                height={64}
+                style={{ marginRight: 18, borderRadius: "50%", background: "#fff" }}
+                priority
+              />
               <Typography
-                variant="h5"
+                variant={isMobile ? "h6" : "h5"}
                 sx={{
-                  fontWeight: 'bold',
-                  color: '#ffb703',
-                  display: { xs: 'block', md: 'block' },
-                  mr: 2,
-                  cursor: 'pointer',
-                  fontFamily: 'Matanya, sans-serif', // Use Matanya font
-                  letterSpacing: '1px', // Optional for added style
-                  textDecoration: 'none',
+                  fontWeight: 800,
+                  color: "#222",
+                  fontFamily: "'Poppins', 'Inter', 'Cinzel', 'Matanya', serif",
+                  letterSpacing: "2.5px",
+                  textShadow: "0 2px 4px rgba(0,0,0,0.06)",
+                  fontSize: { xs: "1.2rem", md: "1.5rem" },
+                  textDecoration: "none",
                 }}
               >
                 Bionics Autoparts
               </Typography>
-            </Link>
-            <img
-              src="/bbb_trust_logo.png" // Replace with your logo image path
-              alt="BBB Trust Logo"
-              style={{ height: '40px', objectFit: 'contain' }}
-            />
-          </Box>
+            </Box>
+          </Link>
 
-          {/* Links for Large Screens */}
-          <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
-            {navItems.map((link) => (
-              <Link key={link.title} href={link.path} passHref>
-                <Button color="inherit" sx={{ ...linkStyle(link.path), fontSize: '1rem', fontWeight: '600' }}>
-                  {link.title}
+          {/* Desktop Navigation */}
+          <Box sx={{ display: { xs: "none", md: "flex" }, alignItems: "center", gap: 1 }}>
+            {navItems.map((item) => (
+              <Link key={item.title} href={item.path} passHref style={{ textDecoration: "none" }}>
+                <Button
+                  sx={{
+                    color: isActive(item.path) ? "#ffb703" : "#222",
+                    fontWeight: 700,
+                    fontSize: "1.08rem",
+                    textTransform: "none",
+                    px: 2.5,
+                    py: 1.2,
+                    borderRadius: 2,
+                    position: "relative",
+                    backgroundColor: isActive(item.path) ? "rgba(255, 183, 3, 0.08)" : "transparent",
+                    transition: "all 0.3s ease",
+                    fontFamily: "'Poppins', 'Inter', 'sans-serif'",
+                    letterSpacing: "0.7px",
+                    textDecoration: "none",
+                    boxShadow: "none",
+                    "&:hover": {
+                      color: "#fb8500",
+                      backgroundColor: "rgba(251, 133, 0, 0.08)",
+                      transform: "translateY(-2px)",
+                      textDecoration: "none",
+                    },
+                    "&::after": isActive(item.path)
+                      ? {
+                          content: '""',
+                          position: "absolute",
+                          bottom: 0,
+                          left: "50%",
+                          transform: "translateX(-50%)",
+                          width: "80%",
+                          height: "2px",
+                          backgroundColor: "#ffb703",
+                          borderRadius: "1px",
+                        }
+                      : {},
+                  }}
+                >
+                  <span style={{ textDecoration: "none", fontWeight: 700, fontFamily: "'Poppins', 'Inter', 'sans-serif'", letterSpacing: "0.7px" }}>{item.title}</span>
                 </Button>
               </Link>
             ))}
           </Box>
 
-          {/* Hamburger Icon for Mobile */}
+          {/* Mobile Menu Button */}
           <IconButton
-            size="large"
-            edge="start"
             color="inherit"
-            aria-label="menu"
+            aria-label="open drawer"
+            edge="end"
+            onClick={handleDrawerToggle}
             sx={{
-              display: { xs: 'flex', md: 'none' },
-              color: '#ffb703',
+              display: { xs: "flex", md: "none" },
+              color: "#ffb703",
+              backgroundColor: "rgba(255, 183, 3, 0.08)",
+              "&:hover": {
+                backgroundColor: "rgba(255, 183, 3, 0.16)",
+                transform: "rotate(90deg)",
+              },
+              transition: "all 0.3s ease",
             }}
-            onClick={handleMenu}
           >
             <MenuIcon />
           </IconButton>
-
-          {/* Mobile Menu */}
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-            PaperProps={{
-              sx: {
-                backgroundColor: '#023047',
-                color: '#8ecae6',
-              },
-            }}
-          >
-            {navItems.map((link) => (
-              <MenuItem
-                key={link.title}
-                onClick={handleClose}
-                sx={{
-                  '&:hover': {
-                    backgroundColor: '#fb8500',
-                    color: '#023047',
-                  },
-                }}
-              >
-                <Link href={link.path} passHref style={linkStyle(link.path)}>
-                  {link.title}
-                </Link>
-              </MenuItem>
-            ))}
-          </Menu>
         </Toolbar>
-      </AppBar>
-    </Box>
-  );
+      </Container>
+
+      {/* Mobile Drawer */}
+      <Drawer
+        variant="temporary"
+        anchor="right"
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        ModalProps={{
+          keepMounted: true, // Better open performance on mobile
+        }}
+        sx={{
+          display: { xs: "block", md: "none" },
+          "& .MuiDrawer-paper": {
+            boxSizing: "border-box",
+            width: 280,
+            backgroundColor: "#fff",
+            backgroundImage: "none",
+            borderLeft: "1px solid #e0e0e0",
+            fontFamily: "'Poppins', 'Inter', 'sans-serif'",
+          },
+        }}
+      >
+        <Box sx={{ p: 2 }}>
+          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}>
+            <Typography
+              variant="h6"
+              sx={{
+                color: "#222",
+                fontWeight: 800,
+                fontFamily: "'Poppins', 'Inter', 'Cinzel', 'Matanya', serif",
+                letterSpacing: "2.5px",
+                fontSize: "1.2rem",
+                textDecoration: "none",
+              }}
+            >
+              Bionics Autoparts
+            </Typography>
+            <IconButton onClick={handleDrawerToggle} sx={{ color: "#ffb703" }}>
+              <CloseIcon />
+            </IconButton>
+          </Box>
+
+          <List>
+            {navItems.map((item) => (
+              <ListItem key={item.title} disablePadding>
+                <Link href={item.path} passHref style={{ textDecoration: "none", width: "100%" }}>
+                  <ListItemButton
+                    onClick={handleDrawerToggle}
+                    sx={{
+                      borderRadius: 2,
+                      mb: 1,
+                      backgroundColor: isActive(item.path) ? "rgba(255, 183, 3, 0.08)" : "transparent",
+                      border: isActive(item.path) ? "1px solid rgba(255, 183, 3, 0.18)" : "1px solid transparent",
+                      "&:hover": {
+                        backgroundColor: "rgba(251, 133, 0, 0.08)",
+                        transform: "translateX(8px)",
+                      },
+                      transition: "all 0.3s ease",
+                      fontFamily: "'Poppins', 'Inter', 'sans-serif'",
+                    }}
+                  >
+                    <ListItemText
+                      primary={item.title}
+                      sx={{
+                        "& .MuiListItemText-primary": {
+                          color: isActive(item.path) ? "#ffb703" : "#222",
+                          fontWeight: isActive(item.path) ? 700 : 600,
+                          fontSize: "1.08rem",
+                          fontFamily: "'Poppins', 'Inter', 'sans-serif'",
+                          letterSpacing: "0.7px",
+                          textDecoration: "none",
+                        },
+                      }}
+                    />
+                  </ListItemButton>
+                </Link>
+              </ListItem>
+            ))}
+          </List>
+        </Box>
+      </Drawer>
+    </AppBar>
+  )
 }
 

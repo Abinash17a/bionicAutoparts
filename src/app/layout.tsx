@@ -7,8 +7,8 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import CarCompanySlider from "./components/Companyslider";
 import Script from "next/script";
+import Header from './components/Topheader';
 import GoogleTagManager from "./components/GoogleTagManager";
-
 
 export const metadata: Metadata = {
   title: "Bionics Autoparts",
@@ -46,6 +46,7 @@ export default function RootLayout({
       </head>
       <body className="flex flex-col min-h-screen font-sans">
         <GoogleTagManager />
+        <Header />
         <Navbar />
         <main className="flex-grow">{children}</main>
         <CarCompanySlider />
@@ -54,3 +55,4 @@ export default function RootLayout({
     </html>
   );
 }
+
