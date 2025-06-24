@@ -11,7 +11,7 @@ export default function PartsPage() {
 
   return (
     <div className="min-h-screen bg-blue-50 py-12 px-4 sm:px-8">
-      <div className="max-w-full mx-auto px-48">
+      <div className="max-w-full mx-auto sm:px-12 md:px-0 lg:px-48">
         <h1 className="text-4xl font-extrabold text-blue-700 mb-6 text-center drop-shadow-sm">Available Auto Parts</h1>
         <div className="mb-8 flex justify-center">
           <input
