@@ -79,9 +79,8 @@ export const CarPartsCardsSection = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 max-w-full mx-auto px-4 sm:px-8 md:px-0 lg:px-48">
         {cardData.map((card, index) => (
-          <Link href="/parts" passHref legacyBehavior>
+          <Link href="/parts" passHref legacyBehavior key={card.title}>
             <motion.a
-              key={card.title}
               custom={index}
               initial="hidden"
               animate={isVisible ? "visible" : "hidden"}
