@@ -2,8 +2,6 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
-  Paper,
-  Typography,
   TextField,
   Button,
   Grid,
@@ -12,7 +10,6 @@ import {
   useTheme
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import Image from 'next/image';
 
 interface ModalSectionProps {
   modalVisible: boolean;

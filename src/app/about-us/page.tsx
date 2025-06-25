@@ -1,6 +1,4 @@
 "use client"
-
-import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import {
@@ -8,18 +6,14 @@ import {
   Award,
   Recycle,
   Phone,
-  Star,
   Wrench,
   Shield,
   Zap,
   Heart,
-  ChevronLeft,
-  ChevronRight,
 } from "lucide-react"
 
 export default function AboutUs() {
   const router = useRouter()
-  const [currentTestimonial, setCurrentTestimonial] = useState(0)
 
   const goToHomePage = () => {
     router.push("/")

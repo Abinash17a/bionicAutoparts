@@ -88,8 +88,8 @@ export default function BlogPage({ params }: { params: { id: string } }) {
             {blog.description.split("\n").map((line: string, index: number) => {
               const boldTextRegex = /\*\*(.*?)\*\*/g;
               if (boldTextRegex.test(line)) {
-                const updatedLine = line.replace(boldTextRegex, (match, p1) => (
-                  `<span class=\"font-bold text-xl text-blue-700\">${p1}</span>`
+                const updatedLine = line.replace(boldTextRegex, (p1) => (
+                  `<span class="font-bold text-xl text-blue-700">${p1}</span>`
                 ));
                 return (
                   <p
