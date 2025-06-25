@@ -161,7 +161,7 @@ export const ModalSection: React.FC<ModalSectionProps> = ({ modalVisible, search
                 }}
                 disabled={isSubmitClicked}
               >
-                Search
+                Submit
               </Button>
             </Grid>
             <Grid item>

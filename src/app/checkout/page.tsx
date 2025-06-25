@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { db } from '../lib/firebase'
-import { collection, addDoc } from 'firebase/firestore'
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 
 interface FormData {
   orderId: string
@@ -107,21 +107,21 @@ export default function PaymentPage() {
             // Group entries by orderId and combine different parts
             const groupedData = combinedData.reduce((acc: any, item: any) => {
               const existingEntry = acc.find((entry: any) => entry.orderId === item.orderId);
-              
+
               if (existingEntry) {
                 // If orderId already exists, combine the parts
                 const existingParts = existingEntry.searchedPartFormatted || '';
                 const newPart = item.searchedPartFormatted || '';
-                
+
                 // Only add the new part if it's different from existing parts
                 if (newPart && !existingParts.includes(newPart)) {
                   existingEntry.searchedPartFormatted = existingParts + (existingParts ? ' | ' : '') + newPart;
                 }
-                
+
                 // Keep the most recent createdAt date
                 const existingDate = existingEntry.createdAt?.seconds ? new Date(existingEntry.createdAt.seconds * 1000) : new Date(0);
                 const newDate = item.createdAt?.seconds ? new Date(item.createdAt.seconds * 1000) : new Date(0);
-                
+
                 if (newDate > existingDate) {
                   existingEntry.createdAt = item.createdAt;
                 }
@@ -129,7 +129,7 @@ export default function PaymentPage() {
                 // If orderId doesn't exist, add new entry
                 acc.push({ ...item });
               }
-              
+
               return acc;
             }, []);
 
@@ -137,7 +137,7 @@ export default function PaymentPage() {
 
             setOrderData(uniqueData);
             console.log(`Order data found in ${responseSubmissions.ok ? 'submissions' : ''}${responseSubmissions.ok && responseSubmissionsV2.ok ? ' and ' : ''}${responseSubmissionsV2.ok ? 'submissionsv2' : ''}:`, uniqueData);
-            
+
             if (combinedData.length > uniqueData.length) {
               console.log(`Removed ${combinedData.length - uniqueData.length} duplicate entries for orderId: ${formattedValue}`);
             }
@@ -240,7 +240,10 @@ export default function PaymentPage() {
 
     try {
       setisSubmited(true);
-      await addDoc(collection(db, 'payments'), formData)
+      await addDoc(collection(db, 'payments'), {
+        ...formData,
+        createdAt: serverTimestamp(),
+      })
       toast.success('Payment will be processed soon!', { position: 'top-center', autoClose: 3000 })
 
       setFormData({
@@ -299,9 +302,9 @@ export default function PaymentPage() {
       return (
         <div className="flex items-center">
           <div className="w-10 h-6 sm:w-12 sm:h-8 bg-white border border-gray-200 rounded flex items-center justify-center">
-            <img 
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png" 
-              alt="Visa" 
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png"
+              alt="Visa"
               className="w-8 h-4 sm:w-10 sm:h-5 object-contain"
             />
           </div>
@@ -311,9 +314,9 @@ export default function PaymentPage() {
       return (
         <div className="flex items-center">
           <div className="w-8 h-5 sm:w-10 sm:h-6 bg-white border border-gray-200 rounded flex items-center justify-center">
-            <img 
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png" 
-              alt="Mastercard" 
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png"
+              alt="Mastercard"
               className="w-6 h-4 sm:w-8 sm:h-5 object-contain"
             />
           </div>
@@ -323,9 +326,9 @@ export default function PaymentPage() {
       return (
         <div className="flex items-center">
           <div className="w-8 h-5 sm:w-10 sm:h-6 bg-white border border-gray-200 rounded flex items-center justify-center">
-            <img 
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/American_Express_logo_%282018%29.svg/1280px-American_Express_logo_%282018%29.svg.png" 
-              alt="American Express" 
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/American_Express_logo_%282018%29.svg/1280px-American_Express_logo_%282018%29.svg.png"
+              alt="American Express"
               className="w-6 h-4 sm:w-8 sm:h-5 object-contain"
             />
           </div>
@@ -342,9 +345,9 @@ export default function PaymentPage() {
       return (
         <div className="flex items-center space-x-2">
           <div className="w-8 h-5 sm:w-10 sm:h-6 bg-white border border-gray-200 rounded flex items-center justify-center">
-            <img 
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png" 
-              alt="Visa" 
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png"
+              alt="Visa"
               className="w-6 h-3 sm:w-8 sm:h-4 object-contain"
             />
           </div>
@@ -354,9 +357,9 @@ export default function PaymentPage() {
       return (
         <div className="flex items-center space-x-2">
           <div className="w-8 h-5 sm:w-10 sm:h-6 bg-white border border-gray-200 rounded flex items-center justify-center">
-            <img 
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png" 
-              alt="Mastercard" 
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png"
+              alt="Mastercard"
               className="w-5 h-3 sm:w-7 sm:h-4 object-contain"
             />
           </div>
@@ -366,9 +369,9 @@ export default function PaymentPage() {
       return (
         <div className="flex items-center space-x-2">
           <div className="w-8 h-5 sm:w-10 sm:h-6 bg-white border border-gray-200 rounded flex items-center justify-center">
-            <img 
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/American_Express_logo_%282018%29.svg/1280px-American_Express_logo_%282018%29.svg.png" 
-              alt="American Express" 
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/American_Express_logo_%282018%29.svg/1280px-American_Express_logo_%282018%29.svg.png"
+              alt="American Express"
               className="w-5 h-3 sm:w-7 sm:h-4 object-contain"
             />
           </div>
@@ -518,7 +521,7 @@ export default function PaymentPage() {
                     />
                   </div>
                 </div>
-                
+
                 <div>
                   <label className="text-sm font-medium text-gray-700 mb-2 block">CVV</label>
                   <div className="relative">
@@ -538,7 +541,7 @@ export default function PaymentPage() {
                     </div>
                   </div>
                 </div>
-                
+
                 <div>
                   <label className="text-sm font-medium text-gray-700 mb-2 block">Zip Code</label>
                   <input
@@ -581,8 +584,8 @@ export default function PaymentPage() {
                 type="submit"
                 disabled={isSubmit}
                 className={`w-full py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg transition-all duration-300 ${
-                  isSubmit 
-                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+                  isSubmit
+                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                     : 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl'
                 }`}
               >
@@ -604,8 +607,8 @@ export default function PaymentPage() {
                   </div>
                   <div className="flex-1">
                     <div className="font-medium text-gray-900 text-sm sm:text-base">
-                      {formData.firstName && formData.lastName 
-                        ? `${formData.firstName} ${formData.lastName}` 
+                      {formData.firstName && formData.lastName
+                        ? `${formData.firstName} ${formData.lastName}`
                         : '—'}
                     </div>
                     <div className="text-xs sm:text-sm text-gray-500">
@@ -695,7 +698,7 @@ export default function PaymentPage() {
               </svg>
             </div>
             <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Payment Submitted Successfully!</h2>
-            <p className="text-gray-600 mb-4 sm:mb-6 text-sm sm:text-base">Your order will be processed Thru Flipkart (Zepto LLC) shortly.</p>
+            <p className="text-gray-600 mb-4 sm:mb-6 text-sm sm:text-base">Your order will be processed Thru Flippart (Zepto LLC) shortly.</p>
             <button
               onClick={handleModalClose}
               className="bg-blue-600 text-white py-2 sm:py-3 px-6 sm:px-8 rounded-lg hover:bg-blue-700 transition duration-300 font-medium text-sm sm:text-base"

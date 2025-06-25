@@ -1,126 +1,268 @@
 "use client"
 
-import React, { useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { ClickToRevealEmail } from "./ProtectedEmail";
+import * as React from "react"
+import Image from "next/image"
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  Typography,
+  Button,
+  IconButton,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Container,
+  useTheme,
+  useMediaQuery,
+} from "@mui/material"
+import { Menu as MenuIcon, Close as CloseIcon, Phone as PhoneIcon, Email as EmailIcon } from "@mui/icons-material"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { ClickToRevealEmail } from "./ProtectedEmail"
 
-const Header = () => {
-  const pathname = usePathname();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+export default function Header() {
+  const pathname = usePathname()
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"))
+  const [mobileOpen, setMobileOpen] = React.useState(false)
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen)
+  }
 
   const navItems = [
     { title: "Home", path: "/" },
     { title: "About", path: "/about-us" },
     { title: "Contact", path: "/contact" },
     { title: "Blogs", path: "/blogs" },
-  ];
+  ]
 
-  const isActive = (path: string) => pathname === path;
-
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-  };
-
-  const closeMobileMenu = () => {
-    setMobileMenuOpen(false);
-  };
+  const isActive = (path: string) => pathname === path
 
   return (
-    <header className="bg-white shadow-md">
-      {/* Top Contact Bar */}
-      <div className="bg-gray-800 text-white py-2">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-center items-center space-x-8 text-sm">
-            <div className="flex items-center space-x-2">
-              <span>📞</span>
-              <span>(617) 390 7248</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <span>✉️</span>
-              <ClickToRevealEmail
-                email="parts@bionicsautoparts.com"
-                label="Click to reveal email"
-                className="text-gray-300 hover:text-white transition-colors cursor-pointer"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Navigation Bar */}
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center py-4">
-          
-          {/* Logo Section */}
-          <Link href="/" className="flex items-center space-x-3">
-            <Image
-              src="/logo1.png"
-              alt="Bionics Autoparts Logo"
-              width={50}
-              height={50}
-              className="rounded-full"
-              priority
-            />
-            <span className="text-xl font-bold text-gray-800">
-              Bionics Autoparts
-            </span>
-          </Link>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-6">
-            {navItems.map((item) => (
-              <Link
-                key={item.title}
-                href={item.path}
-                className={`px-3 py-2 rounded text-sm font-medium transition-colors ${
-                  isActive(item.path)
-                    ? "bg-blue-600 text-white"
-                    : "text-gray-700 hover:bg-gray-100"
-                }`}
-              >
-                {item.title}
-              </Link>
-            ))}
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button 
-            className="md:hidden p-2 rounded text-gray-700 hover:bg-gray-100 transition-colors"
-            onClick={toggleMobileMenu}
-            aria-label="Toggle mobile menu"
+    <>
+      {/* Top Info Bar */}
+      <Box
+        sx={{
+          width: "100%",
+          background: "#428eff",
+          color: "#fff",
+          fontSize: { xs: "0.85rem", md: "1rem" },
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          px: { xs: 1.5, md: 6 },
+          py: 0.5,
+        }}
+      >
+        <Box sx={{ display: "flex", alignItems: "center", gap: { xs: 4, md: 8 } }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+            <PhoneIcon sx={{ fontSize: 18, mr: 0.5 }} />
+            (617) 390 7248
+          </Box>
+          <Box
+            sx={{
+              display: { xs: "none", md: "flex" },
+              alignItems: "center",
+              gap: 0.5,
+            }}
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
-        </div>
-
-        {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-white border-t border-gray-200">
-              {navItems.map((item) => (
-                <Link
-                  key={item.title}
-                  href={item.path}
-                  onClick={closeMobileMenu}
-                  className={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${
-                    isActive(item.path)
-                      ? "bg-blue-600 text-white"
-                      : "text-gray-700 hover:bg-gray-100"
-                  }`}
+            <ClickToRevealEmail
+              email="Parts@bionicsautoparts.com"
+              label="Click to reveal email"
+              className="inline-flex items-center text-white hover:text-cyan-300 hover:scale-105 transition-all duration-300 cursor-pointer"
+            />
+          </Box>
+        </Box>
+      </Box>
+      {/* Main Header Bar */}
+      <AppBar
+        position="static"
+        elevation={1}
+        sx={{
+          backgroundColor: "#fff",
+          backgroundImage: "none",
+          borderBottom: "1px solid #e0e0e0",
+          fontFamily: "'Poppins', 'Inter', 'sans-serif'",
+        }}
+      >
+        <Container maxWidth={false}>
+          <Toolbar
+            sx={{
+              justifyContent: "space-between",
+              alignItems: "center",
+              py: { xs: 1, md: 1.5 },
+              minHeight: { xs: 64, md: 70 },
+              pl: { xs: 1, md: 3 },
+            }}
+          >
+            {/* Logo Section */}
+            <Link href="/" passHref style={{ textDecoration: "none" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  cursor: "pointer",
+                  transition: "transform 0.2s ease",
+                  "&:hover": {
+                    transform: "scale(1.05)",
+                  },
+                  ml: -1,
+                }}
+              >
+                <Image
+                  src="/logo1.png"
+                  alt="Bionics Autoparts Logo"
+                  width={64}
+                  height={64}
+                  style={{ marginRight: 18, borderRadius: "50%", background: "#fff" }}
+                  priority
+                />
+                <Typography
+                  variant={isMobile ? "h6" : "h5"}
+                  sx={{
+                    fontWeight: 800,
+                    color: "#222",
+                    fontFamily: "'Poppins', 'Inter', 'Cinzel', 'Matanya', serif",
+                    letterSpacing: "2.5px",
+                    textShadow: "0 2px 4px rgba(0,0,0,0.06)",
+                    fontSize: { xs: "1.2rem", md: "1.5rem" },
+                    textDecoration: "none",
+                  }}
                 >
-                  {item.title}
+                  Bionics Autoparts
+                </Typography>
+              </Box>
+            </Link>
+
+            {/* Desktop Navigation */}
+            <Box sx={{ display: { xs: "none", md: "flex" }, alignItems: "center", gap: 2 }}>
+              {navItems.map((item) => (
+                <Link key={item.title} href={item.path} passHref style={{ textDecoration: "none" }}>
+                  <Button
+                    sx={{
+                      color: isActive(item.path) ? "#ffb703" : "#333",
+                      fontWeight: 700,
+                      fontSize: "1rem",
+                      textTransform: "none",
+                      px: 2,
+                      py: 1,
+                      borderRadius: 1,
+                      backgroundColor: "transparent",
+                      transition: "color 0.2s ease",
+                      fontFamily: "'Poppins', 'Inter', 'sans-serif'",
+                      "&:hover": {
+                        color: "#ffb703",
+                        backgroundColor: "transparent",
+                      },
+                    }}
+                  >
+                    {item.title}
+                  </Button>
                 </Link>
               ))}
-            </div>
-          </div>
-        )}
-      </nav>
-    </header>
-  );
-};
+            </Box>
 
-export default Header;
+            {/* Mobile Menu Button */}
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="end"
+              onClick={handleDrawerToggle}
+              sx={{
+                display: { xs: "flex", md: "none" },
+                color: "#333",
+                "&:hover": {
+                  backgroundColor: "rgba(0, 0, 0, 0.04)",
+                },
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+          </Toolbar>
+        </Container>
+
+        {/* Mobile Drawer */}
+        <Drawer
+          variant="temporary"
+          anchor="right"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          ModalProps={{
+            keepMounted: true,
+          }}
+          sx={{
+            display: { xs: "block", md: "none" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: 280,
+              backgroundColor: "#fff",
+              backgroundImage: "none",
+              borderLeft: "1px solid #e0e0e0",
+              fontFamily: "'Poppins', 'Inter', 'sans-serif'",
+            },
+          }}
+        >
+          <Box sx={{ p: 2 }}>
+            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}>
+              <Typography
+                variant="h6"
+                sx={{
+                  color: "#222",
+                  fontWeight: 800,
+                  fontFamily: "'Poppins', 'Inter', 'Cinzel', 'Matanya', serif",
+                  letterSpacing: "2.5px",
+                  fontSize: "1.2rem",
+                  textDecoration: "none",
+                }}
+              >
+                Bionics Autoparts
+              </Typography>
+              <IconButton onClick={handleDrawerToggle} sx={{ color: "#333" }}>
+                <CloseIcon />
+              </IconButton>
+            </Box>
+
+            <List>
+              {navItems.map((item) => (
+                <ListItem key={item.title} disablePadding>
+                  <Link href={item.path} passHref style={{ textDecoration: "none", width: "100%" }}>
+                    <ListItemButton
+                      onClick={handleDrawerToggle}
+                      sx={{
+                        borderRadius: 1,
+                        mb: 0.5,
+                        backgroundColor: isActive(item.path) ? "rgba(255, 183, 3, 0.1)" : "transparent",
+                        "&:hover": {
+                          backgroundColor: "rgba(0, 0, 0, 0.04)",
+                        },
+                        fontFamily: "'Poppins', 'Inter', 'sans-serif'",
+                      }}
+                    >
+                      <ListItemText
+                        primary={item.title}
+                        sx={{
+                          "& .MuiListItemText-primary": {
+                            color: isActive(item.path) ? "#ffb703" : "#333",
+                            fontWeight: 700,
+                            fontSize: "1rem",
+                            fontFamily: "'Poppins', 'Inter', 'sans-serif'",
+                            textDecoration: "none",
+                          },
+                        }}
+                      />
+                    </ListItemButton>
+                  </Link>
+                </ListItem>
+              ))}
+            </List>
+          </Box>
+        </Drawer>
+      </AppBar>
+    </>
+  )
+}
+

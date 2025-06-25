@@ -6,7 +6,7 @@ import { ClickToRevealEmail } from "./ProtectedEmail";
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-800 text-white">
+    <footer className="bg-[#428eff] text-white">
       {/* Trust/Payment/Delivery Image Section */}
       <div className="bg-gray-100 py-4 md:py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -19,11 +19,11 @@ export default function Footer() {
           />
         </div>
       </div>
-      
+
       {/* Main Footer Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-12">
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-6 lg:gap-8">
-          
+
           {/* Company Info */}
           <div className="col-span-2 lg:col-span-2">
             <div className="flex items-center mb-4 md:mb-6">
@@ -40,12 +40,12 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-gray-300 mb-4 md:mb-6 leading-relaxed text-sm md:text-base">
-              Your trusted partner for premium automotive parts and accessories. 
-              We provide reliable, high-quality components to keep your vehicle 
+              Your trusted partner for premium automotive parts and accessories.
+              We provide reliable, high-quality components to keep your vehicle
               running at peak performance.
             </p>
             <div className="flex space-x-4">
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" 
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
                  className="text-gray-300 hover:text-white transition-colors">
                 <FaFacebook className="w-4 h-4 md:w-5 md:h-5" />
               </a>
@@ -99,7 +99,7 @@ export default function Footer() {
                 <p className="text-gray-300 text-xs md:text-sm mb-1">Phone</p>
                 <p className="text-white text-sm md:text-base">+1 617-390-7248</p>
               </div>
-              
+
               <div>
                 <p className="text-gray-300 text-xs md:text-sm mb-1">Address</p>
                 <p className="text-white text-xs md:text-sm">

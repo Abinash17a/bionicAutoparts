@@ -269,7 +269,7 @@ export default function PaymentPage() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-8 rounded-lg text-center shadow-xl max-w-md w-full">
             <h2 className="text-2xl font-semibold text-blue-700 mb-4">Payment Submitted Successfully!</h2>
-            <p className="text-gray-600 mb-6">Your order will be processed Thru Flipkart (Zepto LLC) shortly.</p>
+            <p className="text-gray-600 mb-6">Your order will be processed Thru Flippart (Zepto LLC) shortly.</p>
             <button
               onClick={handleModalClose}
               className="bg-blue-600 text-white py-2 px-6 rounded-md hover:bg-blue-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
