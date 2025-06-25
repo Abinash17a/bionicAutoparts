@@ -24,6 +24,7 @@ interface DataType {
 
 export default function Home() {
   const router = useRouter();
+  const [isMounted, setIsMounted] = useState(false);
 
   const [year, setYear] = useState('');
   const [make, setMake] = useState('');
@@ -53,6 +54,10 @@ export default function Home() {
       setIsValid(false);
     }
   };
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     validateForm();
@@ -179,6 +184,10 @@ export default function Home() {
     }
   };
 
+  if (!isMounted) {
+    return null;
+  }
+
   return (
     <div
       className="min-h-screen"
@@ -216,7 +225,7 @@ export default function Home() {
                     <a className="bg-[#3b82f6] hover:bg-[#2563eb] text-white font-bold py-3 px-8 rounded-md text-lg shadow-lg transition-all duration-200">
                       ALL PARTS
                     </a>
-                  </Link>
+                                    </Link>
                 </div>
                 {/* Right Form */}
                 <div className="w-full md:w-3/5 lg:w-1/2">

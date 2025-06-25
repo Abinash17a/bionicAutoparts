@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { ObfuscatedEmail } from "../components/ProtectedEmail";
 
 export default function Refunds() {
   return (
@@ -13,7 +14,7 @@ export default function Refunds() {
             As a part of our money-back guarantee, we want you to be completely satisfied with your purchase. If you wish to return a part, please follow the return policy guidelines below.
           </p>
           <p className="text-xl mb-2">
-            Email <a href="mailto:parts@bionicsautoparts.com" className="text-blue-600 underline">parts@bionicsautoparts.com</a> or call <a href="tel:16173907248" className="text-blue-600 underline">(617) 390-7248</a> Monday through Friday, 8:00 a.m. to 5:00 p.m. Eastern Time to request a return authorization (RA) number. We cannot process returns that do not include an RA number.
+            Email <ObfuscatedEmail className="text-blue-600 underline">parts@bionicsautoparts.com</ObfuscatedEmail> or call <a href="tel:16173907248" className="text-blue-600 underline">(617) 390-7248</a> Monday through Friday, 8:00 a.m. to 5:00 p.m. Eastern Time to request a return authorization (RA) number. We cannot process returns that do not include an RA number.
           </p>
         </section>
 

@@ -72,7 +72,7 @@ export const ModalSection: React.FC<ModalSectionProps> = ({ modalVisible, search
           <CloseIcon />
         </IconButton>
       </DialogTitle>
-      <DialogContent sx={{ p: { xs: 2, sm: 4 }, maxHeight: { xs: '70vh', sm: '70vh', md: '75vh' }, overflowY: 'auto' }}>
+      <DialogContent>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2} direction="column">
             <Grid item>
@@ -90,13 +90,23 @@ export const ModalSection: React.FC<ModalSectionProps> = ({ modalVisible, search
             <Grid item>
               <TextField
                 label="Contact Number"
-                value={contact}
-                onChange={(e) => setContact(e.target.value)}
+                value={contact.startsWith('+1') ? contact : `+1${contact}`}
+                onChange={(e) => {
+                  let value = e.target.value;
+                  // Remove +1 prefix for processing
+                  if (value.startsWith('+1')) {
+                    value = value.substring(2);
+                  }
+                  // Only allow digits and limit to 10 digits
+                  value = value.replace(/\D/g, '').substring(0, 10);
+                  setContact(value);
+                }}
                 fullWidth
                 required
                 variant="outlined"
                 type="tel"
                 autoComplete="tel"
+                placeholder="+1 (555) 123-4567"
                 InputLabelProps={{ sx: { fontWeight: 600 } }}
               />
             </Grid>

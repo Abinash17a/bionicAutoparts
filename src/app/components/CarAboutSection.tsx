@@ -1,7 +1,6 @@
 "use client"
 
-import { useState, useRef } from "react"
-import { motion, useInView } from "framer-motion"
+import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import {
@@ -18,6 +17,7 @@ import {
   FaSearch,
   FaChevronRight,
 } from "react-icons/fa"
+import { ClickToRevealEmail } from "./ProtectedEmail"
 
 // Image data
 const carPartsImages = [
@@ -65,11 +65,11 @@ const staticContent = [
   },
   {
     icon: FaShippingFast,
-    title: "Shipping & Delivery",
+    title: "USA Nationwide Shipping",
     content: [
       {
         icon: FaTruck,
-        text: "We deliver worldwide. Some restrictions apply, and international shipping may vary based on location.",
+        text: "We deliver across all 50 states in the USA. Fast and reliable shipping to every corner of the country.",
       },
       {
         icon: FaCalendarAlt,
@@ -83,7 +83,15 @@ const staticContent = [
     content: [
       {
         icon: FaPhoneAlt,
-        text: "Contact us at +1 617-390-7248, email auth@bionicsautoparts.com, or chat live for assistance with returns.",
+        text: "Contact us at +1 617-390-7248, email ",
+        emailComponent: (
+          <ClickToRevealEmail
+            email="Bionicsautoparts@usa.com"
+            label="Click to reveal email"
+            className="inline text-blue-600 hover:text-blue-800 transition-colors"
+          />
+        ),
+        textAfter: ", or chat live for assistance with returns.",
       },
       {
         icon: FaClock,
@@ -95,46 +103,28 @@ const staticContent = [
 
 export const CarAboutSection = () => {
   const [hoveredImage, setHoveredImage] = useState<number | null>(null)
-  const sectionRef = useRef(null)
-  const isInView = useInView(sectionRef, { once: true, amount: 0.2 })
 
   return (
-    <motion.div
-      ref={sectionRef}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: isInView ? 1 : 0 }}
-      transition={{ duration: 0.6 }}
-      className="py-12 px-4 sm:px-6 lg:px-8 bg-gray-50"
-    >
+    <div className="py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
       <div className="max-w-full mx-auto px-12">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 20 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
+        <div className="text-center mb-12">
           <h1 className="text-4xl sm:text-5xl font-bold text-gray-800 mb-4">
             Premium Auto Parts
           </h1>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Quality components for your vehicle with a commitment to excellence.
           </p>
-        </motion.div>
+        </div>
 
         {/* Main grid */}
         <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
           {/* Left column - Static content */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: isInView ? 1 : 0, x: isInView ? 0 : -20 }}
-            transition={{ duration: 0.6 }}
-            className="xl:col-span-5 space-y-6"
-          >
+          <div className="xl:col-span-5 space-y-6">
             {staticContent.map((section, index) => (
               <div
                 key={index}
-                className="bg1-white rounded-lg shadow-md border border-gray-100 p-6"
+                className="bg-white rounded-lg shadow-md border border-gray-100 p-6"
               >
                 <div className="flex items-center mb-4">
                   <div className="bg-blue-500 p-3 rounded-lg mr-4 text-white">
@@ -148,7 +138,11 @@ export const CarAboutSection = () => {
                       <div className="text-blue-600 mt-1 mr-3">
                         <item.icon size={18} />
                       </div>
-                      <p className="text-gray-700 text-base">{item.text}</p>
+                      <p className="text-gray-700 text-base">
+                        {item.text}
+                        {item.emailComponent && item.emailComponent}
+                        {item.textAfter && item.textAfter}
+                      </p>
                     </div>
                   ))}
                 </div>
@@ -156,11 +150,7 @@ export const CarAboutSection = () => {
             ))}
 
             {/* CTA Button */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 20 }}
-              transition={{ duration: 0.6 }}
-            >
+            <div>
               <a
                 href="/files/warranty.pdf"
                 className="inline-flex items-center bg-blue-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-600 transition"
@@ -170,16 +160,11 @@ export const CarAboutSection = () => {
                 <FaFilePdf className="mr-2 text-lg" />
                 Terms and Conditions
               </a>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
 
           {/* Right column - Images and Stats */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: isInView ? 1 : 0, x: isInView ? 0 : 20 }}
-            transition={{ duration: 0.6 }}
-            className="xl:col-span-7"
-          >
+          <div className="xl:col-span-7">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {carPartsImages.map((image, index) => (
                 <div
@@ -189,13 +174,13 @@ export const CarAboutSection = () => {
                   onMouseLeave={() => setHoveredImage(null)}
                 >
                   <Image
-                    src={image.src || "/placeholder.svg"}
+                    src={image.src || "/logo1.png"}
                     alt={image.title}
                     fill
                     className="object-cover"
                   />
                   <div
-                    className={`absolute inset-0 bg-gray-900/70 bg1-white flex flex-col justify-end p-6 transition-opacity duration-300 ${
+                    className={`absolute inset-0 bg-gray-900/70 flex flex-col justify-end p-6 transition-opacity duration-300 ${
                       hoveredImage === index ? "opacity-100" : "opacity-0"
                     }`}
                   >
@@ -212,12 +197,7 @@ export const CarAboutSection = () => {
             </div>
 
             {/* Stats */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 20 }}
-              transition={{ duration: 0.6 }}
-              className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8"
-            >
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8">
               {[
                 { label: "Parts Available", value: "10,000+" },
                 { label: "Brands", value: "30+" },
@@ -232,11 +212,11 @@ export const CarAboutSection = () => {
                   <p className="text-sm text-gray-600">{stat.label}</p>
                 </div>
               ))}
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   )
 }
 

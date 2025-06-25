@@ -1,113 +1,84 @@
 "use client"
 
-import { useRef, useEffect, useState } from "react"
-import { motion } from "framer-motion"
-import { Quote, Star, ChevronRight, ChevronLeft } from "lucide-react"
+import { useState, useRef } from "react"
+import { motion, useInView } from "framer-motion"
+import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react"
 
 export const TestimonialsSection = () => {
   const [activeIndex, setActiveIndex] = useState(0)
-  const [isVisible, setIsVisible] = useState(false)
-  const [isDesktop, setIsDesktop] = useState(false)
-  const sectionRef = useRef<HTMLDivElement>(null)
-  const [isMobile, setIsMobile] = useState(false)
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768)
-    }
-
-    const checkScreenSize = () => {
-      setIsDesktop(window.innerWidth >= 1024) // lg breakpoint
-      console.log(isDesktop)
-    }
-
-    checkMobile()
-    checkScreenSize()
-    window.addEventListener("resize", () => {
-      checkMobile()
-      checkScreenSize()
-    })
-
-    return () => window.removeEventListener("resize", () => {
-      checkMobile()
-      checkScreenSize()
-    })
-  }, [])
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-          observer.disconnect()
-        }
-      },
-      { threshold: 0.1 },
-    )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
-    return () => observer.disconnect()
-  }, [])
-
-  useEffect(() => {
-    if (!isMobile) return
-
-    const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % testimonials.length)
-    }, 5000)
-
-    return () => clearInterval(interval)
-  }, [isMobile])
+  const sectionRef = useRef(null)
+  const isVisible = useInView(sectionRef, { once: true, amount: 0.2 })
 
   const testimonials = [
     {
-      text: "I recently purchased a part for my project, and I couldn't be more satisfied. The quality is outstanding, and it fits perfectly. The ordering process was smooth, and it arrived on time. Highly recommend this part to anyone in need!",
-      name: "Jay",
-      car: "Ford F350",
+      name: "Sarah Mitchell",
+      car: "2018 Honda Civic",
+      text: "Found the exact brake pads I needed at an unbeatable price. The quality exceeded my expectations and they arrived faster than promised. Will definitely be ordering again!",
       rating: 5,
-      initials: "JD",
-      color: "bg-gradient-to-br from-blue-500 to-cyan-400",
+      initials: "SM",
+      color: "bg-blue-500"
     },
     {
-      text: "I found the exact part I needed in no time! The service was quick and reliable, making my repair process so much easier.",
-      name: "Brenda",
-      car: "Dodge Charger",
+      name: "Mike Rodriguez",
+      car: "2015 Ford F-150",
+      text: "Their engine parts selection is incredible. I was able to restore my truck to peak performance with genuine OEM parts at fraction of dealer prices. Excellent customer service too.",
       rating: 5,
-      initials: "BM",
-      color: "bg-gradient-to-br from-purple-500 to-pink-500",
+      initials: "MR",
+      color: "bg-green-500"
     },
     {
-      text: "An excellent service when it comes to 'Used car spare parts'.",
-      name: "Damien",
-      car: "Chevy S10",
-      rating: 4,
-      initials: "DK",
-      color: "bg-gradient-to-br from-amber-500 to-orange-500",
+      name: "Jennifer Chen",
+      car: "2020 Toyota Camry",
+      text: "Quick delivery and perfect fit! The headlight assembly was exactly what I needed. The packaging was secure and the installation was straightforward. Highly recommend!",
+      rating: 5,
+      initials: "JC",
+      color: "bg-purple-500"
     },
+    {
+      name: "David Thompson",
+      car: "2017 BMW 3 Series",
+      text: "Premium parts at affordable prices. The air filter and oil filter combo saved me money compared to local shops. Quality is top-notch and shipping was lightning fast.",
+      rating: 5,
+      initials: "DT",
+      color: "bg-red-500"
+    },
+    {
+      name: "Lisa Wang",
+      car: "2019 Nissan Altima",
+      text: "Amazing experience! The suspension components transformed my car's ride quality. Professional packaging and detailed installation guides made the process smooth.",
+      rating: 5,
+      initials: "LW",
+      color: "bg-yellow-500"
+    },
+    {
+      name: "Robert Johnson",
+      car: "2016 Chevrolet Silverado",
+      text: "Best place for truck parts online. Found rare transmission components that local dealers couldn't source. Fair pricing and genuine parts make this my go-to supplier.",
+      rating: 5,
+      initials: "RJ",
+      color: "bg-indigo-500"
+    }
   ]
 
-  const nextTestimonial = () => {
-    setActiveIndex((prev) => (prev + 1) % testimonials.length)
-  }
-
-  const prevTestimonial = () => {
-    setActiveIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length)
-  }
-
   const cardVariants = {
-    hidden: { opacity: 0, y: 50 },
+    hidden: { opacity: 0, y: 20 },
     visible: (i: number) => ({
       opacity: 1,
       y: 0,
       transition: {
-        delay: i * 0.2,
-        duration: 0.5,
-        ease: "easeOut",
-      },
-    }),
+        delay: i * 0.1,
+        duration: 0.6,
+        ease: "easeOut"
+      }
+    })
+  }
+
+  const nextTestimonial = () => {
+    setActiveIndex((prevIndex) => (prevIndex + 1) % testimonials.length)
+  }
+
+  const prevTestimonial = () => {
+    setActiveIndex((prevIndex) => (prevIndex - 1 + testimonials.length) % testimonials.length)
   }
 
   return (
@@ -129,9 +100,9 @@ export const TestimonialsSection = () => {
         </p>
       </motion.div>
 
-      {/* Desktop View */}
-      <div className="hidden md:block">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-full mx-auto lg:px-48 sm:px-12 md:px-0 ">
+      {/* Desktop/Tablet View */}
+      <div className="hidden sm:block">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 max-w-full mx-auto lg:px-48 sm:px-12 md:px-0 ">
           {testimonials.map((testimonial, index) => (
             <motion.div
               key={index}
@@ -176,7 +147,7 @@ export const TestimonialsSection = () => {
       </div>
 
       {/* Mobile View - Carousel */}
-      <div className="md:hidden">
+      <div className="sm:hidden">
         <div className="relative px-4">
           <div className="overflow-hidden">
             <motion.div

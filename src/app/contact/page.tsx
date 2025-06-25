@@ -17,6 +17,7 @@ import {
   Users,
   Star,
 } from "lucide-react"
+import { ClickToRevealEmail } from "../components/ProtectedEmail"
 
 export default function Contact() {
   const router = useRouter()
@@ -271,13 +272,27 @@ export default function Contact() {
                 <div className="space-y-3">
                   {method.items.map((item, itemIndex) => (
                     <div key={itemIndex} className="p-3 bg-blue-50 rounded-lg">
-                      <p className="text-blue-600 text-sm">{item.label}</p>
-                      <a
-                        href={item.type === "email" ? `mailto:${item.value}` : `tel:${item.value}`}
-                        className="text-blue-800 hover:text-blue-600 font-medium transition-colors"
-                      >
-                        {item.value}
-                      </a>
+                      {item.type === "email" ? (
+                        <div>
+                          <p className="text-blue-600 text-sm mb-2">{item.label}</p>
+                          <ClickToRevealEmail
+                            email={item.value}
+                            label="Click to reveal email"
+                            className="w-full"
+                          />
+                        </div>
+                      ) : (
+                        <>
+                          <p className="text-blue-600 text-sm">{item.label}</p>
+                          <a
+                            href={`tel:${item.value}`}
+                            className="text-blue-800 hover:text-blue-600 font-medium transition-colors flex items-center gap-2"
+                          >
+                            <Phone className="w-4 h-4" />
+                            {item.value}
+                          </a>
+                        </>
+                      )}
                     </div>
                   ))}
                 </div>

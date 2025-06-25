@@ -2,12 +2,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Footer from "./components/Footer";
-import Navbar from "./components/Navbar";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import CarCompanySlider from "./components/Companyslider";
 import Script from "next/script";
-import Header from './components/Topheader';
+import Header from './components/Header';
 import GoogleTagManager from "./components/GoogleTagManager";
 
 export const metadata: Metadata = {
@@ -47,7 +46,6 @@ export default function RootLayout({
       <body className="flex flex-col min-h-screen font-sans">
         <GoogleTagManager />
         <Header />
-        <Navbar />
         <main className="flex-grow">{children}</main>
         <CarCompanySlider />
         <Footer />
