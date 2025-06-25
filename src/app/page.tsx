@@ -24,6 +24,7 @@ interface DataType {
 
 export default function Home() {
   const router = useRouter();
+  const [isMounted, setIsMounted] = useState(false);
 
   const [year, setYear] = useState('');
   const [make, setMake] = useState('');
@@ -53,6 +54,10 @@ export default function Home() {
       setIsValid(false);
     }
   };
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     validateForm();
@@ -178,6 +183,10 @@ export default function Home() {
       toast.error('Error submitting the form. Check console for details.');
     }
   };
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <div

@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import React, { useState } from "react"
+import React, { useState, ReactNode } from "react"
 import {
   Box,
   Paper,
@@ -42,6 +42,8 @@ const makeLogos: Record<string, string> = {
   Aston_Martin: "/car-logos/aston-martin.png",
   Audi: "/car-logos/audi.png",
   Austin: "/car-logos/austin.png",
+  AutoCar: "/car-logos/autocar.png",
+  Avanti: "/car-logos/avanti.png",
   BMW: "/car-logos/bmw.png",
   Bentley: "/car-logos/bentley.png",
   Buick: "/car-logos/buick.png",
@@ -51,6 +53,7 @@ const makeLogos: Record<string, string> = {
   Citroen: "/car-logos/citroen.png",
   Daewoo: "/car-logos/daewoo.png",
   Daihatsu: "/car-logos/daihatsu.png",
+  Delorean: "/car-logos/delorean.png",
   Dodge: "/car-logos/dodge.png",
   Eagle: "/car-logos/eagle.png",
   Ferrari: "/car-logos/ferrari.png",
@@ -102,6 +105,9 @@ const makeLogos: Record<string, string> = {
   Volkswagen: "/car-logos/volkswagen.png",
   Volvo: "/car-logos/volvo.png",
   Western: "/car-logos/western-star.png",
+  Willys: "/car-logos/jeep.png", // Using Jeep as fallback (Willys was acquired by Jeep)
+  Winnebago: "/car-logos/winnebago.png",
+  Yugo: "/car-logos/yugo.png",
 };
 
 export const HomeForm: React.FC<HomeFormProps> = ({
@@ -210,8 +216,16 @@ export const HomeForm: React.FC<HomeFormProps> = ({
               fullWidth
               value={year}
               onChange={(e) => setYear(e.target.value)}
-              placeholder="Select year"
               size="small"
+              SelectProps={{
+                displayEmpty: true,
+                renderValue: (selected: unknown): ReactNode => {
+                  if (!selected || selected === '') {
+                    return <span style={{ color: '#000000' }}>Choose year</span>;
+                  }
+                  return selected as string;
+                }
+              }}
               sx={{
                 "& .MuiOutlinedInput-root": {
                   borderRadius: 2,
@@ -223,11 +237,11 @@ export const HomeForm: React.FC<HomeFormProps> = ({
                     borderColor: "#3b82f6",
                     borderWidth: "1px",
                   },
-                },
+                }
               }}
             >
-              <MenuItem value="">
-                <em>Choose year</em>
+              <MenuItem value="" disabled sx={{ color: "#000000" }}>
+                Choose year
               </MenuItem>
               {initialData.years.map((y) => (
                 <MenuItem key={y} value={y}>
@@ -265,9 +279,17 @@ export const HomeForm: React.FC<HomeFormProps> = ({
                 setMake(e.target.value)
                 setModel('')
               }}
-              placeholder="Select make"
               size="small"
               disabled={!year}
+              SelectProps={{
+                displayEmpty: true,
+                renderValue: (selected: unknown): ReactNode => {
+                  if (!selected || selected === '') {
+                    return <span style={{ color: '#000000' }}>Choose make</span>;
+                  }
+                  return selected as string;
+                }
+              }}
               sx={{
                 flex: 1,
                 "& .MuiOutlinedInput-root": {
@@ -280,11 +302,11 @@ export const HomeForm: React.FC<HomeFormProps> = ({
                     borderColor: "#3b82f6",
                     borderWidth: "1px",
                   } : {},
-                },
+                }
               }}
             >
-              <MenuItem value="">
-                <em>Choose make</em>
+              <MenuItem value="" disabled sx={{ color: "#000000" }}>
+                Choose make
               </MenuItem>
               {initialData.makes.map((m) => (
                 <MenuItem key={m} value={m}>
@@ -294,23 +316,29 @@ export const HomeForm: React.FC<HomeFormProps> = ({
             </TextField>
             {/* Selected Make Logo on the right */}
             {make && makeLogos[make] && (
-              <Avatar
+              <Box
                 sx={{ 
-                  width: { xs: 50, sm: 60 }, 
-                  height: { xs: 50, sm: 60 },
-                  backgroundColor: 'white',
-                  p: { xs: 0.75, sm: 1 },
-                  border: '2px solid rgba(255, 255, 255, 0.4)',
-                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
-                  '& img': {
-                    objectFit: 'contain',
-                    width: '100%',
-                    height: '100%'
-                  }
+                  width: { xs: 70, sm: 85 }, 
+                  height: { xs: 70, sm: 85 },
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  p: { xs: 1, sm: 1.25 }
                 }}
-                src={makeLogos[make]}
-                alt={make}
-              />
+              >
+                <img
+                  src={makeLogos[make]}
+                  alt={make}
+                  style={{
+                    maxWidth: '100%',
+                    maxHeight: '100%',
+                    width: 'auto',
+                    height: 'auto',
+                    objectFit: 'contain',
+                    filter: 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2))'
+                  }}
+                />
+              </Box>
             )}
             </Box>
             {!year && (
@@ -344,9 +372,17 @@ export const HomeForm: React.FC<HomeFormProps> = ({
               fullWidth
               value={model}
               onChange={(e) => setModel(e.target.value)}
-              placeholder="Select model"
               size="small"
               disabled={!make}
+              SelectProps={{
+                displayEmpty: true,
+                renderValue: (selected: unknown): ReactNode => {
+                  if (!selected || selected === '') {
+                    return <span style={{ color: '#000000' }}>Choose model</span>;
+                  }
+                  return selected as string;
+                }
+              }}
               sx={{
                 "& .MuiOutlinedInput-root": {
                   borderRadius: 2,
@@ -358,11 +394,11 @@ export const HomeForm: React.FC<HomeFormProps> = ({
                     borderColor: "#3b82f6",
                     borderWidth: "1px",
                   } : {},
-                },
+                }
               }}
             >
-              <MenuItem value="">
-                <em>Choose model</em>
+              <MenuItem value="" disabled sx={{ color: "#000000" }}>
+                Choose model
               </MenuItem>
               {make &&
                 initialData.models[make]?.map((mod) => (
@@ -402,8 +438,16 @@ export const HomeForm: React.FC<HomeFormProps> = ({
               fullWidth
               value={part}
               onChange={(e) => setPart(e.target.value)}
-              placeholder="Select part"
               size="small"
+              SelectProps={{
+                displayEmpty: true,
+                renderValue: (selected: unknown): ReactNode => {
+                  if (!selected || selected === '') {
+                    return <span style={{ color: '#000000' }}>Choose part</span>;
+                  }
+                  return selected as string;
+                }
+              }}
               sx={{
                 "& .MuiOutlinedInput-root": {
                   borderRadius: 2,
@@ -415,11 +459,11 @@ export const HomeForm: React.FC<HomeFormProps> = ({
                     borderColor: "#3b82f6",
                     borderWidth: "1px",
                   },
-                },
+                }
               }}
             >
-              <MenuItem value="">
-                <em>Choose part</em>
+              <MenuItem value="" disabled sx={{ color: "#000000" }}>
+                Choose part
               </MenuItem>
               {initialData.parts.map((p) => (
                 <MenuItem key={p} value={p}>
@@ -436,7 +480,7 @@ export const HomeForm: React.FC<HomeFormProps> = ({
          <Button
            fullWidth
            variant="contained"
-           size={window?.innerWidth < 600 ? "medium" : "large"}
+           size="large"
            onClick={handleSearch}
            disabled={!year || !make || !model || !part}
            startIcon={<Search sx={{ fontSize: { xs: 18, sm: 20 } }} />}
@@ -467,7 +511,7 @@ export const HomeForm: React.FC<HomeFormProps> = ({
             },
           }}
         >
-          {(year && make && model && part) ? "Search Parts" : "Complete all fields"}
+          Complete all fields to Search Parts
         </Button>
 
                  {/* Footer */}
@@ -479,7 +523,7 @@ export const HomeForm: React.FC<HomeFormProps> = ({
            mt={{ xs: 1, sm: 1.5 }}
            sx={{ fontSize: { xs: "0.7rem", sm: "0.75rem" } }}
          >
-           ✓ Quality parts • ✓ Fast shipping • ✓ 30-day warranty
+           ✓ Quality parts • ✓ Fast shipping • ✓ 6 Month warranty
          </Typography>
     </Box>
   )

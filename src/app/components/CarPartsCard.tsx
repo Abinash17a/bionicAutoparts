@@ -77,20 +77,20 @@ export const CarPartsCardsSection = () => {
         </p>
       </motion.div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 max-w-full mx-auto px-4 sm:px-8 md:px-0 lg:px-48">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 max-w-full mx-auto px-4 sm:px-8 md:px-4 lg:px-48">
         {cardData.map((card, index) => (
-          <Link href="/parts" passHref legacyBehavior>
+          <Link key={card.title} href="/parts" passHref legacyBehavior>
             <motion.a
-              key={card.title}
               custom={index}
               initial="hidden"
               animate={isVisible ? "visible" : "hidden"}
               variants={cardVariants}
               whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}
-              className="relative bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 block focus:outline-none"
+              className="relative bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 block focus:outline-none"
               tabIndex={0}
+              style={{ transformOrigin: 'center center' }}
             >
-              <div className="relative h-48 sm:h-56 w-100">
+              <div className="relative h-48 sm:h-56 w-100 overflow-hidden rounded-t-lg">
                 <Image
                   src={card.image}
                   alt={card.title}
@@ -102,9 +102,11 @@ export const CarPartsCardsSection = () => {
                   {card.icon}
                 </div>
               </div>
-              <div className="p-5">
-                <h3 className="text-lg font-semibold text-gray-900">{card.title}</h3>
-                <p className="mt-2 text-gray-600 text-sm">{card.description}</p>
+              <div className="p-5 min-h-[120px] flex flex-col justify-between">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 leading-tight mb-2">{card.title}</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">{card.description}</p>
+                </div>
                 <div className="mt-4 flex items-center text-sm font-medium text-blue-700 hover:text-blue-900">
                   Explore
                   <ChevronRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
