@@ -32,7 +32,7 @@ export default function AboutUs() {
     <div className="min-h-screen bg-white">
       {/* Hero Section with Animated Background */}
       <section className="relative overflow-hidden bg-blue-900 text-white">
-        <div className="absolute inset-0 bg-[url('/placeholder.svg?height=800&width=1200')] opacity-10 bg-cover bg-center"></div>
+        <div className="absolute inset-0 bg-[url('/mainpagebg.jpg')] opacity-10 bg-cover bg-center"></div>
 
         <div className="relative container mx-auto px-4 py-24">
           <div className="max-w-4xl mx-auto text-center">

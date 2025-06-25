@@ -18,6 +18,7 @@ import {
   FaSearch,
   FaChevronRight,
 } from "react-icons/fa"
+import { ClickToRevealEmail } from "./ProtectedEmail"
 
 // Image data
 const carPartsImages = [
@@ -65,11 +66,11 @@ const staticContent = [
   },
   {
     icon: FaShippingFast,
-    title: "Shipping & Delivery",
+    title: "USA Nationwide Shipping",
     content: [
       {
         icon: FaTruck,
-        text: "We deliver worldwide. Some restrictions apply, and international shipping may vary based on location.",
+        text: "We deliver across all 50 states in the USA. Fast and reliable shipping to every corner of the country.",
       },
       {
         icon: FaCalendarAlt,
@@ -83,7 +84,15 @@ const staticContent = [
     content: [
       {
         icon: FaPhoneAlt,
-        text: "Contact us at +1 617-390-7248, email auth@bionicsautoparts.com, or chat live for assistance with returns.",
+        text: "Contact us at +1 617-390-7248, email ",
+        emailComponent: (
+          <ClickToRevealEmail
+            email="Bionicsautoparts@usa.com"
+            label="Click to reveal email"
+            className="inline text-blue-600 hover:text-blue-800 transition-colors"
+          />
+        ),
+        textAfter: ", or chat live for assistance with returns.",
       },
       {
         icon: FaClock,
@@ -134,7 +143,7 @@ export const CarAboutSection = () => {
             {staticContent.map((section, index) => (
               <div
                 key={index}
-                className="bg1-white rounded-lg shadow-md border border-gray-100 p-6"
+                className="bg-white rounded-lg shadow-md border border-gray-100 p-6"
               >
                 <div className="flex items-center mb-4">
                   <div className="bg-blue-500 p-3 rounded-lg mr-4 text-white">
@@ -148,7 +157,11 @@ export const CarAboutSection = () => {
                       <div className="text-blue-600 mt-1 mr-3">
                         <item.icon size={18} />
                       </div>
-                      <p className="text-gray-700 text-base">{item.text}</p>
+                      <p className="text-gray-700 text-base">
+                        {item.text}
+                        {item.emailComponent && item.emailComponent}
+                        {item.textAfter && item.textAfter}
+                      </p>
                     </div>
                   ))}
                 </div>
@@ -189,13 +202,13 @@ export const CarAboutSection = () => {
                   onMouseLeave={() => setHoveredImage(null)}
                 >
                   <Image
-                    src={image.src || "/placeholder.svg"}
+                    src={image.src || "/logo1.png"}
                     alt={image.title}
                     fill
                     className="object-cover"
                   />
                   <div
-                    className={`absolute inset-0 bg-gray-900/70 bg1-white flex flex-col justify-end p-6 transition-opacity duration-300 ${
+                    className={`absolute inset-0 bg-gray-900/70 flex flex-col justify-end p-6 transition-opacity duration-300 ${
                       hoveredImage === index ? "opacity-100" : "opacity-0"
                     }`}
                   >
