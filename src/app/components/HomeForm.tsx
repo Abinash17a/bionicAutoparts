@@ -1,20 +1,17 @@
 "use client"
 
-import Image from "next/image"
-import React, { useState, ReactNode } from "react"
+import React, { ReactNode } from "react"
 import {
   Box,
-  Paper,
   Typography,
   TextField,
   MenuItem,
   Button,
   Stack,
   Chip,
-  Avatar,
   Divider,
 } from "@mui/material"
-import { Search, DirectionsCar, Build, CalendarToday, Category, CheckCircle } from "@mui/icons-material"
+import { Search, DirectionsCar, Build, CalendarToday, Category } from "@mui/icons-material"
 
 interface HomeFormProps {
   year: string
@@ -135,9 +132,9 @@ export const HomeForm: React.FC<HomeFormProps> = ({
         backdropFilter: "blur(10px)",
         borderRadius: { xs: 3, sm: 4 },
         border: "1px solid rgba(255, 255, 255, 0.1)",
-        boxShadow: { 
-          xs: "0 4px 20px rgba(0, 0, 0, 0.25)", 
-          sm: "0 8px 32px rgba(0, 0, 0, 0.3)" 
+        boxShadow: {
+          xs: "0 4px 20px rgba(0, 0, 0, 0.25)",
+          sm: "0 8px 32px rgba(0, 0, 0, 0.3)"
         },
       }}
     >
@@ -163,10 +160,10 @@ export const HomeForm: React.FC<HomeFormProps> = ({
         </Box>
 
         {/* Progress Steps */}
-        <Stack 
-          direction="row" 
-          spacing={{ xs: 0.5, sm: 1 }} 
-          mb={{ xs: 1.5, sm: 2 }} 
+        <Stack
+          direction="row"
+          spacing={{ xs: 0.5, sm: 1 }}
+          mb={{ xs: 1.5, sm: 2 }}
           justifyContent="center"
         >
           {[
@@ -196,18 +193,18 @@ export const HomeForm: React.FC<HomeFormProps> = ({
         <Stack spacing={{ xs: 1, sm: 1.5 }}>
           {/* Year Field */}
           <Box>
-            <Typography 
-              variant="body2" 
-              fontWeight={500} 
-              color="#ffffff" 
+            <Typography
+              variant="body2"
+              fontWeight={500}
+              color="#ffffff"
               mb={{ xs: 0.5, sm: 1 }}
               sx={{ fontSize: { xs: "0.8rem", sm: "0.875rem" } }}
             >
-              <CalendarToday sx={{ 
-                fontSize: { xs: 14, sm: 16 }, 
-                mr: 1, 
-                verticalAlign: "middle", 
-                color: "#e2e8f0" 
+              <CalendarToday sx={{
+                fontSize: { xs: 14, sm: 16 },
+                mr: 1,
+                verticalAlign: "middle",
+                color: "#e2e8f0"
               }} />
               Vehicle Year
             </Typography>
@@ -255,18 +252,18 @@ export const HomeForm: React.FC<HomeFormProps> = ({
 
           {/* Make Field */}
           <Box>
-            <Typography 
-              variant="body2" 
-              fontWeight={500} 
-              color="#ffffff" 
+            <Typography
+              variant="body2"
+              fontWeight={500}
+              color="#ffffff"
               mb={{ xs: 0.5, sm: 1 }}
               sx={{ fontSize: { xs: "0.8rem", sm: "0.875rem" } }}
             >
-              <DirectionsCar sx={{ 
-                fontSize: { xs: 14, sm: 16 }, 
-                mr: 1, 
-                verticalAlign: "middle", 
-                color: "#e2e8f0" 
+              <DirectionsCar sx={{
+                fontSize: { xs: 14, sm: 16 },
+                mr: 1,
+                verticalAlign: "middle",
+                color: "#e2e8f0"
               }} />
               Vehicle Make
             </Typography>
@@ -317,8 +314,8 @@ export const HomeForm: React.FC<HomeFormProps> = ({
             {/* Selected Make Logo on the right */}
             {make && makeLogos[make] && (
               <Box
-                sx={{ 
-                  width: { xs: 70, sm: 85 }, 
+                sx={{
+                  width: { xs: 70, sm: 85 },
                   height: { xs: 70, sm: 85 },
                   display: 'flex',
                   alignItems: 'center',
@@ -352,18 +349,18 @@ export const HomeForm: React.FC<HomeFormProps> = ({
 
           {/* Model Field */}
           <Box>
-            <Typography 
-              variant="body2" 
-              fontWeight={500} 
-              color="#ffffff" 
+            <Typography
+              variant="body2"
+              fontWeight={500}
+              color="#ffffff"
               mb={{ xs: 0.5, sm: 1 }}
               sx={{ fontSize: { xs: "0.8rem", sm: "0.875rem" } }}
             >
-              <Category sx={{ 
-                fontSize: { xs: 14, sm: 16 }, 
-                mr: 1, 
-                verticalAlign: "middle", 
-                color: "#e2e8f0" 
+              <Category sx={{
+                fontSize: { xs: 14, sm: 16 },
+                mr: 1,
+                verticalAlign: "middle",
+                color: "#e2e8f0"
               }} />
               Vehicle Model
             </Typography>
@@ -418,18 +415,18 @@ export const HomeForm: React.FC<HomeFormProps> = ({
 
           {/* Part Field */}
           <Box>
-            <Typography 
-              variant="body2" 
-              fontWeight={500} 
-              color="#ffffff" 
+            <Typography
+              variant="body2"
+              fontWeight={500}
+              color="#ffffff"
               mb={{ xs: 0.5, sm: 1 }}
               sx={{ fontSize: { xs: "0.8rem", sm: "0.875rem" } }}
             >
-              <Build sx={{ 
-                fontSize: { xs: 14, sm: 16 }, 
-                mr: 1, 
-                verticalAlign: "middle", 
-                color: "#e2e8f0" 
+              <Build sx={{
+                fontSize: { xs: 14, sm: 16 },
+                mr: 1,
+                verticalAlign: "middle",
+                color: "#e2e8f0"
               }} />
               Part Type
             </Typography>
@@ -474,8 +471,6 @@ export const HomeForm: React.FC<HomeFormProps> = ({
           </Box>
         </Stack>
 
-
-
                  {/* Search Button */}
          <Button
            fullWidth
@@ -488,11 +483,11 @@ export const HomeForm: React.FC<HomeFormProps> = ({
              mt: { xs: 1.5, sm: 2 },
              py: { xs: 1.2, sm: 1.5 },
             borderRadius: 2,
-            background: (year && make && model && part) 
-              ? "#3b82f6" 
+            background: (year && make && model && part)
+              ? "#3b82f6"
               : "#e2e8f0",
-            color: (year && make && model && part) 
-              ? "#ffffff" 
+            color: (year && make && model && part)
+              ? "#ffffff"
               : "#94a3b8",
             fontWeight: 600,
             fontSize: { xs: "0.875rem", sm: "1rem" },

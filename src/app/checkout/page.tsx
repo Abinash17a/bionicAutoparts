@@ -33,7 +33,6 @@ export default function PaymentPage() {
     securityCode: '',
   })
   const [isSubmit, setisSubmited] = useState(false);
-  const [loading] = useState(false);
   const [showModal, setShowModal] = useState(false)
 
   const [orderData, setOrderData] = useState<any[]>([]);

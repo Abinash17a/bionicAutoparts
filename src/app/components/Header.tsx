@@ -18,7 +18,7 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material"
-import { Menu as MenuIcon, Close as CloseIcon, Phone as PhoneIcon, Email as EmailIcon } from "@mui/icons-material"
+import { Menu as MenuIcon, Close as CloseIcon, Phone as PhoneIcon } from "@mui/icons-material"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { ClickToRevealEmail } from "./ProtectedEmail"
