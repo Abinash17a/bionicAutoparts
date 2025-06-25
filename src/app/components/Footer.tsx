@@ -10,8 +10,8 @@ export default function Footer() {
       {/* Trust/Payment/Delivery Image Section */}
       <div className="bg-gray-100 py-4 md:py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Image
-            src="/trust-payment-delivery.png"
+          <img
+            src="/new-trust-payment-delivery.png"
             alt="Trusted Shopping, Payment Options, Delivery Partners"
             width={1200}
             height={100}
