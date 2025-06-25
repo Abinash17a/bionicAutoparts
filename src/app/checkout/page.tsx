@@ -728,7 +728,7 @@ export default function PaymentPage() {
               </svg>
             </div>
             <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Payment Submitted Successfully!</h2>
-            <p className="text-gray-600 mb-4 sm:mb-6 text-sm sm:text-base">Your order will be processed Thru Flippart (Zepto LLC) shortly.</p>
+            <p className="text-gray-600 mb-4 sm:mb-6 text-sm sm:text-base">Your order will be processed Thru Flippart-Kart (<span className="text-gray-800 font-medium">Zepto LLC</span>) shortly.</p>
             <button
               onClick={handleModalClose}
               className="bg-blue-600 text-white py-2 sm:py-3 px-6 sm:px-8 rounded-lg hover:bg-blue-700 transition duration-300 font-medium text-sm sm:text-base"
