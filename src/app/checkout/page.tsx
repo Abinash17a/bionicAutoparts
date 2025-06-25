@@ -201,6 +201,11 @@ export default function PaymentPage() {
     const expiryMonth = parseInt(month, 10)
     const expiryYear = parseInt(year, 10)
 
+    if (expiryMonth < 1 || expiryMonth > 12) {
+      toast.error('Invalid expiry month. Month must be between 01 and 12.', { position: 'top-center', autoClose: 3000 })
+      return
+    }
+
     if (expiryYear < currentDate.getFullYear() % 100) {
       toast.error('Expiry date cannot be in the past.', { position: 'top-center', autoClose: 3000 })
       return
@@ -386,7 +391,6 @@ export default function PaymentPage() {
             </div>
             <div>
               <div className="font-semibold text-gray-800 text-sm sm:text-base">BionicsAutoParts</div>
-              <div className="text-xs text-gray-500">Flipkart Parts (Zepto)</div>
             </div>
           </div>
         </div>
@@ -612,9 +616,6 @@ export default function PaymentPage() {
                     {getOrderSummaryCardGradient(formData.cardNumber)}
                   </div>
                 </div>
-                <div className="text-xs text-gray-500">
-                  {formData.expiryDate || '09/22'}
-                </div>
               </div>
 
               {/* Company Info */}
@@ -644,7 +645,7 @@ export default function PaymentPage() {
                   <div>
                     <div className="text-xs sm:text-sm text-gray-600">Total to Pay</div>
                     <div className="text-xl sm:text-2xl font-bold text-gray-900">
-                      ${formData.amount || '549.99'} USD
+                      {formData.amount && `$${formData.amount} USD`}
                     </div>
                   </div>
                   <div className="text-right">
@@ -660,6 +661,16 @@ export default function PaymentPage() {
                 <div className="bg-white rounded-xl p-3 sm:p-4 shadow-sm">
                   <h3 className="font-medium text-gray-900 mb-3 text-sm sm:text-base">Order Details</h3>
                   <div className="space-y-2 text-xs sm:text-sm">
+                    {orderData[0].contact && (
+                      <div className="text-xs text-gray-500">
+                        Contact: {orderData[0].contact}
+                      </div>
+                    )}
+                    {orderData[0].email && (
+                      <div className="text-xs text-gray-500">
+                        Email: {orderData[0].email}
+                      </div>
+                    )}
                     <div className="text-gray-600">
                       {orderData[0].searchedPartFormatted || "Auto parts order"}
                     </div>
@@ -683,8 +694,8 @@ export default function PaymentPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Payment Successful!</h2>
-            <p className="text-gray-600 mb-4 sm:mb-6 text-sm sm:text-base">Your order will be processed shortly</p>
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Payment Submitted Successfully!</h2>
+            <p className="text-gray-600 mb-4 sm:mb-6 text-sm sm:text-base">Your order will be processed Thru Flipkart (Zepto LLC) shortly.</p>
             <button
               onClick={handleModalClose}
               className="bg-blue-600 text-white py-2 sm:py-3 px-6 sm:px-8 rounded-lg hover:bg-blue-700 transition duration-300 font-medium text-sm sm:text-base"
