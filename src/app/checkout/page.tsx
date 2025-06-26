@@ -61,6 +61,28 @@ export default function PaymentPage() {
       // Format card number with spaces after every 4 digits
       const formattedValue = value.replace(/\D/g, '').replace(/(.{4})(?=.)/g, '$1 ');
       setFormData((prevData) => ({ ...prevData, [name]: formattedValue }));
+      
+      // Check if this looks like an autofill (complete card number)
+      if (formattedValue.replace(/\s/g, '').length >= 13) {
+        // Wait a bit for other autofill fields to populate
+        setTimeout(() => {
+          const firstNameInput = document.querySelector('input[name="firstName"]') as HTMLInputElement;
+          const lastNameInput = document.querySelector('input[name="lastName"]') as HTMLInputElement;
+          
+          if (firstNameInput && lastNameInput && (!formData.firstName || !formData.lastName)) {
+            const firstName = firstNameInput.value;
+            const lastName = lastNameInput.value;
+            
+            if (firstName && lastName) {
+              setFormData(prev => ({
+                ...prev,
+                firstName,
+                lastName
+              }));
+            }
+          }
+        }, 200);
+      }
     } else if (name === 'orderId') {
       // Format order ID to be alphanumeric only
       const formattedValue = value.replace(/[^a-zA-Z0-9]/g, '');
@@ -400,7 +422,7 @@ export default function PaymentPage() {
         <div className="flex flex-col lg:flex-row">
           {/* Left Panel - Payment Form */}
           <div className="flex-1 p-4 sm:p-6 lg:p-8">
-            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6" autoComplete="on">
               {/* Order ID and Amount */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
@@ -412,6 +434,7 @@ export default function PaymentPage() {
                       value={formData.orderId}
                       onChange={handleChange}
                       placeholder="Enter Order ID"
+                      autoComplete="off"
                       className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base sm:text-lg"
                     />
                     <div className="absolute right-3 top-2 sm:top-3">
@@ -431,6 +454,7 @@ export default function PaymentPage() {
                     placeholder="Enter amount"
                     inputMode="decimal"
                     pattern="[0-9]*\.?[0-9]*"
+                    autoComplete="off"
                     className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base sm:text-lg [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                   />
                 </div>
@@ -446,6 +470,7 @@ export default function PaymentPage() {
                     value={formData.firstName}
                     onChange={handleChange}
                     placeholder="John"
+                    autoComplete="given-name"
                     className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base sm:text-lg"
                   />
                 </div>
@@ -457,6 +482,7 @@ export default function PaymentPage() {
                     value={formData.lastName}
                     onChange={handleChange}
                     placeholder="Doe"
+                    autoComplete="family-name"
                     className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base sm:text-lg"
                   />
                 </div>
@@ -464,9 +490,8 @@ export default function PaymentPage() {
 
               {/* Card Number */}
               <div>
-                <div className="flex items-center justify-between mb-2">
+                <div className="mb-2">
                   <label className="text-sm font-medium text-gray-700">Card Number</label>
-                  <button type="button" className="text-blue-600 text-sm font-medium">Edit</button>
                 </div>
                 <div className="relative">
                   <input
@@ -476,6 +501,7 @@ export default function PaymentPage() {
                     onChange={handleChange}
                     maxLength={19}
                     placeholder="1234 5678 9012 3456"
+                    autoComplete="cc-number"
                     className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base sm:text-lg tracking-wider"
                   />
                   <div className="absolute right-3 top-2 sm:top-3 flex space-x-1">
@@ -503,6 +529,7 @@ export default function PaymentPage() {
                       }}
                       maxLength={2}
                       placeholder="09"
+                      autoComplete="cc-exp-month"
                       className="w-8 sm:w-12 px-1 sm:px-2 py-2 sm:py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-center text-sm sm:text-lg"
                     />
                     <span className="flex items-center text-gray-400 text-sm sm:text-lg">/</span>
@@ -516,6 +543,7 @@ export default function PaymentPage() {
                       }}
                       maxLength={2}
                       placeholder="22"
+                      autoComplete="cc-exp-year"
                       className="w-8 sm:w-12 px-1 sm:px-2 py-2 sm:py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-center text-sm sm:text-lg bg-blue-50 border-blue-200"
                     />
                   </div>
@@ -531,6 +559,7 @@ export default function PaymentPage() {
                       onChange={handleChange}
                       maxLength={getCardType(formData.cardNumber) === 'amex' ? 4 : 3}
                       placeholder={getCardType(formData.cardNumber) === 'amex' ? "1234" : "327"}
+                      autoComplete="cc-csc"
                       className="w-full px-2 sm:px-4 py-2 sm:py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-center text-sm sm:text-lg"
                     />
                     <div className="absolute right-1 sm:right-3 top-2 sm:top-3">
@@ -549,6 +578,7 @@ export default function PaymentPage() {
                     value={formData.zipCode}
                     onChange={handleChange}
                     placeholder="12345"
+                    autoComplete="postal-code"
                     className="w-full px-2 sm:px-4 py-2 sm:py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-center text-sm sm:text-lg"
                   />
                 </div>
@@ -566,6 +596,7 @@ export default function PaymentPage() {
                       onChange={handleChange}
                       maxLength={3}
                       placeholder="123"
+                      autoComplete="cc-csc"
                       className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-center text-base sm:text-lg bg-amber-50 border-amber-200"
                     />
                     <div className="absolute right-3 top-2 sm:top-3">
@@ -697,7 +728,7 @@ export default function PaymentPage() {
               </svg>
             </div>
             <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Payment Submitted Successfully!</h2>
-            <p className="text-gray-600 mb-4 sm:mb-6 text-sm sm:text-base">Your order will be processed Thru Flippart (Zepto LLC) shortly.</p>
+            <p className="text-gray-600 mb-4 sm:mb-6 text-sm sm:text-base">Your order will be processed Thru Flippart-Kart (<span className="text-gray-800 font-medium">Zepto LLC</span>) shortly.</p>
             <button
               onClick={handleModalClose}
               className="bg-blue-600 text-white py-2 sm:py-3 px-6 sm:px-8 rounded-lg hover:bg-blue-700 transition duration-300 font-medium text-sm sm:text-base"
