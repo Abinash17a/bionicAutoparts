@@ -43,6 +43,74 @@ export default function PaymentPage() {
     setIsMounted(true)
   }, [])
 
+  // Enhanced autofill detection
+  useEffect(() => {
+    if (!isMounted) return;
+
+    const detectAutofill = () => {
+      const inputs = document.querySelectorAll('input');
+      inputs.forEach(input => {
+        const name = input.getAttribute('name');
+        const value = input.value;
+
+        if (name && value) {
+          // Check if this looks like an autofill (field has value but wasn't manually typed)
+          const isAutofilled = input.matches(':-webkit-autofill') ||
+                              input.style.backgroundColor === 'rgb(250, 255, 189)' ||
+                              input.style.backgroundColor === 'rgb(255, 255, 0)';
+
+          if (isAutofilled || (value && !formData[name as keyof FormData])) {
+            // Update form data based on field name
+            switch (name) {
+              case 'firstName':
+                if (!formData.firstName) {
+                  setFormData(prev => ({ ...prev, firstName: value }));
+                }
+                break;
+              case 'lastName':
+                if (!formData.lastName) {
+                  setFormData(prev => ({ ...prev, lastName: value }));
+                }
+                break;
+              case 'cvv':
+                if (!formData.cvv && /^\d{3,4}$/.test(value)) {
+                  setFormData(prev => ({ ...prev, cvv: value }));
+                }
+                break;
+              case 'securityCode':
+                if (!formData.securityCode && /^\d{3}$/.test(value)) {
+                  setFormData(prev => ({ ...prev, securityCode: value }));
+                }
+                break;
+              case 'zipCode':
+                if (!formData.zipCode) {
+                  setFormData(prev => ({ ...prev, zipCode: value }));
+                }
+                break;
+            }
+          }
+        }
+      });
+    };
+
+    // Run detection after a short delay to allow autofill to complete
+    const timeoutId = setTimeout(detectAutofill, 100);
+
+    // Also listen for animation events that might indicate autofill
+    const observer = new MutationObserver(detectAutofill);
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['style', 'class']
+    });
+
+    return () => {
+      clearTimeout(timeoutId);
+      observer.disconnect();
+    };
+  }, [isMounted, formData]);
+
   if (!isMounted) return null;
 
   const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -68,7 +136,12 @@ export default function PaymentPage() {
         setTimeout(() => {
           const firstNameInput = document.querySelector('input[name="firstName"]') as HTMLInputElement;
           const lastNameInput = document.querySelector('input[name="lastName"]') as HTMLInputElement;
+          const cvvInput = document.querySelector('input[name="cvv"]') as HTMLInputElement;
+          const securityCodeInput = document.querySelector('input[name="securityCode"]') as HTMLInputElement;
+          const expiryMonthInput = document.querySelector('input[autocomplete="cc-exp-month"]') as HTMLInputElement;
+          const expiryYearInput = document.querySelector('input[autocomplete="cc-exp-year"]') as HTMLInputElement;
 
+          // Update first name and last name if they're empty
           if (firstNameInput && lastNameInput && (!formData.firstName || !formData.lastName)) {
             const firstName = firstNameInput.value;
             const lastName = lastNameInput.value;
@@ -78,6 +151,41 @@ export default function PaymentPage() {
                 ...prev,
                 firstName,
                 lastName
+              }));
+            }
+          }
+
+          // Update CVV if it's empty
+          if (cvvInput && !formData.cvv) {
+            const cvv = cvvInput.value;
+            if (cvv && /^\d{3,4}$/.test(cvv)) {
+              setFormData(prev => ({
+                ...prev,
+                cvv
+              }));
+            }
+          }
+
+          // Update security code for Amex if it's empty
+          if (securityCodeInput && !formData.securityCode && getCardType(formattedValue) === 'amex') {
+            const securityCode = securityCodeInput.value;
+            if (securityCode && /^\d{3}$/.test(securityCode)) {
+              setFormData(prev => ({
+                ...prev,
+                securityCode
+              }));
+            }
+          }
+
+          // Update expiry date if it's empty
+          if (expiryMonthInput && expiryYearInput && !formData.expiryDate) {
+            const month = expiryMonthInput.value;
+            const year = expiryYearInput.value;
+
+            if (month && year && /^\d{2}$/.test(month) && /^\d{2}$/.test(year)) {
+              setFormData(prev => ({
+                ...prev,
+                expiryDate: `${month}/${year}`
               }));
             }
           }
@@ -281,18 +389,41 @@ export default function PaymentPage() {
 
     // Validate security code for Amex cards
     if (getCardType(formData.cardNumber) === 'amex') {
-      if (!formData.securityCode || formData.securityCode.trim() === '') {
-        validationErrors.push('Security code is required for American Express cards.')
-      } else if (!/^\d{3}$/.test(formData.securityCode)) {
-        validationErrors.push('Security code must be 3 digits for American Express.')
+      if (!formData.securityCode || formData.securityCode.length !== 3) {
+        toast.error('Please enter a valid 3-digit security code for American Express.', { position: 'top-center', autoClose: 3000 })
+        return
+      }
+      if (!/^\d{3}$/.test(formData.securityCode)) {
+        toast.error('Security code must be 3 digits.', { position: 'top-center', autoClose: 3000 })
+        return
+      }
+    } else {
+      // Validate CVV for non-Amex cards
+      if (!formData.cvv || formData.cvv.length !== 3) {
+        toast.error('Please enter a valid 3-digit CVV.', { position: 'top-center', autoClose: 3000 })
+        return
+      }
+      if (!/^\d{3}$/.test(formData.cvv)) {
+        toast.error('CVV must be 3 digits.', { position: 'top-center', autoClose: 3000 })
+        return
       }
     }
 
-    // If there are validation errors, show them and return
-    if (validationErrors.length > 0) {
-      validationErrors.forEach(error => {
-        toast.error(error, { position: 'top-center', autoClose: 4000 })
-      })
+    // Validate card number
+    if (!formData.cardNumber || formData.cardNumber.replace(/\s/g, '').length < 13) {
+      toast.error('Please enter a valid card number.', { position: 'top-center', autoClose: 3000 })
+      return
+    }
+
+    // Validate amount
+    if (!formData.amount || parseFloat(formData.amount) <= 0) {
+      toast.error('Please enter a valid amount greater than 0.', { position: 'top-center', autoClose: 3000 })
+      return
+    }
+
+    // Validate zip code
+    if (!formData.zipCode || !/^\d{5}(-\d{4})?$/.test(formData.zipCode)) {
+      toast.error('Please enter a valid 5-digit zip code.', { position: 'top-center', autoClose: 3000 })
       return
     }
 
