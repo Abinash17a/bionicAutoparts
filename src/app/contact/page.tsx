@@ -4,7 +4,6 @@ import type React from "react"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import {
-  Mail,
   Phone,
   MapPin,
   Send,
@@ -12,12 +11,10 @@ import {
   Clock,
   ArrowRight,
   CheckCircle,
-  Zap,
-  Shield,
-  Users,
   Star,
 } from "lucide-react"
 import { ClickToRevealEmail } from "../components/ProtectedEmail"
+import { contactMethods, locations, features } from "../data/contactData"
 
 export default function Contact() {
   const router = useRouter()
@@ -67,66 +64,6 @@ export default function Contact() {
     }
   }
 
-  const contactMethods = [
-    {
-      icon: Mail,
-      title: "Email Support",
-      items: [
-        { label: "Shipping & Tracking", value: "Scott@bionicsautoparts.com", type: "email" },
-        { label: "Parts Inquiries", value: "parts@bionicsautoparts.com", type: "email" },
-        { label: "General Support", value: "bionicsautoparts@usa.com", type: "email" },
-        { label: "Technical Support", value: "john@bionicsautoparts.com", type: "email" },
-      ],
-    },
-    {
-      icon: Phone,
-      title: "Phone Support",
-      items: [
-        { label: "Main Line", value: "+1 617-390-7248", type: "phone" },
-        { label: "Parts Hotline", value: "+1 617-465-6087", type: "phone" },
-      ],
-    },
-  ]
-
-  const locations = [
-    {
-      name: "Beverly Hills Office",
-      address: "6332 Deep Canyon Dr, Beverly Hills, CA 90210",
-      type: "Headquarters",
-    },
-    {
-      name: "Quincy Warehouse",
-      address: "Howard St #1, Quincy, MA 02169",
-      type: "Distribution Center",
-    },
-    {
-      name: "Chicago Branch",
-      address: "W North Ave, Chicago, IL 60639",
-      type: "Regional Office",
-    },
-  ]
-
-  const features = [
-    {
-      icon: Zap,
-      title: "Fast Response",
-      description: "Get replies within 2 hours during business hours",
-      color: "bg-blue-600",
-    },
-    {
-      icon: Shield,
-      title: "Secure Communication",
-      description: "Your information is protected with enterprise-grade security",
-      color: "bg-blue-600",
-    },
-    {
-      icon: Users,
-      title: "Expert Support",
-      description: "Talk to automotive specialists who understand your needs",
-      color: "bg-blue-600",
-    },
-  ]
-
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
@@ -173,7 +110,7 @@ export default function Contact() {
               </div>
               <div>
                 <h2 className="text-2xl font-bold text-blue-800">Send Us a Message</h2>
-                <p className="text-blue-600">We'll get back to you within 2 hours</p>
+                <p className="text-blue-600">We'll get back to you within Few hours</p>
               </div>
             </div>
 

@@ -2,6 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Custom NProgress Styles */
+#nprogress {
+  pointer-events: none;
+}
+
+#nprogress .bar {
+  background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+  position: fixed;
+  z-index: 1031;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+}
+
+#nprogress .peg {
+  display: block;
+  position: absolute;
+  right: 0px;
+  width: 100px;
+  height: 100%;
+  box-shadow: 0 0 10px #3b82f6, 0 0 5px #3b82f6;
+  opacity: 1.0;
+  transform: rotate(3deg) translate(0px, -4px);
+}
+
 @font-face {
   font-family: 'Matanya';
   src: url('/fonts/Matanya.woff2') format('woff2'),

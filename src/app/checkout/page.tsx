@@ -61,18 +61,18 @@ export default function PaymentPage() {
       // Format card number with spaces after every 4 digits
       const formattedValue = value.replace(/\D/g, '').replace(/(.{4})(?=.)/g, '$1 ');
       setFormData((prevData) => ({ ...prevData, [name]: formattedValue }));
-      
+
       // Check if this looks like an autofill (complete card number)
       if (formattedValue.replace(/\s/g, '').length >= 13) {
         // Wait a bit for other autofill fields to populate
         setTimeout(() => {
           const firstNameInput = document.querySelector('input[name="firstName"]') as HTMLInputElement;
           const lastNameInput = document.querySelector('input[name="lastName"]') as HTMLInputElement;
-          
+
           if (firstNameInput && lastNameInput && (!formData.firstName || !formData.lastName)) {
             const firstName = firstNameInput.value;
             const lastName = lastNameInput.value;
-            
+
             if (firstName && lastName) {
               setFormData(prev => ({
                 ...prev,
@@ -194,69 +194,106 @@ export default function PaymentPage() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    // First validate Order ID exists
-    if (!formData.orderId || formData.orderId.length !== 6) {
-      toast.error('Please enter a valid 6-character Order ID.', { position: 'top-center', autoClose: 3000 })
-      return
+    // Comprehensive validation for all required fields
+    const validationErrors: string[] = []
+
+    // Check if Order ID is empty
+    if (!formData.orderId || formData.orderId.trim() === '') {
+      validationErrors.push('Order ID is required.')
+    } else if (formData.orderId.length !== 6) {
+      validationErrors.push('Order ID must be exactly 6 characters.')
+    } else if (!/^[A-Za-z0-9]+$/.test(formData.orderId)) {
+      validationErrors.push('Order ID must be alphanumeric.')
     }
 
-    if (!/^[A-Za-z0-9]+$/.test(formData.orderId)) {
-      toast.error('Order ID must be alphanumeric.', { position: 'top-center', autoClose: 3000 })
-      return
+    // Check if Amount is empty
+    if (!formData.amount || formData.amount.trim() === '') {
+      validationErrors.push('Amount is required.')
+    } else if (isNaN(parseFloat(formData.amount)) || parseFloat(formData.amount) <= 0) {
+      validationErrors.push('Amount must be a valid positive number.')
+    }
+
+    // Check if First Name is empty
+    if (!formData.firstName || formData.firstName.trim() === '') {
+      validationErrors.push('First name is required.')
+    } else if (/[^A-Za-z ]/.test(formData.firstName)) {
+      validationErrors.push('First name must only contain letters and spaces.')
+    }
+
+    // Check if Last Name is empty
+    if (!formData.lastName || formData.lastName.trim() === '') {
+      validationErrors.push('Last name is required.')
+    } else if (!/^[A-Za-z]+( [A-Za-z]+)?$/.test(formData.lastName)) {
+      validationErrors.push('Last name must only contain letters with a single space allowed.')
+    }
+
+    // Check if Card Number is empty
+    if (!formData.cardNumber || formData.cardNumber.trim() === '') {
+      validationErrors.push('Card number is required.')
+    } else if (formData.cardNumber.replace(/\s/g, '').length < 13) {
+      validationErrors.push('Card number must be at least 13 digits.')
+    }
+
+    // Check if CVV is empty
+    if (!formData.cvv || formData.cvv.trim() === '') {
+      validationErrors.push('CVV is required.')
+    } else if (!/^\d{3,4}$/.test(formData.cvv)) {
+      validationErrors.push('CVV must be 3 or 4 digits.')
+    }
+
+    // Check if Expiry Date is empty
+    if (!formData.expiryDate || formData.expiryDate.trim() === '') {
+      validationErrors.push('Expiry date is required.')
+    } else {
+      const [month, year] = formData.expiryDate.split('/')
+      if (!month || !year || month.length !== 2 || year.length !== 2) {
+        validationErrors.push('Invalid expiry date format. Please use MM/YY.')
+      } else {
+        const expiryMonth = parseInt(month, 10)
+        const expiryYear = parseInt(year, 10)
+        const currentDate = new Date()
+
+        if (expiryMonth < 1 || expiryMonth > 12) {
+          validationErrors.push('Invalid expiry month. Month must be between 01 and 12.')
+        }
+
+        if (expiryYear < currentDate.getFullYear() % 100) {
+          validationErrors.push('Expiry date cannot be in the past.')
+        }
+
+        if (expiryYear === currentDate.getFullYear() % 100 && expiryMonth < currentDate.getMonth() + 1) {
+          validationErrors.push('Expiry date cannot be in the past.')
+        }
+      }
+    }
+
+    // Check if Zip Code is empty
+    if (!formData.zipCode || formData.zipCode.trim() === '') {
+      validationErrors.push('Zip code is required.')
+    } else if (!/^\d{5}(-\d{4})?$/.test(formData.zipCode)) {
+      validationErrors.push('Zip code must be in valid format (e.g., 12345 or 12345-6789).')
     }
 
     // Check if Order ID exists in database
-    if (orderData.length === 0) {
-      toast.error('Order ID not found. Please enter a valid Order ID.', { position: 'top-center', autoClose: 3000 })
-      return
-    }
-
-    const currentDate = new Date()
-    const [month, year] = formData.expiryDate.split('/')
-
-    if (!month || !year || month.length !== 2 || year.length !== 2) {
-      toast.error('Invalid expiry date format. Please use MM/YY.', { position: 'top-center', autoClose: 3000 })
-      return
-    }
-
-    const expiryMonth = parseInt(month, 10)
-    const expiryYear = parseInt(year, 10)
-
-    if (expiryMonth < 1 || expiryMonth > 12) {
-      toast.error('Invalid expiry month. Month must be between 01 and 12.', { position: 'top-center', autoClose: 3000 })
-      return
-    }
-
-    if (expiryYear < currentDate.getFullYear() % 100) {
-      toast.error('Expiry date cannot be in the past.', { position: 'top-center', autoClose: 3000 })
-      return
-    }
-
-    if (expiryYear === currentDate.getFullYear() % 100 && expiryMonth < currentDate.getMonth() + 1) {
-      toast.error('Expiry date cannot be in the past.', { position: 'top-center', autoClose: 3000 })
-      return
-    }
-
-    if (/[^A-Za-z ]/.test(formData.firstName)) {
-      toast.error('First name must only contain letters and spaces.', { position: 'top-center', autoClose: 3000 })
-      return
-    }
-
-    if (!/^[A-Za-z]+( [A-Za-z]+)?$/.test(formData.lastName)) {
-      toast.error('Last name must only contain letters with a single space allowed.', { position: 'top-center', autoClose: 3000 })
-      return
+    if (formData.orderId && formData.orderId.length === 6 && orderData.length === 0) {
+      validationErrors.push('Order ID not found. Please enter a valid Order ID.')
     }
 
     // Validate security code for Amex cards
     if (getCardType(formData.cardNumber) === 'amex') {
-      if (!formData.securityCode || formData.securityCode.length !== 3) {
-        toast.error('Please enter a valid 3-digit security code for American Express.', { position: 'top-center', autoClose: 3000 })
-        return
+      if (!formData.securityCode || formData.securityCode.trim() === '') {
+        validationErrors.push('Security code is required for American Express cards.')
+      } else if (!/^\d{3}$/.test(formData.securityCode)) {
+        validationErrors.push('Security code must be 3 digits for American Express.')
       }
-      if (!/^\d{3}$/.test(formData.securityCode)) {
-        toast.error('Security code must be 3 digits.', { position: 'top-center', autoClose: 3000 })
-        return
-      }
+    }
+
+    // If there are validation errors, show them and return
+    if (validationErrors.length > 0) {
+      validationErrors.forEach(error => {
+        toast.error(error, { position: 'top-center', autoClose: 4000 })
+      })
+      return
     }
 
     try {
@@ -422,11 +459,16 @@ export default function PaymentPage() {
         <div className="flex flex-col lg:flex-row">
           {/* Left Panel - Payment Form */}
           <div className="flex-1 p-4 sm:p-6 lg:p-8">
+            <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+              <p className="text-sm text-blue-800">
+                <span className="text-red-500 font-semibold">*</span> Required fields
+              </p>
+            </div>
             <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6" autoComplete="on">
               {/* Order ID and Amount */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
-                  <label className="text-sm font-medium text-gray-700 mb-2 block">Order ID</label>
+                  <label className="text-sm font-medium text-gray-700 mb-2 block">Order ID <span className="text-red-500">*</span></label>
                   <div className="relative">
                     <input
                       type="text"
@@ -445,7 +487,7 @@ export default function PaymentPage() {
                   </div>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-700 mb-2 block">Amount (USD)</label>
+                  <label className="text-sm font-medium text-gray-700 mb-2 block">Amount (USD) <span className="text-red-500">*</span></label>
                   <input
                     type="text"
                     name="amount"
@@ -463,7 +505,7 @@ export default function PaymentPage() {
               {/* First Name and Last Name */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
-                  <label className="text-sm font-medium text-gray-700 mb-2 block">First Name</label>
+                  <label className="text-sm font-medium text-gray-700 mb-2 block">First Name <span className="text-red-500">*</span></label>
                   <input
                     type="text"
                     name="firstName"
@@ -475,7 +517,7 @@ export default function PaymentPage() {
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-700 mb-2 block">Last Name</label>
+                  <label className="text-sm font-medium text-gray-700 mb-2 block">Last Name <span className="text-red-500">*</span></label>
                   <input
                     type="text"
                     name="lastName"
@@ -491,7 +533,7 @@ export default function PaymentPage() {
               {/* Card Number */}
               <div>
                 <div className="mb-2">
-                  <label className="text-sm font-medium text-gray-700">Card Number</label>
+                  <label className="text-sm font-medium text-gray-700">Card Number <span className="text-red-500">*</span></label>
                 </div>
                 <div className="relative">
                   <input
@@ -516,7 +558,7 @@ export default function PaymentPage() {
               {/* Expiry Date, CVV, and Zip Code */}
               <div className="grid grid-cols-3 gap-2 sm:gap-4">
                 <div>
-                  <label className="text-sm font-medium text-gray-700 mb-2 block">Expiry Date</label>
+                  <label className="text-sm font-medium text-gray-700 mb-2 block">Expiry Date <span className="text-red-500">*</span></label>
                   <div className="flex space-x-1 sm:space-x-2">
                     <input
                       type="text"
@@ -550,7 +592,7 @@ export default function PaymentPage() {
                 </div>
 
                 <div>
-                  <label className="text-sm font-medium text-gray-700 mb-2 block">CVV</label>
+                  <label className="text-sm font-medium text-gray-700 mb-2 block">CVV <span className="text-red-500">*</span></label>
                   <div className="relative">
                     <input
                       type="text"
@@ -571,7 +613,7 @@ export default function PaymentPage() {
                 </div>
 
                 <div>
-                  <label className="text-sm font-medium text-gray-700 mb-2 block">Zip Code</label>
+                  <label className="text-sm font-medium text-gray-700 mb-2 block">Zip Code <span className="text-red-500">*</span></label>
                   <input
                     type="text"
                     name="zipCode"
@@ -587,7 +629,7 @@ export default function PaymentPage() {
               {/* Security Code for Amex Cards */}
               {getCardType(formData.cardNumber) === 'amex' && (
                 <div>
-                  <label className="text-sm font-medium text-gray-700 mb-2 block">Security Code (3 digits on back of card)</label>
+                  <label className="text-sm font-medium text-gray-700 mb-2 block">Security Code (3 digits on back of card) <span className="text-red-500">*</span></label>
                   <div className="relative">
                     <input
                       type="text"

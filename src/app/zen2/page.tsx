@@ -2,10 +2,10 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { useRouter } from 'next/navigation';
 import { auth } from '../lib/firebase';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Card from '../components/Ui/Card';
 
 const Admin = () => {
   const [userData, setUserData] = useState<any[]>([]);
@@ -50,27 +50,27 @@ const Admin = () => {
     }
   };
 
-const fetchData = async () => {
-  setLoading(true);
-  try {
-    const response = await fetch(`/api/getSubmissionsv2?timestamp=${new Date().getTime()}`);
-    const data = await response.json();
-    if (response.ok) {
-      const sortedData = (data.submissions || []).sort((a:any, b:any) => {
-        const dateA = a.createdAt?.seconds ? new Date(a.createdAt.seconds * 1000) : new Date();
-        const dateB = b.createdAt?.seconds ? new Date(b.createdAt.seconds * 1000) : new Date();
-        return dateB.getTime() - dateA.getTime();
-      });
-      setUserData(sortedData);
-    } else {
-      console.error('Error fetching user data:', data.message);
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`/api/getSubmissionsv2?timestamp=${new Date().getTime()}`);
+      const data = await response.json();
+      if (response.ok) {
+        const sortedData = (data.submissions || []).sort((a: any, b: any) => {
+          const dateA = a.createdAt?.seconds ? new Date(a.createdAt.seconds * 1000) : new Date();
+          const dateB = b.createdAt?.seconds ? new Date(b.createdAt.seconds * 1000) : new Date();
+          return dateB.getTime() - dateA.getTime();
+        });
+        setUserData(sortedData);
+      } else {
+        console.error('Error fetching user data:', data.message);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    console.error('Error:', error);
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   const formatDate = (timestamp: any) => {
     if (timestamp?.seconds) {
@@ -170,53 +170,31 @@ const fetchData = async () => {
         </div>
       ) : (
         <>
-          <h2 className="text-2xl font-bold mb-8 text-center text-gray-800">Admin Dashboard</h2>
+          <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Admin Dashboard</h2>
+
           {loading ? (
-            <div className="flex justify-center items-center">
-              <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-16 w-16"></div>
+            <div className="flex justify-center items-center h-40">
+              <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-300 h-16 w-16 animate-spin"></div>
             </div>
           ) : (
             <>
               {userData.length > 0 ? (
-                <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+                <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {userData.map((submission) => (
-                    <li key={submission.id} className="bg-white rounded-lg shadow-md p-6">
-                      <p className="text-lg font-semibold text-gray-800 mb-2">{submission.name}</p>
-                      <p className="text-gray-600 mb-1">
-                        <span className="font-medium">Contact:</span> {submission.contact}
-                      </p>
-                      <p className="text-gray-600 mb-1">
-                        <span className="font-medium">Email:</span> {submission.email}
-                      </p>
-                      <p className="text-gray-600 mb-1">
-                        <span className="font-medium">Zip Code:</span> {submission.zipCode}
-                      </p>
-                      <p className="text-gray-600 mb-1">
-                        <span className="font-medium">Part Info:</span> {submission.searchedPartFormatted}
-                      </p>
-                      <p className="text-gray-600 mb-1">
-                        <span className="font-medium">Order Id:</span> {submission.orderId}
-                      </p>
-                      <p className="text-gray-600 mb-1">
-                        <span className="font-medium">Created At:</span> {formatDate(submission.createdAt)}
-                      </p>
-                      <div className="mt-4">
-                        <select
-                          value={submission.status || 'Pending'}
-                          onChange={(e) => handleStatusChange(submission.id, e.target.value)}
-                          className={`p-2 border rounded ${
-                            submission.status === 'Pending'
-                              ? 'border-yellow-400'
-                              : submission.status === 'Approved'
-                              ? 'border-green-400'
-                              : 'border-red-400'
-                          }`}
-                        >
-                          <option value="Pending">Pending</option>
-                          <option value="Approved">Approved</option>
-                          <option value="Rejected">Rejected</option>
-                        </select>
-                      </div>
+                    <li key={submission.id}>
+                      <Card
+                        variant="submission"
+                        name={submission.name}
+                        contact={submission.contact}
+                        email={submission.email}
+                        zipCode={submission.zipCode}
+                        searchedPartFormatted={submission.searchedPartFormatted}
+                        orderId={submission.orderId}
+                        createdAt={formatDate(submission.createdAt)}
+                        status={submission.status}
+                        onStatusChange={(newStatus) => handleStatusChange(submission.id, newStatus)}
+                        className="hover:shadow-lg transition-shadow duration-200"
+                      />
                     </li>
                   ))}
                 </ul>
@@ -239,3 +217,4 @@ const fetchData = async () => {
 };
 
 export default Admin;
+

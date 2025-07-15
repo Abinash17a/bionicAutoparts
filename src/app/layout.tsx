@@ -8,6 +8,8 @@ import CarCompanySlider from "./components/Companyslider";
 import Script from "next/script";
 import Header from './components/Header';
 import GoogleTagManager from "./components/GoogleTagManager";
+import { LoadingProvider } from "./context/LoadingContext";
+import LoadingWrapper from "./components/LoadingWrapper";
 
 export const metadata: Metadata = {
   title: "Bionics Autoparts",
@@ -44,11 +46,17 @@ export default function RootLayout({
         />
       </head>
       <body className="flex flex-col min-h-screen font-sans">
-        <GoogleTagManager />
-        <Header />
-        <main className="flex-grow">{children}</main>
-        <CarCompanySlider />
-        <Footer />
+        <LoadingProvider>
+          <GoogleTagManager />
+          <Header />
+          <main className="flex-grow">{children}</main>
+          <LoadingWrapper>
+            <CarCompanySlider />
+          </LoadingWrapper>
+          <LoadingWrapper>
+            <Footer />
+          </LoadingWrapper>
+        </LoadingProvider>
       </body>
     </html>
   );
