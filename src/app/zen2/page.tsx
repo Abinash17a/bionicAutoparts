@@ -120,6 +120,59 @@ const Admin = () => {
     }
   };
 
+const handleImageUpload = async (
+  e: React.ChangeEvent<HTMLInputElement>,
+  submissionId: string,
+  status: string
+) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+
+  try {
+    // Prepare the file for upload
+    const formData = new FormData();
+    formData.append("partImage", file); // 🔹 must match multer field name
+
+    // Step 1: Upload to Firebase via backend API
+    const uploadRes = await fetch(`/api/uploadOrderImage/${submissionId}`, {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!uploadRes.ok) {
+      throw new Error("Image upload failed");
+    }
+
+    const { imageUrl } = await uploadRes.json();
+    console.log("✅ Uploaded image URL:", imageUrl);
+
+    // Step 2: Update SQL row with new imageUrl
+    const updateRes = await fetch("/api/partimageUpload", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id: submissionId,
+        status,
+        imageUrl,
+      }),
+    });
+
+    const updateData = await updateRes.json();
+
+    if (!updateRes.ok) {
+      throw new Error(updateData.error || "Failed to update submission with image");
+    }
+
+    console.log("✅ Submission updated:", updateData.message);
+    toast.success("Image uploaded & submission updated!");
+  } catch (err: any) {
+    console.error("❌ Error in image upload:", err);
+    toast.error(err.message || "Image upload failed");
+  }
+};
+
+
+
   useEffect(() => {
     if (isLoggedIn) {
       resetLogoutTimer();
@@ -193,6 +246,8 @@ const Admin = () => {
                         createdAt={formatDate(submission.createdAt)}
                         status={submission.status}
                         onStatusChange={(newStatus) => handleStatusChange(submission.id, newStatus)}
+                         handleImageUpload={(e) => handleImageUpload(e, submission.id, submission.status)}
+                        id={submission.id}
                         className="hover:shadow-lg transition-shadow duration-200"
                       />
                     </li>

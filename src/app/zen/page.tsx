@@ -129,6 +129,70 @@ const Admin = () => {
       toast.error('Error updating status');
     }
   };
+const handleImageUpload = async (
+  e: React.ChangeEvent<HTMLInputElement>,
+  submissionId: string,
+  submissionStatus:string
+) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+
+  try {
+    // Check size (optional)
+    const maxSizeMB = 5;
+    if (file.size / 1024 / 1024 > maxSizeMB) {
+      toast.error(`Image too large. Max ${maxSizeMB}MB allowed.`);
+      return;
+    }
+
+    // Build FormData with the field name matching multer ("partImage")
+    const formData = new FormData();
+    formData.append("partImage", file);
+
+    // 1) Upload image to S3 via backend route
+    const uploadRes = await fetch(`/api/getImageUrl/${submissionId}`, {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!uploadRes.ok) {
+      const errText = await uploadRes.text().catch(() => null);
+      throw new Error(errText || "Image upload to S3 failed");
+    }
+
+    const { imageUrl } = await uploadRes.json();
+    if (!imageUrl) throw new Error("No imageUrl returned from S3 upload");
+
+    console.log("✅ Uploaded to S3:", imageUrl);
+    toast.success("Image uploaded to the Order!");
+
+    // 2) Save the S3 URL into Firestore/SQL (if needed)
+    const updateRes = await fetch("/api/uploadImage", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: submissionId, imageUrl }),
+    });
+
+    const updateData = await updateRes.json();
+    if (!updateRes.ok) {
+      throw new Error(updateData.error || "Failed to update submission with image URL");
+    }
+
+    console.log("✅ Submission updated:", updateData.message);
+    toast.success("Submission image updated!");
+
+    // 3) Update local state immediately (optional)
+    setUserData((prev) =>
+      prev.map((s: any) => (s.id === submissionId ? { ...s, partImageUrl: imageUrl } : s))
+    );
+  } catch (err: any) {
+    console.error("❌ Error in handleImageUpload:", err);
+    toast.error(err.message || "Image upload failed");
+  }
+};
+
+
+
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -203,7 +267,11 @@ const Admin = () => {
                         createdAt={formatDate(submission.createdAt)}
                         status={submission.status}
                         onStatusChange={(newStatus) => handleStatusChange(submission.id, newStatus)}
+                        handleImageUpload={(e) => handleImageUpload(e, submission.id, submission.status)}
+                        id={submission.id}
                         className="hover:shadow-lg transition-shadow duration-200"
+                        partImageUrl={submission.partImageUrl}
+                        partImageUrls={submission.partImageUrls}
                       />
                     </li>
                   ))}

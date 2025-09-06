@@ -6,6 +6,7 @@ import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { db } from '../lib/firebase'
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
+import { Carousel } from '../components/Carousel'
 
 interface FormData {
   orderId: string
@@ -863,29 +864,32 @@ export default function PaymentPage() {
               </div>
 
               {/* Order Details */}
-              {orderData && orderData.length > 0 && (
-                <div className="bg-white rounded-xl p-3 sm:p-4 shadow-sm">
-                  <h3 className="font-medium text-gray-900 mb-3 text-sm sm:text-base">Order Details</h3>
-                  <div className="space-y-2 text-xs sm:text-sm">
-                    {orderData[0].contact && (
-                      <div className="text-xs text-gray-500">
-                        Contact: {orderData[0].contact}
-                      </div>
-                    )}
-                    {orderData[0].email && (
-                      <div className="text-xs text-gray-500">
-                        Email: {orderData[0].email}
-                      </div>
-                    )}
-                    <div className="text-gray-600">
-                      {orderData[0].searchedPartFormatted || "Auto parts order"}
-                    </div>
-                    <div className="text-xs text-gray-500">
-                      Ordered: {new Date(orderData[0].createdAt.seconds * 1000).toLocaleDateString()}
-                    </div>
-                  </div>
-                </div>
-              )}
+{orderData && orderData.length > 0 && (
+  <div className="bg-white rounded-xl p-3 sm:p-4 shadow-sm">
+    <h3 className="font-medium text-gray-900 mb-3 text-sm sm:text-base">Order Details</h3>
+    <div className="space-y-2 text-xs sm:text-sm">
+      {orderData[0].contact && (
+        <div className="text-xs text-gray-500">Contact: {orderData[0].contact}</div>
+      )}
+      {orderData[0].email && (
+        <div className="text-xs text-gray-500">Email: {orderData[0].email}</div>
+      )}
+      <div className="text-gray-600">
+        {orderData[0].searchedPartFormatted || "Auto parts order"}
+      </div>
+      <div className="text-xs text-gray-500">
+        Ordered: {new Date(orderData[0].createdAt.seconds * 1000).toLocaleDateString()}
+      </div>
+
+      {orderData[0].partImageUrls && orderData[0].partImageUrls.length > 0 && (
+        <Carousel imageUrls={orderData[0].partImageUrls} />
+      )}
+
+
+    </div>
+  </div>
+)}
+
             </div>
           </div>
         </div>
