@@ -17,6 +17,12 @@ if (!AWS_ACCESS_KEY_ID || !AWS_SECRET_ACCESS_KEY || !AWS_REGION || !AWS_BUCKET_N
   });
   // Keep process running — this file will still be imported, but calls will immediately error with helpful message
 }
+console.log("AWS Config:", {
+  AWS_ACCESS_KEY_ID: !!AWS_ACCESS_KEY_ID,
+  AWS_SECRET_ACCESS_KEY: !!AWS_SECRET_ACCESS_KEY,
+  AWS_REGION: !!AWS_REGION,
+  AWS_BUCKET_NAME: !!AWS_BUCKET_NAME,
+});
 
 const s3Client = new S3Client({
   region: AWS_REGION,
