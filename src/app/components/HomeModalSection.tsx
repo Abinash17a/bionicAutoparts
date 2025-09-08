@@ -92,9 +92,15 @@ export const ModalSection: React.FC<ModalSectionProps> = ({ modalVisible, search
                 label="Contact Number"
                 value={contact}
                 onChange={(e) => {
-                  let value = e.target.value;
-                  // Only allow digits and limit to 10 digits
-                  value = value.replace(/\D/g, '').substring(0, 10);
+                  let value = e.target.value.replace(/\D/g, '');
+
+
+                  if (value.startsWith('1') && value.length > 10) {
+                    value = value.substring(0, 11);
+                  } else {
+                    value = value.substring(0, 10);
+                  }
+
                   setContact(value);
                 }}
                 fullWidth
