@@ -61,7 +61,7 @@ export default function Header() {
         <Box sx={{ display: "flex", alignItems: "center", gap: { xs: 4, md: 8 } }}>
           <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
             <PhoneIcon sx={{ fontSize: 18, mr: 0.5 }} />
-            (617) 390 7248
+             +1 412 926 8644
           </Box>
           <Box
             sx={{
