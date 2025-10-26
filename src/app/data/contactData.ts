@@ -11,7 +11,7 @@ export const contactMethods = [
       icon: Mail,
       title: "Email Support",
       items: [
-        { label: "Shipping & Tracking", value: "Scott@bionicsautoparts.com", type: "email" },
+        { label: "Shipping & Tracking", value: "parts@bionicsautoparts.com", type: "email" },
         { label: "Parts Inquiries", value: "parts@bionicsautoparts.com", type: "email" },
         { label: "General Support", value: "bionicsautoparts@usa.com", type: "email" },
         { label: "Technical Support", value: "john@bionicsautoparts.com", type: "email" },
@@ -21,8 +21,8 @@ export const contactMethods = [
       icon: Phone,
       title: "Phone Support",
       items: [
-        { label: "Main Line", value: "+1 617-390-7248", type: "phone" },
-        { label: "Parts Hotline", value: "+1 617-465-6087", type: "phone" },
+        { label: "Main Line", value: "+1 412 926 8644", type: "phone" },
+        { label: "Parts Hotline", value: "+1 412 926 8644", type: "phone" },
       ],
     },
   ]

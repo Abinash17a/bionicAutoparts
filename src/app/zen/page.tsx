@@ -28,16 +28,6 @@ const Admin = () => {
       setFetchInterval(setInterval(fetchData, 4 * 60 * 1000)); // Fetch every 4 minutes
     }
   }, []);
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "Approved":
-        return "bg-green-100 text-green-800 border-green-200"
-      case "Rejected":
-        return "bg-red-100 text-red-800 border-red-200"
-      default:
-        return "bg-yellow-100 text-yellow-800 border-yellow-200"
-    }
-  }
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();

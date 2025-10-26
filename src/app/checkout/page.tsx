@@ -377,11 +377,12 @@ export default function PaymentPage() {
     }
 
     // Check if Zip Code is empty
-    if (!formData.zipCode || formData.zipCode.trim() === '') {
-      validationErrors.push('Zip code is required.')
-    } else if (!/^\d{5}(-\d{4})?$/.test(formData.zipCode)) {
-      validationErrors.push('Zip code must be in valid format (e.g., 12345 or 12345-6789).')
-    }
+      if (!formData.zipCode || formData.zipCode.trim() === '') {
+          validationErrors.push('Zip code is required.');
+      } else if (!/^[A-Za-z0-9\s-]{3,10}$/.test(formData.zipCode)) {
+          validationErrors.push('Zip code must be alphanumeric (e.g., 123AB or A1B2C3).');
+      }
+
 
     // Check if Order ID exists in database
     if (formData.orderId && formData.orderId.length === 6 && orderData.length === 0) {
@@ -423,10 +424,13 @@ export default function PaymentPage() {
     }
 
     // Validate zip code
-    if (!formData.zipCode || !/^\d{5}(-\d{4})?$/.test(formData.zipCode)) {
-      toast.error('Please enter a valid 5-digit zip code.', { position: 'top-center', autoClose: 3000 })
-      return
-    }
+if (!formData.zipCode || !/^[A-Za-z0-9\s-]{3,10}$/.test(formData.zipCode)) {
+  toast.error('Please enter a valid alphanumeric zip code (e.g., 123AB or A1B2C3).', {
+    position: 'top-center',
+    autoClose: 3000
+  });
+  return;
+}
 
     try {
       setisSubmited(true);

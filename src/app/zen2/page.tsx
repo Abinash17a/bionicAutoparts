@@ -158,12 +158,11 @@ const handleImageUpload = async (
     toast.success("Image uploaded to the Order!");
 
     // 2) Save the S3 URL into Firestore/SQL (if needed)
-    const updateRes = await fetch("/api/uploadImage", {
+    const updateRes = await fetch("/api/uploadImagev2", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id: submissionId, imageUrl }),
     });
-
     const updateData = await updateRes.json();
     if (!updateRes.ok) {
       throw new Error(updateData.error || "Failed to update submission with image URL");
