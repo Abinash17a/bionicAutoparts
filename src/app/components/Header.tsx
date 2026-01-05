@@ -115,7 +115,7 @@ export default function Header() {
               >
                 <Image
                   src="/logo1.png"
-                  alt="Bionics Autoparts Logo"
+                  alt="Nationwide Used Auto Parts Logo"
                   width={64}
                   height={64}
                   style={{ marginRight: 18, borderRadius: "50%", background: "#fff" }}
@@ -133,7 +133,7 @@ export default function Header() {
                     textDecoration: "none",
                   }}
                 >
-                  Bionics Autoparts
+                  Nationwide Used Auto Parts
                 </Typography>
               </Box>
             </Link>
@@ -219,7 +219,7 @@ export default function Header() {
                   textDecoration: "none",
                 }}
               >
-                Bionics Autoparts
+                Nationwide Used Auto Parts
               </Typography>
               <IconButton onClick={handleDrawerToggle} sx={{ color: "#333" }}>
                 <CloseIcon />

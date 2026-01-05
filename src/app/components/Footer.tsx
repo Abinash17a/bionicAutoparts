@@ -35,7 +35,7 @@ export default function Footer() {
                 className="rounded-full mr-3 md:mr-4"
               />
               <div>
-                <h2 className="text-xl md:text-2xl font-bold text-white mb-1">Bionics Auto Parts</h2>
+                <h2 className="text-xl md:text-2xl font-bold text-white mb-1">Nationwide Used Auto Parts</h2>
                 <p className="text-gray-300 text-xs md:text-sm">Quality Parts Since 2015</p>
               </div>
             </div>
@@ -115,7 +115,7 @@ export default function Footer() {
             <h3 className="text-base md:text-lg font-semibold mb-3 md:mb-4 text-white">Email</h3>
             <div>
               <ClickToRevealEmail
-                email="parts@bionicsautoparts.com"
+                email="parts@nationwideusedautoparts.com"
                 label="Click to reveal email"
                 className="text-gray-400 hover:text-white transition-colors text-sm md:text-base cursor-pointer"
               />
@@ -127,7 +127,7 @@ export default function Footer() {
         <div className="border-t border-gray-700 pt-4 md:pt-8 mt-6 md:mt-8">
           <div className="text-center">
             <p className="text-gray-300 text-xs md:text-sm">
-              &copy; {new Date().getFullYear()} Bionics Auto Parts. All rights reserved.
+              &copy; {new Date().getFullYear()} Nationwide Used Auto Parts. All rights reserved.
             </p>
           </div>
         </div>

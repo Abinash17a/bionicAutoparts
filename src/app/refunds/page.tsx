@@ -14,7 +14,7 @@ export default function Refunds() {
             As a part of our money-back guarantee, we want you to be completely satisfied with your purchase. If you wish to return a part, please follow the return policy guidelines below.
           </p>
           <p className="text-xl mb-2">
-            Email <ObfuscatedEmail className="text-blue-600 underline">parts@bionicsautoparts.com</ObfuscatedEmail> or call <a href="tel:16173907248" className="text-blue-600 underline">(617) 390-7248</a> Monday through Friday, 8:00 a.m. to 5:00 p.m. Eastern Time to request a return authorization (RA) number. We cannot process returns that do not include an RA number.
+            Email <ObfuscatedEmail className="text-blue-600 underline">parts@Nationwide Used Auto Parts.com</ObfuscatedEmail> or call <a href="tel:16173907248" className="text-blue-600 underline">(617) 390-7248</a> Monday through Friday, 8:00 a.m. to 5:00 p.m. Eastern Time to request a return authorization (RA) number. We cannot process returns that do not include an RA number.
           </p>
         </section>
 
@@ -41,21 +41,21 @@ export default function Refunds() {
             If you received an incorrect or defective part, you may return it for an exchange or replacement. Please contact Customer Service to explain the problem. We will create a new order for the part and issue an RA for the original part.
           </p>
           <p className="text-xl mb-2">
-            BionicsAutoParts will ship the replacement part as soon as freight charges have been paid for the returned part and the part is on its way back to us.
+            Nationwide Used Auto Parts will ship the replacement part as soon as freight charges have been paid for the returned part and the part is on its way back to us.
           </p>
         </section>
 
         <section>
           <h2 className="text-xl font-semibold mb-2">Refused Shipment or Failed Delivery</h2>
           <p className="text-xl mb-2">
-            If you have refused delivery of your shipment, please contact Customer Service immediately at <a href="tel:16173907248" className="text-blue-600 underline">(617) 390-7248</a>. Shipped items that are either refused by the customer or are unable to be delivered due to continual failed delivery attempts will be returned to BionicsAutoParts, and you will be credited the amount of the sale, not including shipping and handling. Please allow up to 14 business days for a credit to be issued. It is your responsibility to make immediate and adequate arrangements with the shipping company to accept a shipment in the event of a failed delivery.
+            If you have refused delivery of your shipment, please contact Customer Service immediately at <a href="tel:16173907248" className="text-blue-600 underline">(617) 390-7248</a>. Shipped items that are either refused by the customer or are unable to be delivered due to continual failed delivery attempts will be returned to Nationwide Used Auto Parts, and you will be credited the amount of the sale, not including shipping and handling. Please allow up to 14 business days for a credit to be issued. It is your responsibility to make immediate and adequate arrangements with the shipping company to accept a shipment in the event of a failed delivery.
           </p>
         </section>
 
         <section>
-          <h2 className="text-xl font-semibold mb-2">BionicsAutoParts Discretion</h2>
+          <h2 className="text-xl font-semibold mb-2">Nationwide Used Auto Parts Discretion</h2>
           <p className="text-xl mb-2">
-            BionicsAutoParts reserves the right to deny any exchange or return request. Please do not install damaged or incorrectly shipped items, as doing so will void our return policy. Any parts that have been modified, installed, or damaged in any way by the customer may result in denial of a refund and/or exchange request.
+            Nationwide Used Auto Parts reserves the right to deny any exchange or return request. Please do not install damaged or incorrectly shipped items, as doing so will void our return policy. Any parts that have been modified, installed, or damaged in any way by the customer may result in denial of a refund and/or exchange request.
           </p>
           <p className="text-xl mb-2">
             Customer Service will provide you with the shipping address to send the returned item. You must include the RA number on the shipping label.
@@ -73,7 +73,7 @@ export default function Refunds() {
             Refunds will be issued once we have received, inspected, and processed the part(s). Original shipping charges will be deducted from the refund amount. Exceptions will apply for parts that were received damaged or stocked incorrectly.
           </p>
           <p className="text-xl mb-2">
-            All refunds will be processed once merchandise has been returned to BionicsAutoParts. Please allow 5-7 business days for the refund to be posted to your account.
+            All refunds will be processed once merchandise has been returned to Nationwide Used Auto Parts. Please allow 5-7 business days for the refund to be posted to your account.
           </p>
         </section>
       </div>

@@ -12,7 +12,7 @@ import { LoadingProvider } from "./context/LoadingContext";
 import LoadingWrapper from "./components/LoadingWrapper";
 
 export const metadata: Metadata = {
-  title: "Bionics Autoparts",
+  title: "Nationwide Used Auto Parts",
   icons: {
     icon: "/favicon.png",
   },
@@ -26,11 +26,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <title>Nationwide Salvage Yards | Affordable Used Auto Parts Online - Bionics Auto Parts</title>
-        <meta name="description" content="Find top-quality used auto parts at unbeatable prices with Bionics Auto Parts! Serving all 50 U.S. states, we offer affordable recycled car parts, rare components, and nationwide shipping. Shop online for sustainable, budget-friendly solutions today." />
-        <meta name="keywords" content="nationwide salvage yards, used auto parts online, affordable car parts, recycled auto parts, eco-friendly car parts, salvage yards near me, car parts for all states, rare auto parts, Bionics Auto Parts, sustainable car repair solutions" />
+        <title>Nationwide Salvage Yards | Affordable Used Auto Parts Online - Nationwide Used Auto Parts</title>
+        <meta name="description" content="Find top-quality used auto parts at unbeatable prices with Nationwide Used Auto Parts! Serving all 50 U.S. states, we offer affordable recycled car parts, rare components, and nationwide shipping. Shop online for sustainable, budget-friendly solutions today." />
+        <meta name="keywords" content="nationwide salvage yards, used auto parts online, affordable car parts, recycled auto parts, eco-friendly car parts, salvage yards near me, car parts for all states, rare auto parts, Nationwide Used Auto Parts, sustainable car repair solutions" />
         <meta name="robots" content="index, follow" />
-        <meta name="author" content="Bionics Auto Parts" />
+        <meta name="author" content="Nationwide Used Auto Parts" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
         <script async src="https://www.googletagmanager.com/gtag/js?id=AW-16746690398"></script>
