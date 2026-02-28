@@ -202,7 +202,7 @@ export default function Home() {
         <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} closeOnClick pauseOnHover draggable />
         <div className="w-full relative">
           <Image
-            src="/carouselImages/herosectiono.jpg" // Random image from picsum.photos
+            src="/carouselImages/herosectiono.jpg"
             alt="Random Background"
             fill
             style={{ objectFit: 'cover' }}

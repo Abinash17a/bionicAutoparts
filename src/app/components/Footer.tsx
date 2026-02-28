@@ -115,7 +115,7 @@ export default function Footer() {
             <h3 className="text-base md:text-lg font-semibold mb-3 md:mb-4 text-white">Email</h3>
             <div>
               <ClickToRevealEmail
-                email="parts@nationwideusedautoparts.com"
+                email="Parts@bionicsautoparts.com"
                 label="Click to reveal email"
                 className="text-gray-400 hover:text-white transition-colors text-sm md:text-base cursor-pointer"
               />

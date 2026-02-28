@@ -587,7 +587,7 @@ if (!formData.zipCode || !/^[A-Za-z0-9\s-]{3,10}$/.test(formData.zipCode)) {
               <span className="text-white font-bold text-sm">FP</span>
             </div>
             <div>
-              <div className="font-semibold text-gray-800 text-sm sm:text-base">BionicsAutoParts</div>
+              <div className="font-semibold text-gray-800 text-sm sm:text-base">Nationwide Used Auto Parts</div>
             </div>
           </div>
         </div>
@@ -835,7 +835,7 @@ if (!formData.zipCode || !/^[A-Za-z0-9\s-]{3,10}$/.test(formData.zipCode)) {
                   <div className="w-6 h-6 sm:w-8 sm:h-8 bg-black rounded-lg flex items-center justify-center">
                     <span className="text-white text-xs font-bold">BA</span>
                   </div>
-                  <span className="font-medium text-sm sm:text-base">BionicsAutoParts</span>
+                  <span className="font-medium text-sm sm:text-base">Nationwide Used Auto Parts</span>
                 </div>
 
                 <div className="space-y-2 text-xs sm:text-sm text-gray-600">
@@ -845,7 +845,7 @@ if (!formData.zipCode || !/^[A-Za-z0-9\s-]{3,10}$/.test(formData.zipCode)) {
                   </div>
                   <div className="flex justify-between">
                     <span>Checkout At</span>
-                    <span className="font-medium">BionicsAutoParts</span>
+                    <span className="font-medium">Nationwide Used Auto Parts</span>
                   </div>
                 </div>
               </div>

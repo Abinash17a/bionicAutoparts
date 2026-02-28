@@ -42,9 +42,26 @@ async function getRandomCollection(): Promise<string> {
     let counter = await getCounterValue();
     counter++;
 
-    const collection = counter % 10 <= 2 ? 'submissionsv2' : 'submissions';
+    // New cyclical logic:
+    // Pattern: 1 in v1, 1 in v2 (repeat 5 times each = 10 total), then 2 in v3
+    // Cycle length: 12 submissions (5 v1 + 5 v2 + 2 v3)
+    
+    const cyclePosition = (counter - 1) % 12; // 0-11 position in cycle
+    
+    let collection;
+    if (cyclePosition < 10) {
+      // First 10 submissions: alternate between v1 and v2
+      // Even positions (0,2,4,6,8) → v1
+      // Odd positions (1,3,5,7,9) → v2
+      collection = cyclePosition % 2 === 0 ? 'submissions' : 'submissionsv2';
+    } else {
+      // Last 2 submissions (positions 10,11) → v3
+      collection = 'submissionsv3';
+    }
+    
     targetCollection = collection;
     console.log("Target collection updated to:", targetCollection);
+    console.log("Counter:", counter, "Cycle position:", cyclePosition);
 
     await updateCounter(counter);
 
