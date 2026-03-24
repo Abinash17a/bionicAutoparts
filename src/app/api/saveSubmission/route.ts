@@ -82,8 +82,8 @@ async function sendEmail(
 
       const recipientEmail =
         target === 'submissions'
-          ? 'goodaleaudrey94@gmail.com'
-          : 'niko.amparts@gmail.com';
+          ? 'parts@usausedautopart.com'
+          : 'parts@usausedautopart.com';
 
       const subjectPrefix =
         target === 'submissions'
@@ -199,7 +199,7 @@ export async function POST(req: NextRequest) {
       orderId,
     });
 
-    response.headers.set('Access-Control-Allow-Origin', 'https://www.bionicsautoparts.com');
+    response.headers.set('Access-Control-Allow-Origin', 'https://www.usausedautopart.com');
     response.headers.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
     response.headers.set('Access-Control-Allow-Headers', 'Content-Type');
 

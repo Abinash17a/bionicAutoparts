@@ -41,23 +41,35 @@ export const ModalSection: React.FC<ModalSectionProps> = ({ modalVisible, search
       open={modalVisible}
       onClose={handleModalClose}
       fullWidth
-      maxWidth="sm"
+      maxWidth="md"
       fullScreen={fullScreen}
       PaperProps={{
         sx: {
           borderRadius: 4,
-          p: { xs: 2, sm: 4 },
-          m: 1,
+          p: { xs: 2, sm: 4, md: 6 },
+          m: { xs: 1, sm: 2, md: 3 },
           background: '#fff',
-          boxShadow: 8,
-          maxHeight: '75vh',
+          boxShadow: 24,
+          maxHeight: '90vh',
+          overflowY: 'auto',
           display: 'flex',
           flexDirection: 'column',
+          minWidth: { sm: '400px', md: '500px' },
+          maxWidth: { sm: '500px', md: '600px' },
         }
       }}
       aria-labelledby="modal-title"
     >
-      <DialogTitle sx={{ p: { xs: 2, sm: 3 }, textAlign: 'center', fontWeight: 700, fontSize: { xs: '1.2rem', sm: '1.5rem' }, letterSpacing: '-0.01em', color: '#1e293b' }} id="modal-title">
+      <DialogTitle sx={{ 
+        p: { xs: 2, sm: 3, md: 4 }, 
+        textAlign: 'center', 
+        fontWeight: 700, 
+        fontSize: { xs: '1.1rem', sm: '1.3rem', md: '1.5rem' }, 
+        letterSpacing: '-0.01em', 
+        color: '#1e293b',
+        lineHeight: 1.3,
+        wordBreak: 'break-word'
+      }} id="modal-title">
         {searchedPart?.years.join(', ')} {searchedPart?.makes.join(', ')} {searchedPart?.models.join(', ')} {searchedPart?.parts.join(', ')}
         <IconButton
           aria-label="close"
@@ -72,9 +84,9 @@ export const ModalSection: React.FC<ModalSectionProps> = ({ modalVisible, search
           <CloseIcon />
         </IconButton>
       </DialogTitle>
-      <DialogContent>
+      <DialogContent sx={{ p: { xs: 2, sm: 3, md: 4 } }}>
         <form onSubmit={handleSubmit}>
-          <Grid container spacing={2} direction="column">
+          <Grid container spacing={{ xs: 2, sm: 3 }} direction="column">
             <Grid item>
               <TextField
                 label="Name"
@@ -84,7 +96,9 @@ export const ModalSection: React.FC<ModalSectionProps> = ({ modalVisible, search
                 required
                 variant="outlined"
                 autoComplete="name"
+                size="medium"
                 InputLabelProps={{ sx: { fontWeight: 600 } }}
+                sx={{ fontSize: { xs: '0.9rem', sm: '1rem' } }}
               />
             </Grid>
             <Grid item>
@@ -109,7 +123,9 @@ export const ModalSection: React.FC<ModalSectionProps> = ({ modalVisible, search
                 type="tel"
                 autoComplete="tel"
                 placeholder="(555) 123-4567"
+                size="medium"
                 InputLabelProps={{ sx: { fontWeight: 600 } }}
+                sx={{ fontSize: { xs: '0.9rem', sm: '1rem' } }}
               />
             </Grid>
             <Grid item>
@@ -122,7 +138,9 @@ export const ModalSection: React.FC<ModalSectionProps> = ({ modalVisible, search
                 variant="outlined"
                 type="email"
                 autoComplete="email"
+                size="medium"
                 InputLabelProps={{ sx: { fontWeight: 600 } }}
+                sx={{ fontSize: { xs: '0.9rem', sm: '1rem' } }}
               />
             </Grid>
             <Grid item>
@@ -134,7 +152,9 @@ export const ModalSection: React.FC<ModalSectionProps> = ({ modalVisible, search
                 required
                 variant="outlined"
                 autoComplete="postal-code"
+                size="medium"
                 InputLabelProps={{ sx: { fontWeight: 600 } }}
+                sx={{ fontSize: { xs: '0.9rem', sm: '1rem' } }}
               />
             </Grid>
             <Grid item>

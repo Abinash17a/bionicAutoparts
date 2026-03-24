@@ -61,7 +61,7 @@ export default function Header() {
         <Box sx={{ display: "flex", alignItems: "center", gap: { xs: 4, md: 8 } }}>
           <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
             <PhoneIcon sx={{ fontSize: 18, mr: 0.5 }} />
-             +1 412 926 8644
+             +1 617 516 3140
           </Box>
           <Box
             sx={{
@@ -71,7 +71,7 @@ export default function Header() {
             }}
           >
             <ClickToRevealEmail
-              email="Parts@bionicsautoparts.com"
+              email="Parts@usausedautopart.com"
               label="Click to reveal email"
               className="inline-flex items-center text-white hover:text-cyan-300 hover:scale-105 transition-all duration-300 cursor-pointer"
             />
@@ -115,7 +115,7 @@ export default function Header() {
               >
                 <Image
                   src="/logo1.png"
-                  alt="Nationwide Used Auto Parts Logo"
+                  alt="USA Used Auto Parts Logo"
                   width={64}
                   height={64}
                   style={{ marginRight: 18, borderRadius: "50%", background: "#fff" }}
@@ -133,7 +133,7 @@ export default function Header() {
                     textDecoration: "none",
                   }}
                 >
-                  Nationwide Used Auto Parts
+                  USA Used Auto Parts
                 </Typography>
               </Box>
             </Link>

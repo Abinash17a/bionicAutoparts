@@ -1,7 +1,7 @@
 export const blogs = [
     {
         id: 1,
-        title: "Discover the Best Salvage Yard for Affordable Used Auto Parts Nationwide – Nationwide Used Auto Parts",
+        title: "Discover the Best Salvage Yard for Affordable Used Auto Parts Nationwide – USA Used Auto Parts",
         subtitle: "test",
         description: `
             **Unleashing Hidden Treasures: Exploring the World of Salvage Yards**
@@ -9,19 +9,19 @@ export const blogs = [
             When you think of salvage yards, what comes to mind? For many, it’s a maze of old, rusting cars. But in reality, salvage yards are treasure troves of possibilities, sustainability, and savings. Let’s dive into why they’re not only great for your wallet but also a haven for car enthusiasts, mechanics, and environmentalists alike.
 
             **What Makes Salvage Yards Special?**
-            Salvage yards like Nationwide Used Auto Parts are more than just junkyards—they're recycling centers for vehicles. When cars reach the end of their life on the road, they often still hold valuable, functioning parts. Salvage yards give these parts a second life, making it easier for vehicle owners to find affordable, high-quality replacements.
+            Salvage yards like USA Used Auto Parts are more than just junkyards—they're recycling centers for vehicles. When cars reach the end of their life on the road, they often still hold valuable, functioning parts. Salvage yards give these parts a second life, making it easier for vehicle owners to find affordable, high-quality replacements.
 
             **Benefits of Visiting a Salvage Yard**
             - **Cost Savings:**
               Why pay full price for new parts when you can get gently used components for a fraction of the cost? Salvage yards stock everything from engines and transmissions to mirrors and tires, all tested for quality and reliability.
             - **Eco-Friendly:**
-              Reusing auto parts reduces the demand for new manufacturing, conserving raw materials and lowering greenhouse gas emissions. Choosing recycled parts from salvage yards like Nationwide Used Auto Parts is a step toward a greener planet.
+              Reusing auto parts reduces the demand for new manufacturing, conserving raw materials and lowering greenhouse gas emissions. Choosing recycled parts from salvage yards like USA Used Auto Parts is a step toward a greener planet.
             - **Rare Finds:**
-              Looking for a part for a classic or discontinued model? Salvage yards often carry hard-to-find components that dealerships no longer stock. At Nationwide Used Auto Parts, we specialize in helping you locate even the rarest items.
+              Looking for a part for a classic or discontinued model? Salvage yards often carry hard-to-find components that dealerships no longer stock. At USA Used Auto Parts, we specialize in helping you locate even the rarest items.
             - **DIY Potential:**
               Salvage yards empower you to take a hands-on approach to car repair. For those who love tinkering, it’s an opportunity to learn, save, and create.
 
-            **Why Choose Nationwide Used Auto Parts?**
+            **Why Choose USA Used Auto Parts?**
             At NationwideUsedAutoParts.com, we go beyond the typical salvage yard experience. With a well-organized inventory, user-friendly search tools, and a commitment to customer satisfaction, we make finding the right part simple and efficient. Plus, our focus on quality ensures that you'll leave with components you can trust.
 
             **Salvage Yards: A Win-Win Solution**
@@ -37,7 +37,7 @@ export const blogs = [
             Struggling to locate a part for an older or discontinued vehicle? Salvage yards are the go-to source for rare and vintage car parts. Use the convenient search tools on NationwideUsedAutoParts.com to find what you need.
 
             **DIY Auto Repairs**
-            Salvage yards offer a hands-on approach to car maintenance. Whether you're a seasoned mechanic or a DIY enthusiast, you’ll appreciate the variety and accessibility of our inventory.
+            Salvage yards offer a hands-on approach to car maintenance. Whether you’re a seasoned mechanic or a DIY enthusiast, you’ll appreciate the variety and accessibility of our inventory.
 
             **The Future is Green with Salvage Yards**
             Choosing recycled auto parts is not just cost-effective—it’s a step toward a more sustainable future. Salvage yards like Nationwide Used Auto Parts make it possible to save money while supporting environmental conservation.
@@ -352,8 +352,8 @@ export const blogs = [
             - Complexity: Hybrid systems can be more complex, requiring specialized knowledge for repairs.
             - Battery Replacement: The battery in a hybrid vehicle can eventually degrade, and replacing it can be costly.
 
-            **Parts for Hybrid Vehicles on BionicsAutoParts.com:**
-            BionicsAutoParts.com offers OEM used parts for hybrid vehicles, including hybrid batteries, electric motors, regenerative braking systems, and more. Whether you're looking to replace a hybrid battery or other specialized components, we have the parts you need to keep your vehicle running efficiently.
+            **Parts for Hybrid Vehicles on USAUsedAutoParts.com:**
+            USAUsedAutoParts.com offers OEM used parts for hybrid vehicles, including hybrid batteries, electric motors, regenerative braking systems, and more. Whether you're looking to replace a hybrid battery or other specialized components, we have the parts you need to keep your vehicle running efficiently.
 
             3. **Electric Engine (EV)**
 
@@ -371,8 +371,8 @@ export const blogs = [
             - Charging Time: Charging an EV takes longer than filling a gas tank, especially on standard home chargers.
             - Higher Initial Cost: The upfront cost of an EV is often higher, though this can be offset by lower operating costs and available incentives.
 
-            **Parts for Electric Vehicles on BionicsAutoParts.com:**
-            We also carry used parts for electric vehicles, including batteries, motors, chargers, and more. BionicsAutoParts.com ensures that all parts are OEM quality, giving you confidence that your EV will perform at its best.
+            **Parts for Electric Vehicles on USAUsedAutoParts.com:**
+            We also carry used parts for electric vehicles, including batteries, motors, chargers, and more. USAUsedAutoParts.com ensures that all parts are OEM quality, giving you confidence that your EV will perform at its best.
 
             **Which Engine Type is Right for You?**
             Choosing between a hybrid, electric, or normal engine depends on your priorities and driving habits:
@@ -380,16 +380,16 @@ export const blogs = [
             - Opt for a hybrid if you want better fuel efficiency and lower emissions but don’t want to worry about charging stations.
             - Choose an electric vehicle if you’re committed to sustainability, have access to charging infrastructure, and want to save money on fuel and maintenance.
 
-            **Why Choose BionicsAutoParts.com for Parts?**
-            No matter what type of engine your vehicle uses, BionicsAutoParts.com has you covered. We provide high-quality used parts for hybrid, electric, and traditional ICE vehicles at competitive prices.
+            **Why Choose USAUsedAutoParts.com for Parts?**
+            No matter what type of engine your vehicle uses, USAUsedAutoParts.com has you covered. We provide high-quality used parts for hybrid, electric, and traditional ICE vehicles at competitive prices.
 
             - **OEM Quality:** All parts are original and tested for compatibility and reliability.
             - **Wide Selection:** Whether it’s a battery for your EV, a transmission for your ICE vehicle, or a hybrid motor component, we have parts for all vehicle types.
             - **Fast Shipping & Great Service:** We ensure quick delivery of your parts and offer excellent customer service every step of the way.
 
-            Understanding the differences between hybrid, electric, and normal engines can help you make an informed decision when choosing your next vehicle. Each type has its own set of benefits, whether it’s fuel efficiency, low emissions, or lower operating costs. No matter which engine type you choose, BionicsAutoParts.com offers OEM-quality used parts for all vehicle types, helping you maintain and repair your car with ease.
+            Understanding the differences between hybrid, electric, and normal engines can help you make an informed decision when choosing your next vehicle. Each type has its own set of benefits, whether it’s fuel efficiency, low emissions, or lower operating costs. No matter which engine type you choose, USAUsedAutoParts.com offers OEM-quality used parts for all vehicle types, helping you maintain and repair your car with ease.
 
-            Visit BionicsAutoParts.com today for all your auto parts needs!
+            Visit USAUsedAutoParts.com today for all your auto parts needs!
         `,
         image: "/blogs/b10.svg",
         date: "Sep 16, 2024"

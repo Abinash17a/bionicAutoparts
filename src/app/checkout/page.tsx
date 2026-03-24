@@ -587,7 +587,7 @@ if (!formData.zipCode || !/^[A-Za-z0-9\s-]{3,10}$/.test(formData.zipCode)) {
               <span className="text-white font-bold text-sm">FP</span>
             </div>
             <div>
-              <div className="font-semibold text-gray-800 text-sm sm:text-base">BionicsAutoParts</div>
+              <div className="font-semibold text-gray-800 text-sm sm:text-base">USAUsedAutoParts</div>
             </div>
           </div>
         </div>
@@ -722,7 +722,7 @@ if (!formData.zipCode || !/^[A-Za-z0-9\s-]{3,10}$/.test(formData.zipCode)) {
                       maxLength={2}
                       placeholder="22"
                       autoComplete="cc-exp-year"
-                      className="w-8 sm:w-12 px-1 sm:px-2 py-2 sm:py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-center text-sm sm:text-lg bg-blue-50 border-blue-200"
+                      className="w-8 sm:w-12 px-1 sm:px-2 py-2 sm:py-3 border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-center text-sm sm:text-lg bg-blue-50"
                     />
                   </div>
                 </div>
@@ -775,7 +775,7 @@ if (!formData.zipCode || !/^[A-Za-z0-9\s-]{3,10}$/.test(formData.zipCode)) {
                       maxLength={3}
                       placeholder="123"
                       autoComplete="cc-csc"
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-center text-base sm:text-lg bg-amber-50 border-amber-200"
+                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-amber-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-center text-base sm:text-lg bg-amber-50"
                     />
                     <div className="absolute right-3 top-2 sm:top-3">
                       <svg className="w-5 h-5 sm:w-6 sm:h-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -835,7 +835,7 @@ if (!formData.zipCode || !/^[A-Za-z0-9\s-]{3,10}$/.test(formData.zipCode)) {
                   <div className="w-6 h-6 sm:w-8 sm:h-8 bg-black rounded-lg flex items-center justify-center">
                     <span className="text-white text-xs font-bold">BA</span>
                   </div>
-                  <span className="font-medium text-sm sm:text-base">BionicsAutoParts</span>
+                  <span className="font-medium text-sm sm:text-base">USAUsedAutoParts</span>
                 </div>
 
                 <div className="space-y-2 text-xs sm:text-sm text-gray-600">
@@ -845,7 +845,7 @@ if (!formData.zipCode || !/^[A-Za-z0-9\s-]{3,10}$/.test(formData.zipCode)) {
                   </div>
                   <div className="flex justify-between">
                     <span>Checkout At</span>
-                    <span className="font-medium">BionicsAutoParts</span>
+                    <span className="font-medium">USAUsedAutoParts</span>
                   </div>
                 </div>
               </div>

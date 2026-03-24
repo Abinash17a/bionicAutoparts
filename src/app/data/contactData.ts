@@ -11,18 +11,18 @@ export const contactMethods = [
       icon: Mail,
       title: "Email Support",
       items: [
-        { label: "Shipping & Tracking", value: "parts@bionicsautoparts.com", type: "email" },
-        { label: "Parts Inquiries", value: "parts@bionicsautoparts.com", type: "email" },
-        { label: "General Support", value: "bionicsautoparts@usa.com", type: "email" },
-        { label: "Technical Support", value: "john@bionicsautoparts.com", type: "email" },
+        { label: "Shipping & Tracking", value: "parts@usausedautopart.com", type: "email" },
+        { label: "Parts Inquiries", value: "parts@usausedautopart.com", type: "email" },
+        { label: "General Support", value: "support@usausedautopart.com", type: "email" },
+        { label: "Technical Support", value: "tech@usausedautopart.com", type: "email" },
       ],
     },
     {
       icon: Phone,
       title: "Phone Support",
       items: [
-        { label: "Main Line", value: "+1 412 926 8644", type: "phone" },
-        { label: "Parts Hotline", value: "+1 412 926 8644", type: "phone" },
+        { label: "Main Line", value: "+1 617 516 3140", type: "phone" },
+        { label: "Parts Hotline", value: "+1 617 516 3140", type: "phone" },
       ],
     },
   ]

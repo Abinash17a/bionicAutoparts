@@ -35,7 +35,7 @@ export default function Footer() {
                 className="rounded-full mr-3 md:mr-4"
               />
               <div>
-                <h2 className="text-xl md:text-2xl font-bold text-white mb-1">Nationwide Used Auto Parts</h2>
+                <h2 className="text-xl md:text-2xl font-bold text-white mb-1">USA Used Auto Parts</h2>
                 <p className="text-gray-300 text-xs md:text-sm">Quality Parts Since 2015</p>
               </div>
             </div>
@@ -97,7 +97,7 @@ export default function Footer() {
             <div className="space-y-2 md:space-y-3">
               <div>
                 <p className="text-gray-300 text-xs md:text-sm mb-1">Phone</p>
-                <p className="text-white text-sm md:text-base">+1 412 926 8644</p>
+                <p className="text-white text-sm md:text-base">+1 617 516 3140</p>
               </div>
 
               <div>
@@ -115,7 +115,7 @@ export default function Footer() {
             <h3 className="text-base md:text-lg font-semibold mb-3 md:mb-4 text-white">Email</h3>
             <div>
               <ClickToRevealEmail
-                email="parts@nationwideusedautoparts.com"
+                email="parts@usausedautopart.com"
                 label="Click to reveal email"
                 className="text-gray-400 hover:text-white transition-colors text-sm md:text-base cursor-pointer"
               />
@@ -127,7 +127,7 @@ export default function Footer() {
         <div className="border-t border-gray-700 pt-4 md:pt-8 mt-6 md:mt-8">
           <div className="text-center">
             <p className="text-gray-300 text-xs md:text-sm">
-              &copy; {new Date().getFullYear()} Nationwide Used Auto Parts. All rights reserved.
+              &copy; {new Date().getFullYear()} USA Used Auto Parts. All rights reserved.
             </p>
           </div>
         </div>

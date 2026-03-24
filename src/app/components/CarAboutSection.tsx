@@ -83,10 +83,10 @@ const staticContent = [
     content: [
       {
         icon: FaPhoneAlt,
-        text: "Contact us at +1 412 926 8644, email ",
+        text: "Contact us at +1 617 516 3140, email ",
         emailComponent: (
           <ClickToRevealEmail
-            email="Bionicsautoparts@usa.com"
+            email="parts@usausedautopart.com"
             label="Click to reveal email"
             className="inline text-blue-600 hover:text-blue-800 transition-colors"
           />
