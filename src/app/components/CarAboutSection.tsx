@@ -12,7 +12,6 @@ import {
   FaPhoneAlt,
   FaUndoAlt,
   FaClock,
-  FaFilePdf,
   FaCalendarAlt,
   FaSearch,
   FaChevronRight,
@@ -149,18 +148,7 @@ export const CarAboutSection = () => {
               </div>
             ))}
 
-            {/* CTA Button */}
-            <div>
-              <a
-                href="/files/warranty.pdf"
-                className="inline-flex items-center bg-blue-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-600 transition"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <FaFilePdf className="mr-2 text-lg" />
-                Terms and Conditions
-              </a>
-            </div>
+            {/* CTA Button removed */}
           </div>
 
           {/* Right column - Images and Stats */}
