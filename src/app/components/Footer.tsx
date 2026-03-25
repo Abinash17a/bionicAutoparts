@@ -10,12 +10,13 @@ export default function Footer() {
       {/* Trust/Payment/Delivery Image Section */}
       <div className="bg-gray-100 py-4 md:py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <img
+          <Image
             src="/new-trust-payment-delivery.png"
             alt="Trusted Shopping, Payment Options, Delivery Partners"
             width={1200}
             height={100}
             className="w-full h-auto object-contain"
+            priority
           />
         </div>
       </div>
@@ -115,7 +116,7 @@ export default function Footer() {
             <h3 className="text-base md:text-lg font-semibold mb-3 md:mb-4 text-white">Email</h3>
             <div>
               <ClickToRevealEmail
-                email="parts@usausedautopart.com"
+                email="part@usausedautopart.com"
                 label="Click to reveal email"
                 className="text-gray-400 hover:text-white transition-colors text-sm md:text-base cursor-pointer"
               />

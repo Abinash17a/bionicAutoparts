@@ -11,8 +11,8 @@ export const contactMethods = [
       icon: Mail,
       title: "Email Support",
       items: [
-        { label: "Shipping & Tracking", value: "parts@usausedautopart.com", type: "email" },
-        { label: "Parts Inquiries", value: "parts@usausedautopart.com", type: "email" },
+        { label: "Shipping & Tracking", value: "part@usausedautopart.com", type: "email" },
+        { label: "Parts Inquiries", value: "part@usausedautopart.com", type: "email" },
         { label: "General Support", value: "support@usausedautopart.com", type: "email" },
         { label: "Technical Support", value: "tech@usausedautopart.com", type: "email" },
       ],

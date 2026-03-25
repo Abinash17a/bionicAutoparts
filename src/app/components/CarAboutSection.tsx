@@ -85,7 +85,7 @@ const staticContent = [
         text: "Contact us at +1 617 516 3140, email ",
         emailComponent: (
           <ClickToRevealEmail
-            email="parts@usausedautopart.com"
+            email="part@usausedautopart.com"
             label="Click to reveal email"
             className="inline text-blue-600 hover:text-blue-800 transition-colors"
           />

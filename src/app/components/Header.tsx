@@ -71,7 +71,7 @@ export default function Header() {
             }}
           >
             <ClickToRevealEmail
-              email="Parts@usausedautopart.com"
+              email="part@usausedautopart.com"
               label="Click to reveal email"
               className="inline-flex items-center text-white hover:text-cyan-300 hover:scale-105 transition-all duration-300 cursor-pointer"
             />
@@ -133,7 +133,7 @@ export default function Header() {
                     textDecoration: "none",
                   }}
                 >
-                  USA Used Auto Parts
+                  USA Used Auto Part
                 </Typography>
               </Box>
             </Link>

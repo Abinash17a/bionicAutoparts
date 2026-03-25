@@ -82,8 +82,8 @@ async function sendEmail(
 
       const recipientEmail =
         target === 'submissions'
-          ? 'parts@usausedautopart.com'
-          : 'parts@usausedautopart.com';
+          ? 'part@usausedautopart.com'
+          : 'part@usausedautopart.com';
 
       const subjectPrefix =
         target === 'submissions'

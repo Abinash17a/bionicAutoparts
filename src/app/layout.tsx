@@ -12,7 +12,7 @@ import { LoadingProvider } from "./context/LoadingContext";
 import LoadingWrapper from "./components/LoadingWrapper";
 
 export const metadata: Metadata = {
-  title: "USA Used Auto Parts",
+  title: "USA Used Auto Part",
   icons: {
     icon: "/favicon.png",
   },
