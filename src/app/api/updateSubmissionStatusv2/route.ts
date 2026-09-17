@@ -1,23 +1,28 @@
+// src/app/api/updateSubmissionStatusv2/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '../../lib/firebase';
-import { doc, updateDoc } from 'firebase/firestore';
+import { supabaseAdmin } from '@/lib/supabase/admin';
 
 export async function POST(req: NextRequest) {
-  const { id, status } = await req.json();
-
   try {
-    const docRef = doc(db, 'submissionsv2', id);
+    const { id, status } = await req.json();
 
-    // Update the status field
-    await updateDoc(docRef, {
-      status,
-    });
+    if (!id || !status) {
+      return NextResponse.json({ error: 'Missing submission ID or status' }, { status: 400 });
+    }
+
+    const { error } = await supabaseAdmin
+      .from('submissions_v2')
+      .update({ status })
+      .eq('id', id);
+
+    if (error) {
+      console.error('Error updating status in Supabase:', error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
 
     return NextResponse.json({ message: 'Status updated successfully!' });
-  } catch (error) {
-    console.error('Error updating status:------------------- ', error);
+  } catch (error: any) {
+    console.error('Error updating status:', error);
     return NextResponse.json({ error: 'Error updating status' }, { status: 500 });
   }
 }
-
-

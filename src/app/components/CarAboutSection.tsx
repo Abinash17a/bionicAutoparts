@@ -94,7 +94,7 @@ const staticContent = [
       },
       {
         icon: FaClock,
-        text: "Refunds are processed within 1-2 business days. However, credit card processing may take an additional 3-5 days.",
+        text: "Refund inspections are completed within 1-2 business days of return arrival. Financial institution posting takes an additional 3-5 business days (5-7 business days total cycle). Covered by our 6-Month Replacement Warranty on certified mechanical assemblies.",
       },
     ],
   },
@@ -137,11 +137,11 @@ export const CarAboutSection = () => {
                       <div className="text-blue-600 mt-1 mr-3">
                         <item.icon size={18} />
                       </div>
-                      <p className="text-gray-700 text-base">
+                      <div className="text-gray-700 text-base">
                         {item.text}
                         {item.emailComponent && item.emailComponent}
                         {item.textAfter && item.textAfter}
-                      </p>
+                      </div>
                     </div>
                   ))}
                 </div>

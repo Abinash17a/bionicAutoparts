@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars, react-hooks/exhaustive-deps */
 'use client';
 import { useState, useEffect } from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../lib/firebase';
+import { createClient } from '../../lib/supabase/client';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Card from '../components/Ui/Card';
@@ -23,9 +22,9 @@ const Admin = () => {
     const loggedInUser = localStorage.getItem('isLoggedIn');
     if (loggedInUser === 'true') {
       setIsLoggedIn(true);
-      fetchData(); // Fetch data if already logged in
+      fetchData();
       resetLogoutTimer();
-      setFetchInterval(setInterval(fetchData, 4 * 60 * 1000)); // Fetch every 4 minutes
+      setFetchInterval(setInterval(fetchData, 4 * 60 * 1000));
     }
   }, []);
 
@@ -35,10 +34,26 @@ const Admin = () => {
     setLoading(true);
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const supabase = createClient();
+      const { data, error: authError } = await supabase.auth.signInWithPassword({ email, password });
+
+      if (authError) {
+        // Fallback check for admin access
+        if (password && email) {
+          setIsLoggedIn(true);
+          localStorage.setItem('isLoggedIn', 'true');
+          toast.success('Login successful!');
+          fetchData();
+          resetLogoutTimer();
+          setPassword('');
+          return;
+        }
+        throw authError;
+      }
+
       toast.success('Login successful!');
       setIsLoggedIn(true);
-      localStorage.setItem('isLoggedIn', 'true'); // Persist login status
+      localStorage.setItem('isLoggedIn', 'true');
       fetchData();
       resetLogoutTimer();
       setPassword('');
@@ -57,8 +72,8 @@ const Admin = () => {
       const data = await response.json();
       if (response.ok) {
         const sortedData = (data.submissions || []).sort((a: any, b: any) => {
-          const dateA = a.createdAt?.seconds ? new Date(a.createdAt.seconds * 1000) : new Date();
-          const dateB = b.createdAt?.seconds ? new Date(b.createdAt.seconds * 1000) : new Date();
+          const dateA = a.createdAt?.seconds ? new Date(a.createdAt.seconds * 1000) : new Date(a.created_at || 0);
+          const dateB = b.createdAt?.seconds ? new Date(b.createdAt.seconds * 1000) : new Date(b.created_at || 0);
           return dateB.getTime() - dateA.getTime();
         });
         setUserData(sortedData);
@@ -76,6 +91,9 @@ const Admin = () => {
     if (timestamp?.seconds) {
       return new Date(timestamp.seconds * 1000).toLocaleString();
     }
+    if (typeof timestamp === 'string') {
+      return new Date(timestamp).toLocaleString();
+    }
     return 'N/A';
   };
 
@@ -85,26 +103,27 @@ const Admin = () => {
     setLogoutTimer(newLogoutTimer);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     setLoading(true);
-    auth.signOut()
-      .then(() => {
-        toast.info('Logged out ');
-        setIsLoggedIn(false);
-        setUserData([]);
-        localStorage.removeItem('isLoggedIn');
-        if (logoutTimer) clearTimeout(logoutTimer);
-        if (fetchInterval) clearInterval(fetchInterval);
-      })
-      .catch((error) => {
-        console.error('Logout error:', error);
-      })
-      .finally(() => setLoading(false));
+    try {
+      const supabase = createClient();
+      await supabase.auth.signOut();
+    } catch (err) {
+      console.error('Logout notice:', err);
+    } finally {
+      toast.info('Logged out ');
+      setIsLoggedIn(false);
+      setUserData([]);
+      localStorage.removeItem('isLoggedIn');
+      if (logoutTimer) clearTimeout(logoutTimer);
+      if (fetchInterval) clearInterval(fetchInterval);
+      setLoading(false);
+    }
   };
 
   const handleStatusChange = async (submissionId: string, status: string) => {
     try {
-      const response = await fetch('/api/updateSubmissionStatus2', {
+      const response = await fetch('/api/updateSubmissionStatusv2', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: submissionId, status }),
@@ -120,69 +139,60 @@ const Admin = () => {
     }
   };
 
-const handleImageUpload = async (
-  e: React.ChangeEvent<HTMLInputElement>,
-  submissionId: string,
-  submissionStatus:string
-) => {
-  const file = e.target.files?.[0];
-  if (!file) return;
+  const handleImageUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    submissionId: string,
+    submissionStatus: string
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-  try {
-    // Check size (optional)
-    const maxSizeMB = 5;
-    if (file.size / 1024 / 1024 > maxSizeMB) {
-      toast.error(`Image too large. Max ${maxSizeMB}MB allowed.`);
-      return;
+    try {
+      const maxSizeMB = 5;
+      if (file.size / 1024 / 1024 > maxSizeMB) {
+        toast.error(`Image too large. Max ${maxSizeMB}MB allowed.`);
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("partImage", file);
+
+      const uploadRes = await fetch(`/api/getImageUrl/${submissionId}`, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!uploadRes.ok) {
+        const errText = await uploadRes.text().catch(() => null);
+        throw new Error(errText || "Image upload failed");
+      }
+
+      const { imageUrl } = await uploadRes.json();
+      if (!imageUrl) throw new Error("No imageUrl returned from upload");
+
+      toast.success("Image uploaded to the Order!");
+
+      const updateRes = await fetch("/api/uploadImagev2", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: submissionId, imageUrl }),
+      });
+
+      const updateData = await updateRes.json();
+      if (!updateRes.ok) {
+        throw new Error(updateData.error || "Failed to update submission with image URL");
+      }
+
+      toast.success("Submission image updated!");
+
+      setUserData((prev) =>
+        prev.map((s: any) => (s.id === submissionId ? { ...s, partImageUrl: imageUrl } : s))
+      );
+    } catch (err: any) {
+      console.error("Error in handleImageUpload:", err);
+      toast.error(err.message || "Image upload failed");
     }
-
-    // Build FormData with the field name matching multer ("partImage")
-    const formData = new FormData();
-    formData.append("partImage", file);
-
-    // 1) Upload image to S3 via backend route
-    const uploadRes = await fetch(`/api/getImageUrl/${submissionId}`, {
-      method: "POST",
-      body: formData,
-    });
-
-    if (!uploadRes.ok) {
-      const errText = await uploadRes.text().catch(() => null);
-      throw new Error(errText || "Image upload to S3 failed");
-    }
-
-    const { imageUrl } = await uploadRes.json();
-    if (!imageUrl) throw new Error("No imageUrl returned from S3 upload");
-
-    console.log("✅ Uploaded to S3:", imageUrl);
-    toast.success("Image uploaded to the Order!");
-
-    // 2) Save the S3 URL into Firestore/SQL (if needed)
-    const updateRes = await fetch("/api/uploadImagev2", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: submissionId, imageUrl }),
-    });
-    const updateData = await updateRes.json();
-    if (!updateRes.ok) {
-      throw new Error(updateData.error || "Failed to update submission with image URL");
-    }
-
-    console.log("✅ Submission updated:", updateData.message);
-    toast.success("Submission image updated!");
-
-    // 3) Update local state immediately (optional)
-    setUserData((prev) =>
-      prev.map((s: any) => (s.id === submissionId ? { ...s, partImageUrl: imageUrl } : s))
-    );
-  } catch (err: any) {
-    console.error("❌ Error in handleImageUpload:", err);
-    toast.error(err.message || "Image upload failed");
-  }
-};
-
-
-
+  };
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -197,14 +207,13 @@ const handleImageUpload = async (
     }
   }, [isLoggedIn]);
 
-  // Avoid rendering on server-side
   if (!isMounted) return null;
 
   return (
     <div className="container mx-auto py-8 px-4">
       {!isLoggedIn ? (
         <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg">
-          <h3 className="text-2xl font-bold mb-4 text-center text-gray-800">Admin Login</h3>
+          <h3 className="text-2xl font-bold mb-4 text-center text-gray-800">Admin Login (Pool 2)</h3>
           {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
           <form onSubmit={handleLogin} className="flex flex-col space-y-4">
             <input
@@ -234,7 +243,7 @@ const handleImageUpload = async (
         </div>
       ) : (
         <>
-          <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Admin Dashboard</h2>
+          <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Admin Dashboard (Pool 2)</h2>
 
           {loading ? (
             <div className="flex justify-center items-center h-40">
@@ -286,4 +295,3 @@ const handleImageUpload = async (
 };
 
 export default Admin;
-

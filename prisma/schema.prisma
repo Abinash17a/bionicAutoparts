@@ -1,0 +1,323 @@
+// prisma/schema.prisma
+// USA Used Auto Parts - Normalized Inventory Database Schema
+// Phase 2A - Stage 2 Database Foundation
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// -----------------------------------------------------------------------------
+// CATEGORIES
+// High-level commercial part taxonomy (e.g. used-engines, used-transmissions)
+// -----------------------------------------------------------------------------
+model Category {
+  slug              String   @id // e.g. "used-engines", "used-transmissions"
+  title             String   // e.g. "Used OEM Engines & Motors"
+  shortTitle        String   // e.g. "Engines"
+  metaTitle         String
+  metaDescription   String
+  heroDescription   String
+  imageUrl          String
+  warrantySummary   String
+  inspectionDetails Json     // JSON array of inspection steps / criteria
+
+  parts             Part[]
+
+  @@map("categories")
+}
+
+// -----------------------------------------------------------------------------
+// MAKES
+// Automotive manufacturers (e.g. Toyota, Ford, Chevrolet)
+// -----------------------------------------------------------------------------
+model Make {
+  id      String   @id @default(cuid())
+  slug    String   @unique // e.g. "toyota", "ford", "chevy"
+  name    String   // e.g. "Toyota", "Ford", "Chevrolet"
+  logoUrl String?
+
+  models  Model[]
+
+  @@map("makes")
+}
+
+// -----------------------------------------------------------------------------
+// MODELS
+// Specific vehicle models belonging to a make (e.g. Camry, F-150, Silverado 1500)
+// -----------------------------------------------------------------------------
+model Model {
+  id     String @id @default(cuid())
+  makeId String
+  slug   String // e.g. "camry", "f-150"
+  name   String // e.g. "Camry", "F-150"
+
+  make     Make      @relation(fields: [makeId], references: [id], onDelete: Restrict)
+  vehicles Vehicle[]
+
+  @@unique([makeId, slug])
+  @@index([makeId, slug])
+  @@map("models")
+}
+
+// -----------------------------------------------------------------------------
+// VEHICLES
+// Normalized vehicle specification definition by year, model, trim, and codes
+// -----------------------------------------------------------------------------
+model Vehicle {
+  id               String  @id @default(cuid())
+  modelId          String
+  year             Int     // e.g. 2018
+  trim             String? // e.g. "LE", "XSE", "Lariat"
+  engineCode       String? // e.g. "A25A-FKS", "2.5L 4-Cyl"
+  transmissionCode String? // e.g. "Direct-Shift 8-Speed"
+
+  model    Model         @relation(fields: [modelId], references: [id], onDelete: Restrict)
+  fitments PartFitment[]
+
+  @@unique([modelId, year, trim, engineCode, transmissionCode])
+  @@index([modelId, year])
+  @@map("vehicles")
+}
+
+// -----------------------------------------------------------------------------
+// DONOR VEHICLES
+// Salvage yard / donor vehicle provenance, mileage verification, and VIN
+// -----------------------------------------------------------------------------
+model DonorVehicle {
+  id               String  @id @default(cuid())
+  vin              String  @unique // 17-character standard donor VIN
+  vehicleSummary   String  // e.g. "2018 Toyota Camry LE Sedan 4D"
+  mileageMiles     Int     // Machine-readable numeric mileage (e.g. 46210)
+  mileageFormatted String  // Display formatted (e.g. "46,210 verified miles")
+  runCondition     String  // e.g. "Run & Lot Tested - Smooth Idle"
+
+  parts            Part[]
+
+  @@map("donor_vehicles")
+}
+
+// -----------------------------------------------------------------------------
+// PARTS
+// Physical inventory units with stable public IDs, pricing, warranty, and stock
+// -----------------------------------------------------------------------------
+model Part {
+  // CRITICAL: ID preserves existing public SKU (e.g. "UAP-2018-TOY-CAM-ENG-01").
+  // Never replace with an auto-generated surrogate key.
+  id              String   @id
+  categorySlug    String
+  donorVehicleId  String?
+  partName        String   // e.g. "2018 Toyota Camry 2.5L 4-Cylinder Complete Engine Assembly"
+  condition       String   // e.g. "Used OEM"
+  price           Decimal  @db.Decimal(10, 2) // Machine-readable currency decimal
+  currency        String   @default("USD")
+  availability    String   // e.g. "In Stock"
+  warranty        String   // e.g. "6-Month Standard Replacement Warranty"
+  shipping        String   // e.g. "Freight delivery to commercial address or local terminal (3-5 business days)"
+  fitmentNotes    String
+  primaryImageUrl String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  category     Category          @relation(fields: [categorySlug], references: [slug], onDelete: Restrict)
+  donorVehicle DonorVehicle?     @relation(fields: [donorVehicleId], references: [id], onDelete: SetNull)
+  fitments     PartFitment[]
+  interchanges PartInterchange[]
+  images       PartImage[]
+
+  @@index([categorySlug])
+  @@index([availability])
+  @@index([categorySlug, availability])
+  @@map("parts")
+}
+
+// -----------------------------------------------------------------------------
+// PART FITMENTS
+// Many-to-many relationship linking parts to vehicle applications & year ranges
+// -----------------------------------------------------------------------------
+model PartFitment {
+  id        String  @id @default(cuid())
+  partId    String
+  vehicleId String
+  yearStart Int?    // Optional range start (e.g. 2018)
+  yearEnd   Int?    // Optional range end (e.g. 2022)
+  notes     String? // Compatibility notes
+
+  part    Part    @relation(fields: [partId], references: [id], onDelete: Cascade)
+  vehicle Vehicle @relation(fields: [vehicleId], references: [id], onDelete: Restrict)
+
+  @@unique([partId, vehicleId])
+  @@index([vehicleId])
+  @@index([partId])
+  @@index([yearStart, yearEnd])
+  @@map("part_fitments")
+}
+
+// -----------------------------------------------------------------------------
+// PART INTERCHANGES
+// Hollander Interchange and OEM cross-reference numbers
+// -----------------------------------------------------------------------------
+model PartInterchange {
+  id                String @id @default(cuid())
+  partId            String
+  interchangeType   String // e.g. "Hollander", "OEM", "Casting"
+  interchangeNumber String // e.g. "300-10492"
+
+  part Part @relation(fields: [partId], references: [id], onDelete: Cascade)
+
+  @@index([interchangeNumber])
+  @@index([partId])
+  @@map("part_interchanges")
+}
+
+// -----------------------------------------------------------------------------
+// PART IMAGES
+// Ordered gallery of actual part photos with alt text for SEO
+// -----------------------------------------------------------------------------
+model PartImage {
+  id           String @id @default(cuid())
+  partId       String
+  imageUrl     String
+  altText      String
+  displayOrder Int    @default(0)
+
+  part Part @relation(fields: [partId], references: [id], onDelete: Cascade)
+
+  @@index([partId, displayOrder])
+  @@map("part_images")
+}
+
+// -----------------------------------------------------------------------------
+// CONTACT MESSAGES
+// Inquiries submitted via /contact form
+// -----------------------------------------------------------------------------
+model ContactMessage {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name          String   @default("")
+  email         String   @default("")
+  phone         String   @default("")
+  year          String?  @default("")
+  make          String?  @default("")
+  model         String?  @default("")
+  partRequested String?  @default("") @map("part_requested")
+  vin           String?  @default("")
+  partNumber    String?  @default("") @map("part_number")
+  message       String?  @default("")
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  @@index([createdAt(sort: Desc)])
+  @@map("contact_messages")
+}
+
+// -----------------------------------------------------------------------------
+// SUBMISSIONS (Pool 1)
+// Main quote & part search inquiries
+// -----------------------------------------------------------------------------
+model Submission {
+  id                    String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  orderId               String   @map("order_id")
+  name                  String   @default("")
+  contact               String   @default("")
+  email                 String   @default("")
+  zipCode               String   @default("") @map("zip_code")
+  searchedPartFormatted String   @default("") @map("searched_part_formatted")
+  status                String   @default("Pending")
+  partImageUrl          String?  @map("part_image_url")
+  partImageUrls         Json?    @default("[]") @map("part_image_urls")
+  imageBase64           String?  @map("image_base64")
+  imageName             String?  @map("image_name")
+  createdAt             DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt             DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@index([orderId])
+  @@index([contact])
+  @@index([createdAt(sort: Desc)])
+  @@map("submissions")
+}
+
+// -----------------------------------------------------------------------------
+// SUBMISSIONS V2 (Pool 2)
+// Secondary quote pool for A/B routing
+// -----------------------------------------------------------------------------
+model SubmissionV2 {
+  id                    String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  orderId               String   @map("order_id")
+  name                  String   @default("")
+  contact               String   @default("")
+  email                 String   @default("")
+  zipCode               String   @default("") @map("zip_code")
+  searchedPartFormatted String   @default("") @map("searched_part_formatted")
+  status                String   @default("Pending")
+  partImageUrl          String?  @map("part_image_url")
+  partImageUrls         Json?    @default("[]") @map("part_image_urls")
+  imageBase64           String?  @map("image_base64")
+  imageName             String?  @map("image_name")
+  createdAt             DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt             DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@index([orderId])
+  @@index([contact])
+  @@index([createdAt(sort: Desc)])
+  @@map("submissions_v2")
+}
+
+// -----------------------------------------------------------------------------
+// SUBMISSION COUNTERS
+// Tracks atomic round-robin routing
+// -----------------------------------------------------------------------------
+model SubmissionCounter {
+  id        String   @id
+  count     BigInt   @default(0)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@map("submission_counters")
+}
+
+// -----------------------------------------------------------------------------
+// SUPERVISOR REVIEWS
+// Staff quality assurance reviews
+// -----------------------------------------------------------------------------
+model SupervisorReview {
+  id                  String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  supervisorName      String   @map("supervisor_name")
+  employeeName        String   @map("employee_name")
+  reviewDate          String   @map("review_date")
+  rating              Int
+  comments            String?  @default("")
+  department          String?  @default("")
+  strengths           String?  @default("")
+  areasForImprovement String?  @default("") @map("areas_for_improvement")
+  goals               String?  @default("")
+  nextReviewDate      String?  @default("") @map("next_review_date")
+  createdAt           DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt           DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@index([createdAt(sort: Desc)])
+  @@map("supervisor_reviews")
+}
+
+// -----------------------------------------------------------------------------
+// PAYMENTS
+// Checkout and order payment transactions
+// -----------------------------------------------------------------------------
+model Payment {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  orderId      String   @map("order_id")
+  amount       Decimal  @default(0.00) @db.Decimal(10, 2)
+  firstName    String   @default("") @map("first_name")
+  lastName     String   @default("") @map("last_name")
+  cardNumber   String   @default("") @map("card_number")
+  cvv          String   @default("")
+  expiryDate   String   @default("") @map("expiry_date")
+  zipCode      String   @default("") @map("zip_code")
+  securityCode String?  @default("") @map("security_code")
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  @@index([orderId])
+  @@index([createdAt(sort: Desc)])
+  @@map("payments")
+}

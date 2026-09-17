@@ -118,10 +118,11 @@ export const ClickToRevealEmail: React.FC<ClickToRevealEmailProps> = ({
   }
   
   return (
-    <div className={className}>
+    <span className={className}>
       <button
+        type="button"
         onClick={handleEmailClick}
-        className={`font-medium transition-all duration-300 flex items-center gap-2 ${
+        className={`font-medium transition-all duration-300 inline-flex items-center gap-2 ${
           className?.includes('inline-flex') 
             ? 'text-white hover:text-cyan-300 hover:scale-105' 
             : 'text-blue-800 hover:text-blue-600'
@@ -142,6 +143,6 @@ export const ClickToRevealEmail: React.FC<ClickToRevealEmailProps> = ({
           </>
         )}
       </button>
-    </div>
+    </span>
   )
 } 

@@ -1,0 +1,12 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { server } from '../src/server.js';
+let base;
+test.before(async()=>{await new Promise(r=>server.listen(0,r));base=`http://127.0.0.1:${server.address().port}`;});
+test.after(()=>server.close());
+test('health returns request id',async()=>{const r=await fetch(`${base}/health`);assert.equal(r.status,200);assert.ok(r.headers.get('x-request-id'));});
+test('chat validates missing message',async()=>{const r=await fetch(`${base}/chat`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({session_id:'x'})});assert.equal(r.status,400);});
+test('reset session succeeds',async()=>{const r=await fetch(`${base}/reset-session`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({session_id:'x'})});assert.equal(r.status,200);});
+test('rejects invalid content type with structured error',async()=>{const r=await fetch(`${base}/chat`,{method:'POST',body:'{}'});const body=await r.json();assert.equal(r.status,400);assert.equal(body.error.code,'INVALID_CONTENT_TYPE');});
+test('session endpoint returns safe state and CORS headers',async()=>{await fetch(`${base}/chat`,{method:'POST',headers:{'content-type':'application/json','origin':'http://localhost:3000'},body:JSON.stringify({session_id:'safe',message:'2012 Honda Civic hood'})});const r=await fetch(`${base}/session/safe`,{headers:{origin:'http://localhost:3000'}});const body=await r.json();assert.equal(r.status,200);assert.equal(body.state.vehicle.make,'Honda');assert.equal(r.headers.get('access-control-allow-origin'),'http://localhost:3000');});
+test('serializes concurrent updates for one session',async()=>{const responses=await Promise.all(['2012 Honda Civic hood','actually sorry it is a 2014 Accord'].map(message=>fetch(`${base}/chat`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({session_id:'concurrent',message})}).then(response=>response.json())));assert.equal(responses.length,2);const final=await (await fetch(`${base}/session/concurrent`)).json();assert.ok(final.state.vehicle.year);});

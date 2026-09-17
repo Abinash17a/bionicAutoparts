@@ -1,0 +1,15 @@
+{
+  "name": "auto-parts-conversation-engine",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Lightweight conversational understanding backend for used auto parts requests.",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test test/conversation.test.js test/api.test.js test/knowledge.test.js test/provider.test.js",
+    "evaluate": "node scripts/evaluate.js",
+    "smoke-test": "node scripts/smoke-test.js"
+  },
+  "engines": { "node": ">=22.5" }
+}

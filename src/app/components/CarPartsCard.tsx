@@ -36,25 +36,36 @@ export const CarPartsCardsSection = () => {
 
   const cardData = [
     {
-      title: "Engine Parts",
-      description: "High-performance components for smooth vehicle operation.",
+      title: "Used OEM Engines",
+      description: "Tested compression and leak-down checked with 6-month warranty.",
       image: "/cardmpageengine.jpg",
       icon: <Engine className="h-5 w-5" />,
       color: "bg-orange-500",
+      href: "/used-engines",
     },
     {
-      title: "Body Parts",
-      description: "Bumpers, fenders, and more for a refreshed look.",
-      image: "/cardinteriormpage.jpg",
+      title: "Used Transmissions",
+      description: "Bench-shifted automatic & manual assemblies with torque converter.",
+      image: "/cardcarpartsmpage.jpg",
+      icon: <Car className="h-5 w-5" />,
+      color: "bg-purple-600",
+      href: "/used-transmissions",
+    },
+    {
+      title: "Auto Body Parts",
+      description: "Bumpers, fenders, hoods, and doors from collision-free donor cars.",
+      image: "/mainpage2.jpg",
       icon: <Car className="h-5 w-5" />,
       color: "bg-blue-500",
+      href: "/used-body-parts",
     },
     {
-      title: "Interior Accessories",
-      description: "Stylish upgrades for comfort and functionality.",
-      image: "/cardcarpartsmpage.jpg",
+      title: "Interior Components",
+      description: "Power seats, instrument clusters, and console assemblies.",
+      image: "/cardinteriormpage.jpg",
       icon: <Sofa className="h-5 w-5" />,
       color: "bg-emerald-500",
+      href: "/used-interior-parts",
     },
   ]
 
@@ -69,17 +80,17 @@ export const CarPartsCardsSection = () => {
         transition={{ duration: 0.5 }}
         className="text-center mb-12"
       >
-        <h2 className="text-4xl font-bold text-gray-900 sm:text-4xl">
-          Premium Car Parts
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+          Commercial Used Auto Parts Categories
         </h2>
-        <p className="mt-2 text-gray-600 max-w-xl mx-auto text-sm sm:text-base">
-          High-quality components for performance, style, and comfort.
+        <p className="mt-2 text-gray-600 max-w-2xl mx-auto text-sm sm:text-base">
+          Certified recycled OEM components backed by our standard 6-month warranty and insured nationwide freight.
         </p>
       </motion.div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 max-w-full mx-auto px-4 sm:px-8 md:px-4 lg:px-48">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
         {cardData.map((card, index) => (
-          <Link href="/parts" passHref legacyBehavior key={card.title}>
+          <Link href={card.href} passHref legacyBehavior key={card.title}>
             <motion.a
               custom={index}
               initial="hidden"

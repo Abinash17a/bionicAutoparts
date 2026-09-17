@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
+import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
 import { ClickToRevealEmail } from "./ProtectedEmail";
 
 export default function Footer() {
@@ -48,45 +48,55 @@ export default function Footer() {
             <div className="flex space-x-4">
               <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
                  className="text-gray-300 hover:text-white transition-colors">
-                <FaFacebook className="w-4 h-4 md:w-5 md:h-5" />
+                <Facebook className="w-4 h-4 md:w-5 md:h-5" />
               </a>
               <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
                  className="text-gray-300 hover:text-white transition-colors">
-                <FaTwitter className="w-4 h-4 md:w-5 md:h-5" />
+                <Twitter className="w-4 h-4 md:w-5 md:h-5" />
               </a>
               <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"
                  className="text-gray-300 hover:text-white transition-colors">
-                <FaInstagram className="w-4 h-4 md:w-5 md:h-5" />
+                <Instagram className="w-4 h-4 md:w-5 md:h-5" />
               </a>
               <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"
                  className="text-gray-300 hover:text-white transition-colors">
-                <FaLinkedin className="w-4 h-4 md:w-5 md:h-5" />
+                <Linkedin className="w-4 h-4 md:w-5 md:h-5" />
               </a>
             </div>
           </div>
 
-          {/* Quick Links */}
+          {/* Quick Links & Commercial Categories */}
           <div>
-            <h3 className="text-base md:text-lg font-semibold mb-3 md:mb-4 text-white">Quick Links</h3>
+            <h3 className="text-base md:text-lg font-semibold mb-3 md:mb-4 text-white">Commercial Categories</h3>
             <ul className="space-y-1 md:space-y-2">
               <li>
-                <Link href="/about-us" className="text-gray-300 hover:text-white transition-colors text-sm md:text-base">
-                  About Us
+                <Link href="/used-engines" className="text-gray-300 hover:text-white transition-colors text-sm md:text-base">
+                  Used OEM Engines
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="text-gray-300 hover:text-white transition-colors text-sm md:text-base">
-                  Contact
+                <Link href="/used-transmissions" className="text-gray-300 hover:text-white transition-colors text-sm md:text-base">
+                  Used Transmissions
                 </Link>
               </li>
               <li>
-                <Link href="/refunds" className="text-gray-300 hover:text-white transition-colors text-sm md:text-base">
-                  Refund Policy
+                <Link href="/used-body-parts" className="text-gray-300 hover:text-white transition-colors text-sm md:text-base">
+                  Auto Body Parts
                 </Link>
               </li>
               <li>
                 <Link href="/parts" className="text-gray-300 hover:text-white transition-colors text-sm md:text-base">
-                  Browse Parts
+                  All Catalog Parts
+                </Link>
+              </li>
+              <li>
+                <Link href="/refunds" className="text-gray-300 hover:text-white transition-colors text-sm md:text-base">
+                  Warranty & Returns
+                </Link>
+              </li>
+              <li>
+                <Link href="/blogs" className="text-gray-300 hover:text-white transition-colors text-sm md:text-base">
+                  Automotive Guides
                 </Link>
               </li>
             </ul>

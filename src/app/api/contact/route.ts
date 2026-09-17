@@ -1,28 +1,56 @@
-// app/api/contact/route.js
-import { db } from  '../../lib/firebase';
-import { collection, addDoc } from "firebase/firestore";
+// src/app/api/contact/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+import { supabaseAdmin } from '@/lib/supabase/admin';
 
-export async function POST(request:any) {
-  const { name, email, message } = await request.json();
-
+export async function POST(request: NextRequest) {
   try {
-    // Reference to your Firebase Firestore collection
-    const contactCollection = collection(db, "contactMessages");
-
-    // Add the form data to Firebase
-    await addDoc(contactCollection, {
+    const body = await request.json();
+    const {
       name,
       email,
+      phone,
+      year,
+      make,
+      model,
+      partRequested,
+      vin,
+      partNumber,
       message,
-      timestamp: new Date(),
-    });
+    } = body;
 
-    return new Response(JSON.stringify({ message: "Message sent successfully!" }), {
-      status: 200,
-    });
-  } catch (error:any) {
-    return new Response(
-      JSON.stringify({ message: "Error sending message", error: error.message }),
+    const { data, error } = await supabaseAdmin
+      .from('contact_messages')
+      .insert({
+        name: name || '',
+        email: email || '',
+        phone: phone || '',
+        year: year || '',
+        make: make || '',
+        model: model || '',
+        part_requested: partRequested || '',
+        vin: vin || '',
+        part_number: partNumber || '',
+        message: message || '',
+      })
+      .select('id')
+      .single();
+
+    if (error) {
+      console.error('Error saving contact message to Supabase:', error);
+      return NextResponse.json(
+        { message: 'Error sending message', error: error.message },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json(
+      { message: 'Message sent successfully!', id: data?.id },
+      { status: 200 }
+    );
+  } catch (error: any) {
+    console.error('Error saving contact message:', error);
+    return NextResponse.json(
+      { message: 'Error sending message', error: error.message },
       { status: 500 }
     );
   }

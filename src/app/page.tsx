@@ -14,6 +14,7 @@ import { ModalSection } from './components/HomeModalSection';
 import { HomeForm } from './components/HomeForm';
 import { HomeCarousel } from './components/HomeCarousel';
 import Link from 'next/link';
+import { mapPartToCategorySlug, toSlug } from '@/lib/inventory/inventoryRepository';
 
 interface DataType {
   years: string[];
@@ -128,13 +129,12 @@ export default function Home() {
   }, [searchedPart]);
 
   const handleSearch = () => {
-    setSearchedPart({ years: [year], makes: [make], models: [model], parts: [part] });
-    if (isValid) {
-      setShowSearchResult(true);
-      setModalVisible(true);
-    }
-    else {
-      setModalVisible(false);
+    if (year && make && model && part) {
+      const categorySlug = mapPartToCategorySlug(part);
+      const makeSlug = toSlug(make);
+      const modelSlug = toSlug(model);
+      router.push(`/${categorySlug}/${makeSlug}/${modelSlug}/${year}`);
+    } else {
       toast.error('All fields need to be filled before submitting!');
     }
   };
@@ -184,10 +184,6 @@ export default function Home() {
     }
   };
 
-  if (!isMounted) {
-    return null;
-  }
-
   return (
     <div
       className="min-h-screen"
@@ -211,21 +207,38 @@ export default function Home() {
           />
           <div className="absolute inset-0 bg-black bg-opacity-0 z-10" />
           <div className="relative z-20 w-full">
-            <div className="max-w-7xl mx-auto flex justify-end w-full h-auto px-4 lg:px-6 py-8 md:py-12">
+            <div className="max-w-7xl mx-auto flex justify-end w-full h-auto px-4 lg:px-6 pt-24 sm:pt-28 md:pt-32 lg:pt-36 pb-12 md:pb-16">
               <div className="flex flex-col md:flex-row w-full gap-8 items-center justify-between">
                 {/* Left Hero Text */}
                 <div className="flex-1 text-left md:pr-8 mb-10 md:mb-0">
-                  <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6 drop-shadow-lg">
+                  <span className="inline-block px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-blue-500/30 text-blue-200 border border-blue-400/40 mb-4 backdrop-blur-sm">
+                    Certified Recycled OEM Auto Parts
+                  </span>
+                  <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-4 drop-shadow-lg">
                     Find Quality Used Auto Parts Fast
                   </h1>
-                  <p className="text-lg md:text-xl text-white font-medium mb-8 drop-shadow-md">
-                    Affordable. Reliable. Shipped to Your Door.
+                  <p className="text-lg md:text-xl text-blue-100 font-medium mb-6 drop-shadow-md">
+                    Compression-tested engines, bench-tested transmissions, and factory body panels with 6-month warranty and nationwide freight.
                   </p>
-                  <Link href="/parts" passHref legacyBehavior>
-                    <a className="bg-[#3b82f6] hover:bg-[#2563eb] text-white font-bold py-3 px-8 rounded-md text-lg shadow-lg transition-all duration-200">
-                      ALL PARTS
-                    </a>
-                                    </Link>
+
+                  <div className="flex flex-wrap gap-2.5 mb-6">
+                    <Link href="/used-engines" className="px-3.5 py-2 rounded-lg bg-white/15 hover:bg-white/25 text-white font-semibold text-xs border border-white/20 backdrop-blur transition-all">
+                      Used Engines
+                    </Link>
+                    <Link href="/used-transmissions" className="px-3.5 py-2 rounded-lg bg-white/15 hover:bg-white/25 text-white font-semibold text-xs border border-white/20 backdrop-blur transition-all">
+                      Used Transmissions
+                    </Link>
+                    <Link href="/used-body-parts" className="px-3.5 py-2 rounded-lg bg-white/15 hover:bg-white/25 text-white font-semibold text-xs border border-white/20 backdrop-blur transition-all">
+                      Body Parts
+                    </Link>
+                    <Link href="/used-interior-parts" className="px-3.5 py-2 rounded-lg bg-white/15 hover:bg-white/25 text-white font-semibold text-xs border border-white/20 backdrop-blur transition-all">
+                      Interior Parts
+                    </Link>
+                  </div>
+
+                  <Link href="/parts" className="inline-flex items-center bg-[#3b82f6] hover:bg-[#2563eb] text-white font-bold py-3.5 px-8 rounded-lg text-base shadow-lg transition-all duration-200">
+                    Browse All Catalog Parts &rarr;
+                  </Link>
                 </div>
                 {/* Right Form */}
                 <div className="w-full md:w-3/5 lg:w-1/2">

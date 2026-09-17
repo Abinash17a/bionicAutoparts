@@ -10,9 +10,37 @@ import Header from './components/Header';
 import GoogleTagManager from "./components/GoogleTagManager";
 import { LoadingProvider } from "./context/LoadingContext";
 import LoadingWrapper from "./components/LoadingWrapper";
+import ChatbotRoot from "./components/chatbot/ChatbotRoot";
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.usausedautopart.com";
 
 export const metadata: Metadata = {
-  title: "USA Used Auto Part",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Used Auto Parts Online | Recycled OEM Engines & Transmissions",
+    template: "%s | USA Used Auto Parts",
+  },
+  description:
+    "Find recycled OEM engines, transmissions, body parts and more. Search by year, make, model, part number or VIN, with clear fitment, warranty and shipping information.",
+  keywords: [
+    "used auto parts",
+    "recycled OEM engines",
+    "used transmissions",
+    "salvage auto parts",
+    "replacement car parts",
+    "OEM car parts online",
+  ],
+  authors: [{ name: "USA Used Auto Parts" }],
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    type: "website",
+    siteName: "USA Used Auto Parts",
+    locale: "en_US",
+    url: "/",
+  },
   icons: {
     icon: "/favicon.png",
   },
@@ -26,13 +54,65 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <title>Nationwide Salvage Yards | Affordable Used Auto Parts Online - USA Used Auto Parts</title>
-        <meta name="description" content="Find top-quality used auto parts at unbeatable prices with USA Used Auto Parts! Serving all 50 U.S. states, we offer affordable recycled car parts, rare components, and nationwide shipping. Shop online for sustainable, budget-friendly solutions today." />
-        <meta name="keywords" content="nationwide salvage yards, used auto parts online, affordable car parts, recycled auto parts, eco-friendly car parts, salvage yards near me, car parts for all states, rare auto parts, USA Used Auto Parts, sustainable car repair solutions" />
-        <meta name="robots" content="index, follow" />
-        <meta name="author" content="USA Used Auto Parts" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "AutoPartsStore",
+                  "@id": `${siteUrl}/#organization`,
+                  "name": "USA Used Auto Parts",
+                  "url": siteUrl,
+                  "logo": `${siteUrl}/logo1.png`,
+                  "image": `${siteUrl}/logo1.png`,
+                  "description": "Nationwide supplier of certified recycled OEM used engines, transmissions, and auto parts with warranty.",
+                  "telephone": "+1-617-516-3140",
+                  "email": "part@usausedautopart.com",
+                  "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "6332 Deep Canyon Dr",
+                    "addressLocality": "Beverly Hills",
+                    "addressRegion": "CA",
+                    "postalCode": "90210",
+                    "addressCountry": "US"
+                  },
+                  "openingHoursSpecification": [
+                    {
+                      "@type": "OpeningHoursSpecification",
+                      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+                      "opens": "09:00",
+                      "closes": "17:00"
+                    },
+                    {
+                      "@type": "OpeningHoursSpecification",
+                      "dayOfWeek": "Saturday",
+                      "opens": "10:00",
+                      "closes": "14:00"
+                    }
+                  ],
+                  "priceRange": "$$"
+                },
+                {
+                  "@type": "WebSite",
+                  "@id": `${siteUrl}/#website`,
+                  "url": siteUrl,
+                  "name": "USA Used Auto Parts",
+                  "publisher": {
+                    "@id": `${siteUrl}/#organization`
+                  },
+                  "potentialAction": {
+                    "@type": "SearchAction",
+                    "target": `${siteUrl}/parts?search={search_term_string}`,
+                    "query-input": "required name=search_term_string"
+                  }
+                }
+              ]
+            }),
+          }}
+        />
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=AW-16746690398"
           strategy="afterInteractive"
@@ -61,6 +141,7 @@ export default function RootLayout({
           <LoadingWrapper>
             <Footer />
           </LoadingWrapper>
+          <ChatbotRoot />
         </LoadingProvider>
       </body>
     </html>

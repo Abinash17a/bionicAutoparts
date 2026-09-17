@@ -67,14 +67,21 @@ export default function Refunds() {
         </section>
 
         <section>
-          <h2 className="text-xl font-semibold mb-2">Return Window & Refund Processing</h2>
-          <p className="text-xl mb-2">
+          <h2 className="text-xl font-semibold mb-2">Return Window & Refund Processing Timeline</h2>
+          <p className="text-base mb-2">
             Our return policy provides 30 days from the date of the original invoice to return items.
-            Refunds will be issued once we have received, inspected, and processed the part(s). Original shipping charges will be deducted from the refund amount. Exceptions will apply for parts that were received damaged or stocked incorrectly.
+            Refunds are issued once our facility receives, inspects, and processes the returned part(s). Original shipping charges are deducted from the refund amount, with exceptions applied for parts received damaged or stocked incorrectly.
           </p>
-          <p className="text-xl mb-2">
-            All refunds will be processed once merchandise has been returned to USA Used Auto Parts. Please allow 5-7 business days for the refund to be posted to your account.
-          </p>
+          <div className="bg-blue-50 p-4 rounded-lg border border-blue-200 my-3 text-sm">
+            <p className="font-bold text-blue-900 mb-1">Transparent Refund Timeline Breakdown:</p>
+            <p className="text-blue-800">
+              • <strong>Facility Inspection & RMA Approval:</strong> 1–2 business days from when the returned part arrives at our warehouse.
+              <br />
+              • <strong>Bank / Credit Card Processing:</strong> 3–5 business days for your financial institution to post the credit to your statement.
+              <br />
+              • <strong>Total Cycle:</strong> 5–7 business days total from warehouse delivery to funds appearing in your account.
+            </p>
+          </div>
         </section>
       </div>
     </div>

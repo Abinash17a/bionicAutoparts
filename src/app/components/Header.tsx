@@ -3,10 +3,7 @@
 import * as React from "react"
 import Image from "next/image"
 import {
-  AppBar,
   Box,
-  Toolbar,
-  Typography,
   Button,
   IconButton,
   Drawer,
@@ -14,20 +11,19 @@ import {
   ListItem,
   ListItemButton,
   ListItemText,
-  Container,
   useTheme,
   useMediaQuery,
 } from "@mui/material"
-import { Menu as MenuIcon, Close as CloseIcon, Phone as PhoneIcon } from "@mui/icons-material"
+import { Menu as MenuIcon, Close as CloseIcon } from "@mui/icons-material"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { ClickToRevealEmail } from "./ProtectedEmail"
 
 export default function Header() {
   const pathname = usePathname()
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down("md"))
   const [mobileOpen, setMobileOpen] = React.useState(false)
+  const isHome = pathname === "/"
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen)
@@ -35,6 +31,9 @@ export default function Header() {
 
   const navItems = [
     { title: "Home", path: "/" },
+    { title: "Used Engines", path: "/used-engines" },
+    { title: "Transmissions", path: "/used-transmissions" },
+    { title: "All Parts", path: "/parts" },
     { title: "About", path: "/about-us" },
     { title: "Contact", path: "/contact" },
     { title: "Blogs", path: "/blogs" },
@@ -44,200 +43,204 @@ export default function Header() {
 
   return (
     <>
-      {/* Top Info Bar */}
+      {/* Floating Navigation Card Sitting Directly Over Hero/Page */}
       <Box
+        component="nav"
+        aria-label="Main Navigation"
         sx={{
+          position: "fixed",
+          top: { xs: "12px", md: "18px" },
+          left: 0,
+          right: 0,
           width: "100%",
-          background: "#428eff",
-          color: "#fff",
-          fontSize: { xs: "0.85rem", md: "1rem" },
           display: "flex",
           justifyContent: "center",
-          alignItems: "center",
-          px: { xs: 1.5, md: 6 },
-          py: 0.5,
+          zIndex: 1100,
+          pointerEvents: "none",
+          px: { xs: 1.5, sm: 2.5, md: 4 },
         }}
       >
-        <Box sx={{ display: "flex", alignItems: "center", gap: { xs: 4, md: 8 } }}>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-            <PhoneIcon sx={{ fontSize: 18, mr: 0.5 }} />
-             +1 617 516 3140
-          </Box>
+        <Box
+          sx={{
+            width: { xs: "94%", sm: "92%", md: "90%" },
+            maxWidth: "1450px",
+            height: { xs: "64px", md: "76px" },
+            pointerEvents: "auto",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            px: { xs: 2, sm: 2.5, md: 3.5, lg: 4 },
+            backgroundColor: "#ffffff",
+            borderRadius: { xs: "16px", md: "20px" },
+            border: "1px solid rgba(226, 232, 240, 0.9)",
+            boxShadow: "0 10px 30px -5px rgba(0, 0, 0, 0.16), 0 4px 12px -2px rgba(0, 0, 0, 0.08)",
+            fontFamily: "'Poppins', 'Inter', 'sans-serif'",
+          }}
+        >
+          {/* Logo + Brand */}
+          <Link href="/" passHref style={{ textDecoration: "none", display: "flex", alignItems: "center" }}>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                cursor: "pointer",
+                transition: "opacity 0.2s ease, transform 0.2s ease",
+                "&:hover": {
+                  opacity: 0.92,
+                  transform: "scale(1.02)",
+                },
+              }}
+            >
+              <Image
+                src="/logo and landing/usedautopartslogo.png"
+                alt="USA Used Auto Parts"
+                width={217}
+                height={72}
+                style={{
+                  height: isMobile ? "38px" : "48px",
+                  width: "auto",
+                  objectFit: "contain",
+                }}
+                priority
+              />
+            </Box>
+          </Link>
+
+          {/* Desktop Navigation */}
           <Box
             sx={{
               display: { xs: "none", md: "flex" },
               alignItems: "center",
-              gap: 0.5,
+              gap: { md: 0.5, lg: 1.25 },
             }}
           >
-            <ClickToRevealEmail
-              email="part@usausedautopart.com"
-              label="Click to reveal email"
-              className="inline-flex items-center text-white hover:text-cyan-300 hover:scale-105 transition-all duration-300 cursor-pointer"
-            />
-          </Box>
-        </Box>
-      </Box>
-      {/* Main Header Bar */}
-      <AppBar
-        position="static"
-        elevation={1}
-        sx={{
-          backgroundColor: "#fff",
-          backgroundImage: "none",
-          borderBottom: "1px solid #e0e0e0",
-          fontFamily: "'Poppins', 'Inter', 'sans-serif'",
-        }}
-      >
-        <Container maxWidth={false}>
-          <Toolbar
-            sx={{
-              justifyContent: "space-between",
-              alignItems: "center",
-              py: { xs: 1, md: 1.5 },
-              minHeight: { xs: 64, md: 70 },
-              pl: { xs: 1, md: 3 },
-            }}
-          >
-            {/* Logo Section */}
-            <Link href="/" passHref style={{ textDecoration: "none" }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  cursor: "pointer",
-                  transition: "transform 0.2s ease",
-                  "&:hover": {
-                    transform: "scale(1.05)",
-                  },
-                  ml: -1,
-                }}
-              >
-                <Image
-                  src="/logo1.png"
-                  alt="USA Used Auto Parts Logo"
-                  width={64}
-                  height={64}
-                  style={{ marginRight: 18, borderRadius: "50%", background: "#fff" }}
-                  priority
-                />
-                <Typography
-                  variant={isMobile ? "h6" : "h5"}
-                  sx={{
-                    fontWeight: 800,
-                    color: "#222",
-                    fontFamily: "'Poppins', 'Inter', 'Cinzel', 'Matanya', serif",
-                    letterSpacing: "2.5px",
-                    textShadow: "0 2px 4px rgba(0,0,0,0.06)",
-                    fontSize: { xs: "1.2rem", md: "1.5rem" },
-                    textDecoration: "none",
-                  }}
-                >
-                  USA Used Auto Part
-                </Typography>
-              </Box>
-            </Link>
-
-            {/* Desktop Navigation */}
-            <Box sx={{ display: { xs: "none", md: "flex" }, alignItems: "center", gap: 2 }}>
-              {navItems.map((item) => (
+            {navItems.map((item) => {
+              const active = isActive(item.path)
+              return (
                 <Link key={item.title} href={item.path} passHref style={{ textDecoration: "none" }}>
                   <Button
                     sx={{
-                      color: isActive(item.path) ? "#ffb703" : "#333",
-                      fontWeight: 700,
-                      fontSize: "1rem",
+                      color: active ? "#2563eb" : "#1f2937",
+                      fontWeight: active ? 700 : 500,
+                      fontSize: { md: "0.85rem", lg: "0.925rem" },
                       textTransform: "none",
-                      px: 2,
-                      py: 1,
-                      borderRadius: 1,
-                      backgroundColor: "transparent",
-                      transition: "color 0.2s ease",
+                      px: { md: 1.25, lg: 1.75 },
+                      py: 0.8,
+                      borderRadius: "10px",
+                      backgroundColor: active ? "rgba(37, 99, 235, 0.08)" : "transparent",
+                      transition: "all 0.2s ease",
                       fontFamily: "'Poppins', 'Inter', 'sans-serif'",
                       "&:hover": {
-                        color: "#ffb703",
-                        backgroundColor: "transparent",
+                        color: "#2563eb",
+                        backgroundColor: active
+                          ? "rgba(37, 99, 235, 0.12)"
+                          : "rgba(37, 99, 235, 0.05)",
                       },
                     }}
                   >
                     {item.title}
                   </Button>
                 </Link>
-              ))}
-            </Box>
+              )
+            })}
+          </Box>
 
-            {/* Mobile Menu Button */}
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              edge="end"
-              onClick={handleDrawerToggle}
-              sx={{
-                display: { xs: "flex", md: "none" },
-                color: "#333",
-                "&:hover": {
-                  backgroundColor: "rgba(0, 0, 0, 0.04)",
-                },
-              }}
-            >
-              <MenuIcon />
-            </IconButton>
-          </Toolbar>
-        </Container>
+          {/* Mobile Menu Button */}
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="end"
+            onClick={handleDrawerToggle}
+            sx={{
+              display: { xs: "flex", md: "none" },
+              color: "#1f2937",
+              p: 1,
+              borderRadius: "10px",
+              "&:hover": {
+                backgroundColor: "rgba(37, 99, 235, 0.06)",
+              },
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
+        </Box>
+      </Box>
 
-        {/* Mobile Drawer */}
-        <Drawer
-          variant="temporary"
-          anchor="right"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true,
-          }}
+      {/* Spacer for non-home pages so fixed navbar doesn't obscure top content */}
+      {!isHome && (
+        <Box
           sx={{
-            display: { xs: "block", md: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: 280,
-              backgroundColor: "#fff",
-              backgroundImage: "none",
-              borderLeft: "1px solid #e0e0e0",
-              fontFamily: "'Poppins', 'Inter', 'sans-serif'",
-            },
+            height: { xs: "76px", md: "96px" },
+            width: "100%",
+            visibility: "hidden",
+            pointerEvents: "none",
           }}
-        >
-          <Box sx={{ p: 2 }}>
-            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}>
-              <Typography
-                variant="h6"
-                sx={{
-                  color: "#222",
-                  fontWeight: 800,
-                  fontFamily: "'Poppins', 'Inter', 'Cinzel', 'Matanya', serif",
-                  letterSpacing: "2.5px",
-                  fontSize: "1.2rem",
-                  textDecoration: "none",
-                }}
-              >
-                Nationwide Used Auto Parts
-              </Typography>
-              <IconButton onClick={handleDrawerToggle} sx={{ color: "#333" }}>
-                <CloseIcon />
-              </IconButton>
-            </Box>
+          aria-hidden="true"
+        />
+      )}
 
-            <List>
-              {navItems.map((item) => (
+      {/* Mobile Drawer */}
+      <Drawer
+        variant="temporary"
+        anchor="right"
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        ModalProps={{
+          keepMounted: true,
+        }}
+        sx={{
+          display: { xs: "block", md: "none" },
+          "& .MuiDrawer-paper": {
+            boxSizing: "border-box",
+            width: 290,
+            backgroundColor: "#fff",
+            backgroundImage: "none",
+            borderLeft: "1px solid #e0e0e0",
+            fontFamily: "'Poppins', 'Inter', 'sans-serif'",
+          },
+        }}
+      >
+        <Box sx={{ p: 2.5 }}>
+          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}>
+            <Link
+              href="/"
+              passHref
+              onClick={handleDrawerToggle}
+              style={{ textDecoration: "none", display: "flex", alignItems: "center" }}
+            >
+              <Image
+                src="/logo and landing/usedautopartslogo.png"
+                alt="USA Used Auto Parts"
+                width={160}
+                height={53}
+                style={{
+                  height: "36px",
+                  width: "auto",
+                  objectFit: "contain",
+                }}
+              />
+            </Link>
+            <IconButton onClick={handleDrawerToggle} sx={{ color: "#1f2937" }} aria-label="close menu">
+              <CloseIcon />
+            </IconButton>
+          </Box>
+
+          <List sx={{ pt: 1 }}>
+            {navItems.map((item) => {
+              const active = isActive(item.path)
+              return (
                 <ListItem key={item.title} disablePadding>
                   <Link href={item.path} passHref style={{ textDecoration: "none", width: "100%" }}>
                     <ListItemButton
                       onClick={handleDrawerToggle}
                       sx={{
-                        borderRadius: 1,
-                        mb: 0.5,
-                        backgroundColor: isActive(item.path) ? "rgba(255, 183, 3, 0.1)" : "transparent",
+                        borderRadius: "10px",
+                        mb: 0.75,
+                        backgroundColor: active ? "rgba(37, 99, 235, 0.08)" : "transparent",
                         "&:hover": {
-                          backgroundColor: "rgba(0, 0, 0, 0.04)",
+                          backgroundColor: active
+                            ? "rgba(37, 99, 235, 0.12)"
+                            : "rgba(0, 0, 0, 0.04)",
                         },
                         fontFamily: "'Poppins', 'Inter', 'sans-serif'",
                       }}
@@ -246,9 +249,9 @@ export default function Header() {
                         primary={item.title}
                         sx={{
                           "& .MuiListItemText-primary": {
-                            color: isActive(item.path) ? "#ffb703" : "#333",
-                            fontWeight: 700,
-                            fontSize: "1rem",
+                            color: active ? "#2563eb" : "#1f2937",
+                            fontWeight: active ? 700 : 500,
+                            fontSize: "0.95rem",
                             fontFamily: "'Poppins', 'Inter', 'sans-serif'",
                             textDecoration: "none",
                           },
@@ -257,12 +260,13 @@ export default function Header() {
                     </ListItemButton>
                   </Link>
                 </ListItem>
-              ))}
-            </List>
-          </Box>
-        </Drawer>
-      </AppBar>
+              )
+            })}
+          </List>
+        </Box>
+      </Drawer>
     </>
   )
 }
+
 

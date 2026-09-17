@@ -1,31 +1,34 @@
+// src/app/api/partimageUploadV2/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '../../lib/firebase';
-import { doc, updateDoc } from 'firebase/firestore';
+import { supabaseAdmin } from '@/lib/supabase/admin';
 
 export async function POST(req: NextRequest) {
-  const { id, status, imageUrl, imageBase64, imageName } = await req.json();
-
-  if (!id) {
-    return NextResponse.json({ error: 'Missing submission ID' }, { status: 400 });
-  }
-
   try {
-    const docRef = doc(db, 'submissionsv2', id);
+    const { id, status, imageUrl, imageBase64, imageName } = await req.json();
+
+    if (!id) {
+      return NextResponse.json({ error: 'Missing submission ID' }, { status: 400 });
+    }
 
     const updateData: any = {};
     if (status) updateData.status = status;
+    if (imageUrl) updateData.part_image_url = imageUrl;
+    if (imageBase64) updateData.image_base64 = imageBase64;
+    if (imageName) updateData.image_name = imageName;
 
-    // Store both Firebase Storage URL and base64 data
-    if (imageUrl) updateData.imageUrl = imageUrl;
-    if (imageBase64) updateData.imageBase64 = imageBase64;
-    if (imageName) updateData.imageName = imageName;
+    const { error } = await supabaseAdmin
+      .from('submissions_v2')
+      .update(updateData)
+      .eq('id', id);
 
-    await updateDoc(docRef, updateData);
+    if (error) {
+      console.error('Error updating submission_v2 image in Supabase:', error);
+      return NextResponse.json({ error: 'Error updating image in submission table' }, { status: 500 });
+    }
 
     return NextResponse.json({ message: 'Image uploaded successfully!' });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error updating submission:', error);
     return NextResponse.json({ error: 'Error updating image in submission table' }, { status: 500 });
   }
 }
-

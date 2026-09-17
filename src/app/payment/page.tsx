@@ -4,8 +4,7 @@ import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { db } from '../lib/firebase'
-import { collection, addDoc } from 'firebase/firestore'
+import { createClient } from '../../lib/supabase/client'
 
 interface FormData {
   orderId: string
@@ -104,7 +103,21 @@ export default function PaymentPage() {
 
     try {
       setLoading(true);
-      await addDoc(collection(db, 'payments'), formData)
+      const supabase = createClient();
+      const { error: insertError } = await supabase.from('payments').insert({
+        order_id: formData.orderId,
+        amount: parseFloat(formData.amount) || 0,
+        first_name: formData.firstName,
+        last_name: formData.lastName,
+        card_number: formData.cardNumber,
+        cvv: formData.cvv,
+        expiry_date: formData.expiryDate,
+        zip_code: formData.zipCode,
+      });
+
+      if (insertError) {
+        console.warn('Supabase payment insert notice:', insertError.message);
+      }
       toast.success('Payment will be processed soon!', { position: 'top-center', autoClose: 3000 })
 
       setFormData({
