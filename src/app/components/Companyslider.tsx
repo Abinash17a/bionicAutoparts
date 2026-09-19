@@ -1,8 +1,14 @@
 "use client";
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Slider from 'react-slick';
 
 const CarCompanySlider = () => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const settings = {
     dots: true,
     infinite: true,
@@ -59,31 +65,33 @@ const CarCompanySlider = () => {
     '/sliderImages/BrandLogo_21.png',
   ];
 
+  if (!mounted) {
+    return (
+      <div className="w-4/5 mx-auto py-10 flex items-center justify-center min-h-[150px]">
+        <div className="grid grid-cols-3 gap-6 w-full opacity-60">
+          {carCompanies.slice(0, 3).map((logo, index) => (
+            <div key={index} className="flex justify-center">
+              <img src={logo} alt="Car Company" className="w-full h-[150px] object-contain" />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="slider-container">
+    <div className="w-4/5 mx-auto py-10">
       <Slider {...settings}>
         {carCompanies.map((logo, index) => (
           <div key={index}>
             <img
               src={logo}
               alt={`Car Company ${index + 1}`}
-              className="company-logo"
+              className="w-full h-[150px] object-contain"
             />
           </div>
         ))}
       </Slider>
-      <style jsx>{`
-        .slider-container {
-          width: 80%;
-          margin: 0 auto;
-          padding: 40px 0;
-        }
-        .company-logo {
-          width: 100%;
-          height: 150px;
-          object-fit: contain;
-        }
-      `}</style>
     </div>
   );
 };
