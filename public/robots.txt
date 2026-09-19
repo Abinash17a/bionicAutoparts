@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /zen
+Disallow: /zen2
+Disallow: /zenpay
+Disallow: /checkout
+Disallow: /payment
+Disallow: /confirmation
+Disallow: /api/
+
+Sitemap: https://www.usausedautopart.com/sitemap.xml

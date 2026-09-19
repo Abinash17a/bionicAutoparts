@@ -12,9 +12,14 @@ import { LoadingProvider } from "./context/LoadingContext";
 import LoadingWrapper from "./components/LoadingWrapper";
 
 export const metadata: Metadata = {
-  title: "USA Used Auto Part",
+  metadataBase: new URL('https://www.usausedautopart.com'),
+  title: "Used Auto Parts USA | Quality Parts Online",
+  description: "Find quality used auto parts in the USA. Search used engines, transmissions and OEM auto parts with nationwide availability and shipping.",
   icons: {
     icon: "/favicon.png",
+  },
+  alternates: {
+    canonical: '/',
   },
 };
 
@@ -26,9 +31,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <title>Nationwide Salvage Yards | Affordable Used Auto Parts Online - USA Used Auto Parts</title>
-        <meta name="description" content="Find top-quality used auto parts at unbeatable prices with USA Used Auto Parts! Serving all 50 U.S. states, we offer affordable recycled car parts, rare components, and nationwide shipping. Shop online for sustainable, budget-friendly solutions today." />
-        <meta name="keywords" content="nationwide salvage yards, used auto parts online, affordable car parts, recycled auto parts, eco-friendly car parts, salvage yards near me, car parts for all states, rare auto parts, USA Used Auto Parts, sustainable car repair solutions" />
         <meta name="robots" content="index, follow" />
         <meta name="author" content="USA Used Auto Parts" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />

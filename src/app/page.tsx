@@ -202,8 +202,8 @@ export default function Home() {
         <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} closeOnClick pauseOnHover draggable />
         <div className="w-full relative">
           <Image
-            src="/carouselImages/herosectiono.jpg" // Random image from picsum.photos
-            alt="Random Background"
+            src="/carouselImages/herosectiono.jpg"
+            alt="Used auto parts warehouse with engines and transmissions"
             fill
             style={{ objectFit: 'cover' }}
             className="z-0"
@@ -216,7 +216,7 @@ export default function Home() {
                 {/* Left Hero Text */}
                 <div className="flex-1 text-left md:pr-8 mb-10 md:mb-0">
                   <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6 drop-shadow-lg">
-                    Find Quality Used Auto Parts Fast
+                    Used Auto Parts in the USA
                   </h1>
                   <p className="text-lg md:text-xl text-white font-medium mb-8 drop-shadow-md">
                     Affordable. Reliable. Shipped to Your Door.

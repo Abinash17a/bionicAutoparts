@@ -89,6 +89,11 @@ export default function Footer() {
                   Browse Parts
                 </Link>
               </li>
+              <li>
+                <Link href="/blogs" className="text-gray-300 hover:text-white transition-colors text-sm md:text-base">
+                  Blog
+                </Link>
+              </li>
             </ul>
           </div>
 
