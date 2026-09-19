@@ -108,9 +108,9 @@ export const CarAboutSection = () => {
       <div className="max-w-full mx-auto px-12">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl sm:text-5xl font-bold text-gray-800 mb-4">
+          <h2 className="text-4xl sm:text-5xl font-bold text-gray-800 mb-4">
             Premium Auto Parts
-          </h1>
+          </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Quality components for your vehicle with a commitment to excellence.
           </p>
