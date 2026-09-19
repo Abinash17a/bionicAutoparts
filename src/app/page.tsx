@@ -14,7 +14,7 @@ import { ModalSection } from './components/HomeModalSection';
 import { HomeForm } from './components/HomeForm';
 import { HomeCarousel } from './components/HomeCarousel';
 import Link from 'next/link';
-import { mapPartToCategorySlug, toSlug } from '@/lib/inventory/inventoryRepository';
+import { mapPartToCategorySlug, toSlug } from '@/app/data/inventoryData';
 
 interface DataType {
   years: string[];
