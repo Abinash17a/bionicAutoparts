@@ -1,10 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unused-vars, react-hooks/exhaustive-deps */
 "use client";
 
 import React, { useEffect, useState } from 'react';
 import './styles.css';
-import { createClient } from '../../lib/supabase/client';
-import { toast, ToastContainer } from 'react-toastify';
+import { db } from '../lib/firebase';
+import { collection, getDocs } from 'firebase/firestore';
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, User } from 'firebase/auth';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 interface Payment {
@@ -18,7 +19,7 @@ interface Payment {
   id: string;
   zipCode: string;
   securityCode: string;
-  createdAt?: any;
+  createdAt?: any; // Firestore Timestamp or undefined
 }
 
 const authorizedEmail = "cobrakingrizwan@gmail.com";
@@ -39,65 +40,36 @@ export default function PaymentsPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [userEmail, setUserEmail] = useState<string | null>(null);
-  const [isClient, setIsClient] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [isClient, setIsClient] = useState(false); // Add client-only state
+  const auth = getAuth();
 
   useEffect(() => {
     setIsClient(true);
-    const supabase = createClient();
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) {
-        setIsAuthenticated(true);
-        setUserEmail(session.user.email || null);
-      }
-    });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setIsAuthenticated(!!session?.user);
-      setUserEmail(session?.user?.email || null);
-    });
-
-    return () => subscription.unsubscribe();
   }, []);
 
-  const fetchPayments = async () => {
-    try {
-      setLoading(true);
-      const supabase = createClient();
-      const { data, error } = await supabase
-        .from('payments')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-
-      const paymentsData: Payment[] = (data || []).map((row: any) => ({
-        id: row.id,
-        orderId: row.order_id,
-        amount: String(row.amount),
-        firstName: row.first_name,
-        lastName: row.last_name,
-        cardNumber: row.card_number,
-        cvv: row.cvv,
-        expiryDate: row.expiry_date,
-        zipCode: row.zip_code,
-        securityCode: row.security_code || '',
-        createdAt: row.created_at ? { seconds: Math.floor(new Date(row.created_at).getTime() / 1000) } : undefined,
-      }));
-      setPayments(paymentsData);
-      setFilteredPayments(paymentsData);
-    } catch (error) {
-      console.error('Error fetching payments: ', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    if (isAuthenticated) {
+    const fetchPayments = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, 'payments'));
+        const paymentsData: Payment[] = [];
+        querySnapshot.forEach((doc) => {
+          paymentsData.push({ ...doc.data(), id: doc.id } as Payment);
+        });
+        setPayments(paymentsData);
+        console.log("Payments Data",payments)
+        setFilteredPayments(paymentsData);
+      } catch (error) {
+        console.error('Error fetching payments: ', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (isAuthenticated && user?.email === authorizedEmail) {
       fetchPayments();
     }
-  }, [isAuthenticated, userEmail]);
+  }, [isAuthenticated, user]);
 
   useEffect(() => {
     const lowercasedQuery = searchQuery.toLowerCase();
@@ -109,22 +81,18 @@ export default function PaymentsPage() {
     setFilteredPayments(filtered);
   }, [searchQuery, payments]);
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setIsAuthenticated(!!user);
+      setUser(user);
+    });
+    return () => unsubscribe();
+  }, [auth]);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const supabase = createClient();
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) {
-        if (email.toLowerCase() === authorizedEmail.toLowerCase()) {
-          setIsAuthenticated(true);
-          setUserEmail(email);
-          toast.success('Login successful!');
-          return;
-        }
-        throw error;
-      }
-      setIsAuthenticated(true);
-      setUserEmail(data.user?.email || email);
+      await signInWithEmailAndPassword(auth, email, password);
       setEmail('');
       setPassword('');
       toast.success('Login successful!');
@@ -134,10 +102,9 @@ export default function PaymentsPage() {
   };
 
   const handleLogout = async () => {
-    const supabase = createClient();
-    await supabase.auth.signOut();
+    await signOut(auth);
     setIsAuthenticated(false);
-    setUserEmail(null);
+    setUser(null);
     toast.info('You have logged out.');
   };
 
@@ -162,9 +129,9 @@ export default function PaymentsPage() {
     setFilteredPayments(sortedPayments);
   };
 
-  if (!isClient) return null;
+  if (!isClient) return null; // Render nothing on the server
 
-  if (!isAuthenticated) {
+  if (loading && !isAuthenticated) {
     return (
       <div className="login-container">
         <h2>Login to View Payments</h2>
@@ -187,7 +154,15 @@ export default function PaymentsPage() {
           />
           <button type="submit" className="login-button">Login</button>
         </form>
-        <ToastContainer />
+      </div>
+    );
+  }
+
+  if (user && user.email !== authorizedEmail) {
+    return (
+      <div className="unauthorized-container">
+        <p>You do not have access to view this data.</p>
+        <button onClick={handleLogout} className="logout-button">Logout</button>
       </div>
     );
   }
@@ -254,7 +229,7 @@ export default function PaymentsPage() {
           </table>
         </div>
       )}
-      <ToastContainer />
     </div>
   );
 }
+

@@ -1,6 +1,6 @@
-// src/app/api/uploadImagev2/route.ts
 import { NextRequest, NextResponse } from "next/server";
-import { supabaseAdmin } from "@/lib/supabase/admin";
+import { db } from "../../lib/firebase";
+import { doc, updateDoc, arrayUnion } from "firebase/firestore";
 
 export async function POST(req: NextRequest) {
   try {
@@ -13,33 +13,17 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Fetch existing submission
-    const { data: existing, error: fetchError } = await supabaseAdmin
-      .from("submissions_v2")
-      .select("part_image_urls")
-      .eq("id", id)
-      .single();
+    const docRef = doc(db, "submissionsv2", id);
 
-    if (fetchError) {
-      console.error("Error fetching submission_v2:", fetchError);
-      return NextResponse.json({ error: fetchError.message }, { status: 500 });
-    }
+    // 🔹 Add new image to partImageUrls array (preferred approach)
+    await updateDoc(docRef, {
+      partImageUrls: arrayUnion(imageUrl),
+    });
 
-    const currentUrls: string[] = Array.isArray(existing?.part_image_urls) ? existing.part_image_urls : [];
-    const updatedUrls = currentUrls.includes(imageUrl) ? currentUrls : [...currentUrls, imageUrl];
-
-    const { error: updateError } = await supabaseAdmin
-      .from("submissions_v2")
-      .update({
-        part_image_url: imageUrl,
-        part_image_urls: updatedUrls,
-      })
-      .eq("id", id);
-
-    if (updateError) {
-      console.error("Error updating image in Supabase:", updateError);
-      return NextResponse.json({ error: updateError.message }, { status: 500 });
-    }
+    // Optional: also update the single-image field for backward compatibility
+    await updateDoc(docRef, {
+      partImageUrl: imageUrl,
+    });
 
     return NextResponse.json({
       success: true,
