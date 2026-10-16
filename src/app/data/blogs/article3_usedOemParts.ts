@@ -188,7 +188,7 @@ export const article3_usedOemParts: BlogArticle = {
       description: 'Search our full commercial inventory of genuine recycled OEM components.',
     },
   ],
-  relatedArticles: [1, 2, 4, 6],
+  relatedArticles: [14, 6, 19, 21],
   cta: {
     title: 'Upgrade Your Repair with Genuine OEM Quality',
     description: 'Do not gamble with ill-fitting aftermarket knockoffs. Search our verified inventory of recycled OEM parts backed by our 6-month warranty and nationwide shipping.',

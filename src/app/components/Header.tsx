@@ -64,7 +64,7 @@ export default function Header() {
           sx={{
             width: { xs: "94%", sm: "92%", md: "90%" },
             maxWidth: "1450px",
-            height: { xs: "64px", md: "76px" },
+            height: { xs: "80px", md: "105px" },
             pointerEvents: "auto",
             display: "flex",
             alignItems: "center",
@@ -94,10 +94,10 @@ export default function Header() {
               <Image
                 src="/logo and landing/usedautopartslogo.png"
                 alt="USA Used Auto Parts"
-                width={217}
-                height={72}
+                width={380}
+                height={120}
                 style={{
-                  height: isMobile ? "38px" : "48px",
+                  height: isMobile ? "64px" : "90px",
                   width: "auto",
                   objectFit: "contain",
                 }}
@@ -170,7 +170,7 @@ export default function Header() {
       {!isHome && (
         <Box
           sx={{
-            height: { xs: "76px", md: "96px" },
+            height: { xs: "95px", md: "125px" },
             width: "100%",
             visibility: "hidden",
             pointerEvents: "none",
@@ -211,10 +211,10 @@ export default function Header() {
               <Image
                 src="/logo and landing/usedautopartslogo.png"
                 alt="USA Used Auto Parts"
-                width={160}
-                height={53}
+                width={260}
+                height={85}
                 style={{
-                  height: "36px",
+                  height: "60px",
                   width: "auto",
                   objectFit: "contain",
                 }}

@@ -1,0 +1,18 @@
+{
+  "summary": {
+    "health_score": 78,
+    "grade": "B+",
+    "domain": "usausedautopart.com",
+    "business_type": "E-commerce & Automotive Salvage / Recycled Auto Parts Store"
+  },
+  "scores": {
+    "technical": 82,
+    "content_eeat": 76,
+    "on_page": 80,
+    "schema": 85,
+    "cwv_performance": 72,
+    "ai_readiness": 68,
+    "images": 84,
+    "total": 78.22
+  }
+}

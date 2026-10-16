@@ -1,11 +1,42 @@
 import { BOT_CONFIG } from "./config";
-import { ChatRequestBody, ChatResponseBody, ResetRequestBody, ResetResponseBody } from "./types";
+import { ChatRequestBody, ChatResponseBody, SessionState, ResetRequestBody, ResetResponseBody } from "./types";
 
 interface SendMessageResult {
   success: boolean;
   reply: string;
   response?: ChatResponseBody;
+  sessionState?: SessionState;
   error?: string;
+}
+
+const SESSION_STATE_KEY = "bionic_chatbot_state";
+
+function getStoredSessionState(): SessionState | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.sessionStorage.getItem(SESSION_STATE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+function saveSessionState(state: SessionState): void {
+  if (typeof window === "undefined") return;
+  try {
+    window.sessionStorage.setItem(SESSION_STATE_KEY, JSON.stringify(state));
+  } catch {
+    // Ignore storage errors
+  }
+}
+
+export function clearSessionState(): void {
+  if (typeof window === "undefined") return;
+  try {
+    window.sessionStorage.removeItem(SESSION_STATE_KEY);
+  } catch {
+    // Ignore
+  }
 }
 
 export async function sendChatMessage(
@@ -21,14 +52,18 @@ export async function sendChatMessage(
     };
   }
 
-  const endpoint = `${BOT_CONFIG.apiUrl.replace(/\/+$/, "")}/chat`;
+  const rawUrl = BOT_CONFIG.apiUrl.replace(/\/+$/, "");
+  const endpoint = rawUrl.endsWith("/chat") ? rawUrl : `${rawUrl}/chat`;
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), BOT_CONFIG.requestTimeoutMs);
 
   try {
+    const currentState = getStoredSessionState();
     const payload: ChatRequestBody = {
-      session_id: sessionId,
-      message: cleanMessage,
+       session_id: sessionId,
+       message: cleanMessage,
+       context: currentState,
+       session_state: currentState,
     };
 
     const res = await fetch(endpoint, {
@@ -63,10 +98,18 @@ export async function sendChatMessage(
     }
 
     const data = (await res.json()) as ChatResponseBody;
+    const resolvedState = data.context || data.extracted_data;
+
+    // Persist merged session state from backend response
+    if (resolvedState) {
+      saveSessionState(resolvedState);
+    }
+
     return {
       success: true,
       reply: data.reply || BOT_CONFIG.defaultErrorMessage,
       response: data,
+      sessionState: resolvedState,
     };
   } catch (err: unknown) {
     clearTimeout(timeoutId);
@@ -90,7 +133,12 @@ export async function sendChatMessage(
 }
 
 export async function resetChatSession(sessionId: string): Promise<boolean> {
-  const endpoint = `${BOT_CONFIG.apiUrl.replace(/\/+$/, "")}/reset-session`;
+  clearSessionState();
+
+  const rawUrl = BOT_CONFIG.apiUrl.replace(/\/+$/, "");
+  const endpoint = rawUrl.endsWith("/chat")
+    ? rawUrl.replace(/\/chat$/, "/reset-session")
+    : `${rawUrl}/reset-session`;
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 8000);
 

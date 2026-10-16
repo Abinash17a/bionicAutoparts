@@ -3,14 +3,35 @@
 import React from "react";
 import { ChatMessage } from "@/lib/chatbot/types";
 import { Wrench } from "lucide-react";
+import { ContactFormWidget } from "./ContactFormWidget";
 
 interface ChatMessageItemProps {
   message: ChatMessage;
+  isLatestBotMessage?: boolean;
+  onSendMessage?: (text: string) => void;
+  isLoading?: boolean;
 }
 
 export const ChatMessageItem: React.FC<ChatMessageItemProps> = React.memo(
-  ({ message }) => {
+  ({ message, isLatestBotMessage = false, onSendMessage, isLoading = false }) => {
     const isUser = message.sender === "user";
+
+    const isContactCategory =
+      message.category === "ASK_PHONE" || message.category === "ASK_ZIP";
+
+    const isMissingContact = Boolean(
+      message.context?.vehicle?.manufacturer &&
+        message.context?.part &&
+        message.context?.customer?.name &&
+        (!message.context?.customer?.phone || !message.context?.customer?.zip) &&
+        message.category !== "REQUEST_COMPLETE"
+    );
+
+    const showWidget =
+      !isUser &&
+      isLatestBotMessage &&
+      (isContactCategory || isMissingContact) &&
+      Boolean(onSendMessage);
 
     return (
       <div
@@ -26,13 +47,21 @@ export const ChatMessageItem: React.FC<ChatMessageItemProps> = React.memo(
         )}
 
         <div
-          className={`max-w-[82%] px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed shadow-sm transition-all ${
+          className={`max-w-[85%] px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed shadow-sm transition-all ${
             isUser
               ? "bg-[#023047] text-white rounded-br-xs font-normal"
               : "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-bl-xs border border-slate-200/70 dark:border-slate-700/60"
           }`}
         >
           <div className="whitespace-pre-wrap break-words">{message.text}</div>
+
+          {showWidget && onSendMessage && (
+            <ContactFormWidget
+              onSubmit={onSendMessage}
+              disabled={isLoading}
+            />
+          )}
+
           <div
             className={`text-[10px] mt-1 ${
               isUser ? "text-blue-200/80 text-right" : "text-slate-400 text-left"

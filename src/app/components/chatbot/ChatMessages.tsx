@@ -9,17 +9,27 @@ import { Wrench } from "lucide-react";
 interface ChatMessagesProps {
   messages: ChatMessage[];
   isLoading: boolean;
+  onSendMessage?: (text: string) => void;
 }
 
 export const ChatMessages: React.FC<ChatMessagesProps> = ({
   messages,
   isLoading,
+  onSendMessage,
 }) => {
   const scrollEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     scrollEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isLoading]);
+
+  let lastBotIdx = -1;
+  for (let i = messages.length - 1; i >= 0; i--) {
+    if (messages[i].sender === "bot") {
+      lastBotIdx = i;
+      break;
+    }
+  }
 
   return (
     <div
@@ -28,8 +38,14 @@ export const ChatMessages: React.FC<ChatMessagesProps> = ({
       aria-live="polite"
       aria-label="Chat conversation history"
     >
-      {messages.map((msg) => (
-        <ChatMessageItem key={msg.id} message={msg} />
+      {messages.map((msg, index) => (
+        <ChatMessageItem
+          key={msg.id}
+          message={msg}
+          isLatestBotMessage={index === lastBotIdx}
+          onSendMessage={onSendMessage}
+          isLoading={isLoading}
+        />
       ))}
 
       {isLoading && (

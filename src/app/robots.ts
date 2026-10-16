@@ -20,6 +20,19 @@ export default function robots(): MetadataRoute.Robots {
           '/parts?search=',
         ],
       },
+      {
+        userAgent: ['GPTBot', 'ClaudeBot', 'Google-Extended', 'PerplexityBot', 'Applebot-Extended'],
+        allow: '/',
+        disallow: [
+          '/api/',
+          '/confirmation',
+          '/checkout',
+          '/payment',
+          '/zen',
+          '/zen2',
+          '/zenpay',
+        ],
+      },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,
   };

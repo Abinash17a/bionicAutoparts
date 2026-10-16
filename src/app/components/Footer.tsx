@@ -95,6 +95,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/car-guide" className="text-gray-300 hover:text-white transition-colors text-sm md:text-base font-medium">
+                  Free Vehicle Guide
+                </Link>
+              </li>
+              <li>
                 <Link href="/blogs" className="text-gray-300 hover:text-white transition-colors text-sm md:text-base">
                   Automotive Guides
                 </Link>

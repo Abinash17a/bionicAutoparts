@@ -1,5 +1,5 @@
 import React from "react";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Metadata } from "next";
@@ -26,8 +26,22 @@ interface BlogPageProps {
   params: { id: string };
 }
 
+export async function generateStaticParams() {
+  return blogs.map((blog) => ({
+    id: blog.slug,
+  }));
+}
+
 export async function generateMetadata({ params }: BlogPageProps): Promise<Metadata> {
-  const blog = blogs.find((b) => Number(b.id) === Number(params.id)) as BlogArticle | undefined;
+  // If visited via numeric ID, permanently redirect to canonical slug URL
+  if (/^\d+$/.test(params.id)) {
+    const numericBlog = blogs.find((b) => String(b.id) === params.id);
+    if (numericBlog) {
+      permanentRedirect(`/blogs/${numericBlog.slug}`);
+    }
+  }
+
+  const blog = blogs.find((b) => b.slug === params.id || String(b.id) === params.id) as BlogArticle | undefined;
 
   if (!blog) {
     notFound();
@@ -44,39 +58,54 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
       .slice(0, 155);
 
   const heroImageUrl = blog.heroImage?.src || blog.image || "/blogs/images/auto-salvage-yard-inventory.jpg";
+  const absoluteImageUrl = heroImageUrl.startsWith("http") ? heroImageUrl : `${siteUrl}${heroImageUrl}`;
 
   return {
     title,
     description,
     alternates: {
-      canonical: `${siteUrl}/blogs/${blog.id}`,
+      canonical: `${siteUrl}/blogs/${blog.slug}`,
     },
     openGraph: {
       title,
       description,
-      url: `${siteUrl}/blogs/${blog.id}`,
+      url: `${siteUrl}/blogs/${blog.slug}`,
       type: "article",
       publishedTime: blog.date,
       authors: [blog.author?.name || "USA Used Auto Parts Technical Editorial Team"],
       images: [
         {
-          url: heroImageUrl.startsWith("http") ? heroImageUrl : `${siteUrl}${heroImageUrl}`,
+          url: absoluteImageUrl,
           alt: blog.heroImage?.alt || blog.title,
         },
       ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [absoluteImageUrl],
     },
   };
 }
 
 export default function BlogPage({ params }: BlogPageProps) {
-  const blog = blogs.find((b) => Number(b.id) === Number(params.id)) as BlogArticle | undefined;
+  // If visited via numeric ID, permanently redirect to canonical slug URL
+  if (/^\d+$/.test(params.id)) {
+    const numericBlog = blogs.find((b) => String(b.id) === params.id);
+    if (numericBlog) {
+      permanentRedirect(`/blogs/${numericBlog.slug}`);
+    }
+  }
+
+  const blog = blogs.find((b) => b.slug === params.id || String(b.id) === params.id) as BlogArticle | undefined;
 
   if (!blog) {
     notFound();
   }
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.usausedautopart.com";
-  const blogIndex = blogs.findIndex((b) => Number(b.id) === Number(params.id));
+  const blogIndex = blogs.findIndex((b) => b.id === blog.id);
   const prevBlog = blogIndex > 0 ? blogs[blogIndex - 1] : null;
   const nextBlog = blogIndex < blogs.length - 1 ? blogs[blogIndex + 1] : null;
 
@@ -114,7 +143,7 @@ export default function BlogPage({ params }: BlogPageProps) {
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `${siteUrl}/blogs/${blog.id}`,
+      "@id": `${siteUrl}/blogs/${blog.slug}`,
     },
   };
 
@@ -138,7 +167,7 @@ export default function BlogPage({ params }: BlogPageProps) {
         "@type": "ListItem",
         position: 3,
         name: blog.title,
-        item: `${siteUrl}/blogs/${blog.id}`,
+        item: `${siteUrl}/blogs/${blog.slug}`,
       },
     ],
   };
@@ -633,7 +662,7 @@ export default function BlogPage({ params }: BlogPageProps) {
                   {relatedArticlesList.map((rel) => (
                     <Link
                       key={rel.id}
-                      href={`/blogs/${rel.id}`}
+                      href={`/blogs/${rel.slug}`}
                       className="group p-4 rounded-xl border border-slate-200 hover:border-blue-400 hover:shadow-sm transition-all bg-slate-50/50 flex items-start gap-3"
                     >
                       <div className="relative w-16 h-16 rounded-lg overflow-hidden shrink-0 bg-slate-200">
@@ -666,7 +695,7 @@ export default function BlogPage({ params }: BlogPageProps) {
             >
               {prevBlog ? (
                 <Button asChild variant="outline" className="w-full sm:w-auto">
-                  <Link href={`/blogs/${prevBlog.id}`}>
+                  <Link href={`/blogs/${prevBlog.slug}`}>
                     <ArrowLeft className="mr-2 w-4 h-4" /> Previous Article
                   </Link>
                 </Button>
@@ -675,7 +704,7 @@ export default function BlogPage({ params }: BlogPageProps) {
               )}
               {nextBlog ? (
                 <Button asChild variant="outline" className="w-full sm:w-auto">
-                  <Link href={`/blogs/${nextBlog.id}`}>
+                  <Link href={`/blogs/${nextBlog.slug}`}>
                     Next Article <ArrowRight className="ml-2 w-4 h-4" />
                   </Link>
                 </Button>

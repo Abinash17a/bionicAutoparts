@@ -14,7 +14,8 @@ import { ModalSection } from './components/HomeModalSection';
 import { HomeForm } from './components/HomeForm';
 import { HomeCarousel } from './components/HomeCarousel';
 import Link from 'next/link';
-import { mapPartToCategorySlug, toSlug } from '@/app/data/inventoryData';
+import { INVENTORY_ITEMS } from './data/inventoryData';
+import InventoryCard from './components/InventoryCard';
 
 interface DataType {
   years: string[];
@@ -129,12 +130,13 @@ export default function Home() {
   }, [searchedPart]);
 
   const handleSearch = () => {
-    if (year && make && model && part) {
-      const categorySlug = mapPartToCategorySlug(part);
-      const makeSlug = toSlug(make);
-      const modelSlug = toSlug(model);
-      router.push(`/${categorySlug}/${makeSlug}/${modelSlug}/${year}`);
-    } else {
+    setSearchedPart({ years: [year], makes: [make], models: [model], parts: [part] });
+    if (isValid) {
+      setShowSearchResult(true);
+      setModalVisible(true);
+    }
+    else {
+      setModalVisible(false);
       toast.error('All fields need to be filled before submitting!');
     }
   };
@@ -184,6 +186,10 @@ export default function Home() {
     }
   };
 
+  if (!isMounted) {
+    return null;
+  }
+
   return (
     <div
       className="min-h-screen"
@@ -207,7 +213,7 @@ export default function Home() {
           />
           <div className="absolute inset-0 bg-black bg-opacity-0 z-10" />
           <div className="relative z-20 w-full">
-            <div className="max-w-7xl mx-auto flex justify-end w-full h-auto px-4 lg:px-6 pt-24 sm:pt-28 md:pt-32 lg:pt-36 pb-12 md:pb-16">
+            <div className="max-w-7xl mx-auto w-full h-auto px-4 lg:px-6 pt-28 pb-8 md:py-12">
               <div className="flex flex-col md:flex-row w-full gap-8 items-center justify-between">
                 {/* Left Hero Text */}
                 <div className="flex-1 text-left md:pr-8 mb-10 md:mb-0">
@@ -221,27 +227,35 @@ export default function Home() {
                     Compression-tested engines, bench-tested transmissions, and factory body panels with 6-month warranty and nationwide freight.
                   </p>
 
-                  <div className="flex flex-wrap gap-2.5 mb-6">
-                    <Link href="/used-engines" className="px-3.5 py-2 rounded-lg bg-white/15 hover:bg-white/25 text-white font-semibold text-xs border border-white/20 backdrop-blur transition-all">
-                      Used Engines
-                    </Link>
-                    <Link href="/used-transmissions" className="px-3.5 py-2 rounded-lg bg-white/15 hover:bg-white/25 text-white font-semibold text-xs border border-white/20 backdrop-blur transition-all">
-                      Used Transmissions
-                    </Link>
-                    <Link href="/used-body-parts" className="px-3.5 py-2 rounded-lg bg-white/15 hover:bg-white/25 text-white font-semibold text-xs border border-white/20 backdrop-blur transition-all">
-                      Body Parts
-                    </Link>
-                    <Link href="/used-interior-parts" className="px-3.5 py-2 rounded-lg bg-white/15 hover:bg-white/25 text-white font-semibold text-xs border border-white/20 backdrop-blur transition-all">
-                      Interior Parts
-                    </Link>
-                  </div>
+                  {/* Desktop Category Shortcuts & CTA */}
+                  <div className="hidden md:block">
+                    <div className="grid grid-cols-2 gap-2.5 mb-6 max-w-md">
+                      <Link href="/used-engines" className="px-3.5 py-2.5 rounded-lg bg-white/15 hover:bg-white/25 text-white font-semibold text-xs border border-white/20 backdrop-blur text-center transition-all">
+                        Used Engines
+                      </Link>
+                      <Link href="/used-transmissions" className="px-3.5 py-2.5 rounded-lg bg-white/15 hover:bg-white/25 text-white font-semibold text-xs border border-white/20 backdrop-blur text-center transition-all">
+                        Used Transmissions
+                      </Link>
+                      <Link href="/used-body-parts" className="px-3.5 py-2.5 rounded-lg bg-white/15 hover:bg-white/25 text-white font-semibold text-xs border border-white/20 backdrop-blur text-center transition-all">
+                        Body Parts
+                      </Link>
+                      <Link href="/used-interior-parts" className="px-3.5 py-2.5 rounded-lg bg-white/15 hover:bg-white/25 text-white font-semibold text-xs border border-white/20 backdrop-blur text-center transition-all">
+                        Interior Parts
+                      </Link>
+                    </div>
 
-                  <Link href="/parts" className="inline-flex items-center bg-[#3b82f6] hover:bg-[#2563eb] text-white font-bold py-3.5 px-8 rounded-lg text-base shadow-lg transition-all duration-200">
-                    Browse All Catalog Parts &rarr;
-                  </Link>
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <Link href="/parts" className="inline-flex items-center justify-center bg-[#3b82f6] hover:bg-[#2563eb] text-white font-bold py-3.5 px-6 rounded-lg text-sm shadow-lg transition-all duration-200">
+                        Browse All Catalog Parts &rarr;
+                      </Link>
+                      <Link href="/car-guide" className="inline-flex items-center justify-center bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 px-6 rounded-lg text-sm shadow-lg transition-all duration-200">
+                        🔍 Free US Vehicle Guide (NHTSA & VIN) &rarr;
+                      </Link>
+                    </div>
+                  </div>
                 </div>
                 {/* Right Form */}
-                <div className="w-full md:w-3/5 lg:w-1/2">
+                <div className="w-full md:w-3/5 lg:w-1/2 flex flex-col items-center">
                   <HomeForm
                     year={year}
                     setYear={setYear}
@@ -254,9 +268,67 @@ export default function Home() {
                     handleSearch={handleSearch}
                     initialData={{ ...initialData, years: initialData.years.map(String) }}
                   />
+
+                  {/* Mobile Category Shortcuts & CTA (Below Form) */}
+                  <div className="w-full max-w-sm mt-6 md:hidden">
+                    <Link href="/parts" className="w-full inline-flex items-center justify-center bg-[#3b82f6] hover:bg-[#2563eb] text-white font-bold py-3.5 px-6 rounded-lg text-base shadow-lg transition-all duration-200">
+                      Browse All Catalog Parts &rarr;
+                    </Link>
+
+                    <Link href="/car-guide" className="w-full mt-2.5 inline-flex items-center justify-center bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-6 rounded-lg text-sm shadow-lg transition-all duration-200">
+                      🔍 Free US Vehicle Guide (NHTSA & VIN) &rarr;
+                    </Link>
+
+                    <div className="grid grid-cols-2 gap-2.5 mt-4">
+                      <Link href="/used-engines" className="px-3.5 py-2.5 rounded-lg bg-white/15 hover:bg-white/25 text-white font-semibold text-xs border border-white/20 backdrop-blur text-center transition-all">
+                        Used Engines
+                      </Link>
+                      <Link href="/used-transmissions" className="px-3.5 py-2.5 rounded-lg bg-white/15 hover:bg-white/25 text-white font-semibold text-xs border border-white/20 backdrop-blur text-center transition-all">
+                        Used Transmissions
+                      </Link>
+                      <Link href="/used-body-parts" className="px-3.5 py-2.5 rounded-lg bg-white/15 hover:bg-white/25 text-white font-semibold text-xs border border-white/20 backdrop-blur text-center transition-all">
+                        Body Parts
+                      </Link>
+                      <Link href="/used-interior-parts" className="px-3.5 py-2.5 rounded-lg bg-white/15 hover:bg-white/25 text-white font-semibold text-xs border border-white/20 backdrop-blur text-center transition-all">
+                        Interior Parts
+                      </Link>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Live In-Stock Inventory Section */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-xs font-bold uppercase tracking-wider text-emerald-400">
+                  Live In-Stock Inventory
+                </span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight">
+                Featured Ready-to-Ship Auto Parts
+              </h2>
+              <p className="text-sm sm:text-base text-slate-300 mt-1">
+                Verified OEM engines, transmissions, and assemblies with 6-month warranty and nationwide freight.
+              </p>
+            </div>
+            <Link
+              href="/parts"
+              className="inline-flex items-center self-start sm:self-auto px-5 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold transition-all shadow-md shrink-0"
+            >
+              Browse All Inventory &rarr;
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {INVENTORY_ITEMS.slice(0, 6).map((item) => (
+              <InventoryCard key={item.id} item={item} />
+            ))}
           </div>
         </div>
 

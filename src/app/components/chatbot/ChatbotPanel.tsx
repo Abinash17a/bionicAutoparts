@@ -78,6 +78,8 @@ export const ChatbotPanel: React.FC<ChatbotPanelProps> = ({
         sender: "bot",
         text: result.reply || BOT_CONFIG.defaultErrorMessage,
         timestamp: Date.now(),
+        category: result.category,
+        context: result.context,
       };
 
       setMessages((prev) => [...prev, botMessage]);
@@ -116,14 +118,18 @@ export const ChatbotPanel: React.FC<ChatbotPanelProps> = ({
       role="dialog"
       aria-modal="false"
       aria-label={`${BOT_CONFIG.name} Auto Parts Assistant`}
-      className="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-[380px] h-[520px] max-h-[calc(100vh-5.5rem)] bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200/90 dark:border-slate-800 flex flex-col overflow-hidden animate-in fade-in-50 zoom-in-95 duration-200"
+      className="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-50 w-[300px] max-w-[calc(100vw-2rem)] sm:w-[380px] h-[400px] sm:h-[520px] max-h-[calc(100vh-5.5rem)] bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200/90 dark:border-slate-800 flex flex-col overflow-hidden animate-in fade-in-50 zoom-in-95 duration-200"
     >
       <ChatHeader
         onClose={onClose}
         onReset={handleReset}
         isResetting={isResetting}
       />
-      <ChatMessages messages={messages} isLoading={isLoading} />
+      <ChatMessages
+        messages={messages}
+        isLoading={isLoading}
+        onSendMessage={handleSendMessage}
+      />
       <ChatInput onSendMessage={handleSendMessage} disabled={isLoading} />
     </div>
   );

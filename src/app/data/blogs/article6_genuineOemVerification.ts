@@ -178,7 +178,7 @@ export const article6_genuineOemVerification: BlogArticle = {
       description: 'Need help verifying casting numbers or engineering codes? Consult our specialists.',
     },
   ],
-  relatedArticles: [2, 3, 4, 5],
+  relatedArticles: [14, 13, 18, 3],
   cta: {
     title: 'Source Verified Genuine OEM Parts with Confidence',
     description: 'Protect your vehicle from dangerous counterfeits and ill-fitting aftermarket replicas. Browse our verified inventory of genuine recycled OEM parts backed by our 6-month warranty.',

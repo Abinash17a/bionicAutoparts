@@ -193,7 +193,7 @@ export const article4_gmPartsOnline: BlogArticle = {
       description: 'Have our specialists decode your GM VIN and SPID RPO codes for exact fitment.',
     },
   ],
-  relatedArticles: [2, 3, 5, 6],
+  relatedArticles: [13, 18, 16, 14],
   cta: {
     title: 'Need the Correct GM Part for Your Truck or SUV?',
     description: 'Skip the dealership markup and generic knockoffs. Let our parts specialists match your VIN and RPO codes to our nationwide inventory of tested, guaranteed recycled OEM GM parts.',

@@ -33,9 +33,6 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
             <h2 className="text-sm font-bold text-white tracking-wide">
               {BOT_CONFIG.name}
             </h2>
-            <span className="text-[10px] font-medium uppercase px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-200 border border-blue-400/30">
-              Bot
-            </span>
           </div>
           <p className="text-xs text-blue-100/75 leading-tight">
             {BOT_CONFIG.subtitle}

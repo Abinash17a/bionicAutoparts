@@ -1,49 +1,46 @@
 /**
  * Data contracts and UI types for the automotive conversational assistant.
- * Matches the backend API contracts defined in part finder bot.
+ * Matches the backend API contracts defined in Tony Beta 3 bot.
  */
 
 export interface ChatRequestBody {
   session_id: string;
   message: string;
+  context?: SessionState | null;
+  session_state?: SessionState | null;
+}
+
+export interface SessionState {
+  customer?: {
+    name?: string | null;
+    phone?: string | null;
+    email?: string | null;
+    zip?: string | null;
+  };
+  intent?: string;
+  vehicle?: {
+    year?: number | string | null;
+    make?: string | null;
+    manufacturer?: string | null;
+    model?: string | null;
+  };
+  part?: string | null;
+  details?: Record<string, unknown>;
+  missing_fields?: string[];
+  pending_confirmation?: Record<string, unknown> | null;
+  status?: string;
+  reply?: string;
 }
 
 export interface ChatResponseBody {
+  status: string;
+  session_id?: string;
   reply: string;
-  intent: string[];
-  context: {
-    vehicle?: {
-      year?: string | null;
-      make?: string | null;
-      model?: string | null;
-      engine?: string | null;
-      transmission?: string | null;
-      body_style?: string | null;
-      trim?: string | null;
-    };
-    request?: {
-      part_name?: string | null;
-      canonical_part_name?: string | null;
-      side?: string | null;
-      position?: string | null;
-      category?: string | null;
-    };
-    location?: {
-      city?: string | null;
-      state?: string | null;
-      zip?: string | null;
-    };
-    problem?: {
-      description?: string | null;
-      urgency?: string | null;
-    };
-    [key: string]: unknown;
-  };
-  missing_information: string[];
-  session_id: string;
-  request_id: string;
-  clarification_needed: boolean;
-  llm_used: boolean;
+  context?: SessionState;
+  extracted_data?: SessionState;
+  action?: string;
+  category?: string;
+  inference_time_seconds?: number;
 }
 
 export interface ResetRequestBody {
@@ -53,7 +50,6 @@ export interface ResetRequestBody {
 export interface ResetResponseBody {
   reset: boolean;
   session_id: string;
-  request_id: string;
 }
 
 export interface ChatMessage {
@@ -61,4 +57,6 @@ export interface ChatMessage {
   sender: "user" | "bot";
   text: string;
   timestamp: number;
+  category?: string;
+  context?: SessionState;
 }

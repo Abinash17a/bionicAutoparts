@@ -1,8 +1,11 @@
 async function run() {
+  const port = process.env.BOT_PORT || 8000;
+  const baseUrl = `http://localhost:${port}`;
   const sessionId = 'test-session-' + Date.now();
   
+  console.log(`Testing Tony Beta 3 API against ${baseUrl}...`);
   console.log('--- 1. First Message ---');
-  let res = await fetch('http://localhost:3005/chat', {
+  let res = await fetch(`${baseUrl}/chat`, {
     method: 'POST',
     headers: { 'content-type': 'application/json', 'origin': 'http://localhost:3000' },
     body: JSON.stringify({ session_id: sessionId, message: "I need a driver's side mirror for my 2015 Ford F150." })
@@ -14,7 +17,7 @@ async function run() {
   console.log('Context:', JSON.stringify(json.context, null, 2));
 
   console.log('\n--- 2. Follow-up Message (Side Correction) ---');
-  res = await fetch('http://localhost:3005/chat', {
+  res = await fetch(`${baseUrl}/chat`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ session_id: sessionId, message: 'Actually I need the passenger side.' })
@@ -24,7 +27,7 @@ async function run() {
   console.log('Context:', JSON.stringify(json.context, null, 2));
 
   console.log('\n--- 3. Follow-up Message (Location update) ---');
-  res = await fetch('http://localhost:3005/chat', {
+  res = await fetch(`${baseUrl}/chat`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ session_id: sessionId, message: 'My car is a 2015 F150 and I moved to Chicago.' })
@@ -35,7 +38,7 @@ async function run() {
 
   console.log('\n--- 4. Civic Query ---');
   const civicSession = 'civic-session-' + Date.now();
-  res = await fetch('http://localhost:3005/chat', {
+  res = await fetch(`${baseUrl}/chat`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ session_id: civicSession, message: 'My 2012 Civic got hit yesterday and the front light broke.' })
@@ -45,7 +48,7 @@ async function run() {
   console.log('Civic Context:', JSON.stringify(json.context, null, 2));
 
   console.log('\n--- 5. Reset Session ---');
-  res = await fetch('http://localhost:3005/reset-session', {
+  res = await fetch(`${baseUrl}/reset-session`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ session_id: sessionId })

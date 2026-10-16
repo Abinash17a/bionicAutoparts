@@ -26,6 +26,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.9,
     },
     {
+      url: `${baseUrl}/car-guide`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
       url: `${baseUrl}/about-us`,
       lastModified: currentDate,
       changeFrequency: 'monthly',
@@ -48,6 +54,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: currentDate,
       changeFrequency: 'weekly',
       priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/llms.txt`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.5,
     },
   ];
 
@@ -108,7 +120,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // 7. Verified Blog Guides
   const blogRoutes: MetadataRoute.Sitemap = blogs.map((blog) => ({
-    url: `${baseUrl}/blogs/${blog.id}`,
+    url: `${baseUrl}/blogs/${blog.slug}`,
     lastModified: currentDate,
     changeFrequency: 'monthly',
     priority: 0.6,

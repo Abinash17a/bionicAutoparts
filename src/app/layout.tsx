@@ -11,6 +11,7 @@ import GoogleTagManager from "./components/GoogleTagManager";
 import { LoadingProvider } from "./context/LoadingContext";
 import LoadingWrapper from "./components/LoadingWrapper";
 import ChatbotRoot from "./components/chatbot/ChatbotRoot";
+import FloatingVinSticker from "./components/FloatingVinSticker";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.usausedautopart.com";
 
@@ -142,6 +143,7 @@ export default function RootLayout({
             <Footer />
           </LoadingWrapper>
           <ChatbotRoot />
+          <FloatingVinSticker />
         </LoadingProvider>
       </body>
     </html>

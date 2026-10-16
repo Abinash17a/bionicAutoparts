@@ -344,3 +344,40 @@ body {
   }
 }
 
+/* Creatlydev Uiverse Floating Button - Check Part Through VIN */
+.vin-sticker-btn:hover {
+  background-color: #000000 !important;
+}
+
+.vin-sticker-btn:hover .vin-sticker-icon-wrapper {
+  color: #000000 !important;
+}
+
+.vin-sticker-icon-svg--copy {
+  transform: translate(-150%, 150%);
+}
+
+.vin-sticker-btn:hover .vin-sticker-icon-svg:first-child {
+  transform: translate(150%, -150%);
+}
+
+.vin-sticker-btn:hover .vin-sticker-icon-svg--copy {
+  transform: translate(0, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vin-sticker-btn,
+  .vin-sticker-icon-wrapper,
+  .vin-sticker-icon-svg,
+  .vin-sticker-icon-svg--copy {
+    transition: none !important;
+    animation: none !important;
+  }
+  .vin-sticker-icon-svg--copy {
+    display: none !important;
+  }
+  .vin-sticker-btn:hover .vin-sticker-icon-svg:first-child {
+    transform: none !important;
+  }
+}
+

@@ -123,29 +123,29 @@ export const HomeForm: React.FC<HomeFormProps> = ({
   return (
     <Box
       sx={{
-        py: { xs: 2, sm: 2.5 },
-        px: { xs: 2, sm: 2.5 },
+        py: { xs: 2, sm: 3 },
+        px: { xs: 2, sm: 3 },
         minHeight: "auto",
-        maxWidth: { xs: "100%", sm: "400px" },
+        maxWidth: { xs: "95vw", sm: "400px" },
         mx: "auto",
-        background: "linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(147, 51, 234, 0.15) 100%)",
-        backdropFilter: "blur(12px)",
+        background: "linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%)",
+        backdropFilter: "blur(10px)",
         borderRadius: { xs: 3, sm: 4 },
-        border: "1px solid rgba(255, 255, 255, 0.15)",
+        border: "1px solid rgba(255, 255, 255, 0.1)",
         boxShadow: {
-          xs: "0 8px 24px rgba(0, 0, 0, 0.25)",
-          sm: "0 12px 36px rgba(0, 0, 0, 0.3)"
+          xs: "0 4px 20px rgba(0, 0, 0, 0.25)",
+          sm: "0 8px 32px rgba(0, 0, 0, 0.3)"
         },
       }}
     >
         {/* Header */}
-        <Box textAlign="center" mb={{ xs: 1.25, sm: 1.5 }}>
+        <Box textAlign="center" mb={{ xs: 1.5, sm: 2 }}>
           <Typography
             variant="h5"
-            fontWeight={700}
+            fontWeight={600}
             color="#ffffff"
             mb={0.5}
-            sx={{ fontSize: { xs: "1.25rem", sm: "1.45rem" } }}
+            sx={{ fontSize: { xs: "1.25rem", sm: "1.5rem" } }}
           >
             Find Auto Parts
           </Typography>
@@ -163,7 +163,7 @@ export const HomeForm: React.FC<HomeFormProps> = ({
         <Stack
           direction="row"
           spacing={{ xs: 0.5, sm: 1 }}
-          mb={{ xs: 1.25, sm: 1.5 }}
+          mb={{ xs: 1.5, sm: 2 }}
           justifyContent="center"
         >
           {[
@@ -180,9 +180,9 @@ export const HomeForm: React.FC<HomeFormProps> = ({
               color={step.completed ? "success" : "default"}
               sx={{
                 fontSize: { xs: "0.7rem", sm: "0.75rem" },
-                height: { xs: 20, sm: 22 },
+                height: { xs: 20, sm: 24 },
                 "& .MuiChip-label": {
-                  px: { xs: 0.75, sm: 1 }
+                  px: { xs: 0.5, sm: 1 }
                 }
               }}
             />
@@ -190,14 +190,14 @@ export const HomeForm: React.FC<HomeFormProps> = ({
         </Stack>
 
         {/* Form Fields */}
-        <Stack spacing={{ xs: 1, sm: 1.25 }}>
+        <Stack spacing={{ xs: 1, sm: 1.5 }}>
           {/* Year Field */}
           <Box>
             <Typography
               variant="body2"
               fontWeight={500}
               color="#ffffff"
-              mb={{ xs: 0.35, sm: 0.5 }}
+              mb={{ xs: 0.5, sm: 1 }}
               sx={{ fontSize: { xs: "0.8rem", sm: "0.875rem" } }}
             >
               <CalendarToday sx={{
@@ -224,10 +224,6 @@ export const HomeForm: React.FC<HomeFormProps> = ({
                 }
               }}
               sx={{
-                "& .MuiSelect-select": {
-                  py: { xs: "8px", sm: "9px" },
-                  fontSize: { xs: "0.85rem", sm: "0.875rem" }
-                },
                 "& .MuiOutlinedInput-root": {
                   borderRadius: 2,
                   backgroundColor: year ? "#f0f9ff" : "#ffffff",
@@ -252,7 +248,7 @@ export const HomeForm: React.FC<HomeFormProps> = ({
             </TextField>
           </Box>
 
-          <Divider sx={{ my: 0.75 }} />
+          <Divider sx={{ my: 1 }} />
 
           {/* Make Field */}
           <Box>
@@ -260,7 +256,7 @@ export const HomeForm: React.FC<HomeFormProps> = ({
               variant="body2"
               fontWeight={500}
               color="#ffffff"
-              mb={{ xs: 0.35, sm: 0.5 }}
+              mb={{ xs: 0.5, sm: 1 }}
               sx={{ fontSize: { xs: "0.8rem", sm: "0.875rem" } }}
             >
               <DirectionsCar sx={{
@@ -293,10 +289,6 @@ export const HomeForm: React.FC<HomeFormProps> = ({
               }}
               sx={{
                 flex: 1,
-                "& .MuiSelect-select": {
-                  py: { xs: "8px", sm: "9px" },
-                  fontSize: { xs: "0.85rem", sm: "0.875rem" }
-                },
                 "& .MuiOutlinedInput-root": {
                   borderRadius: 2,
                   backgroundColor: make ? "#f0f9ff" : year ? "#ffffff" : "#f8fafc",
@@ -323,12 +315,12 @@ export const HomeForm: React.FC<HomeFormProps> = ({
             {make && makeLogos[make] && (
               <Box
                 sx={{
-                  width: { xs: 50, sm: 60 },
-                  height: { xs: 50, sm: 60 },
+                  width: { xs: 70, sm: 85 },
+                  height: { xs: 70, sm: 85 },
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  p: { xs: 0.75, sm: 1 }
+                  p: { xs: 1, sm: 1.25 }
                 }}
               >
                 <img
@@ -347,13 +339,13 @@ export const HomeForm: React.FC<HomeFormProps> = ({
             )}
             </Box>
             {!year && (
-              <Typography variant="caption" color="#d1d5db" mt={0.5} sx={{ fontSize: { xs: "0.75rem", sm: "0.8rem" } }}>
+              <Typography variant="caption" color="#d1d5db" mt={0.5}>
                 Select year first
               </Typography>
             )}
           </Box>
 
-          <Divider sx={{ my: 0.75 }} />
+          <Divider sx={{ my: 1 }} />
 
           {/* Model Field */}
           <Box>
@@ -361,7 +353,7 @@ export const HomeForm: React.FC<HomeFormProps> = ({
               variant="body2"
               fontWeight={500}
               color="#ffffff"
-              mb={{ xs: 0.35, sm: 0.5 }}
+              mb={{ xs: 0.5, sm: 1 }}
               sx={{ fontSize: { xs: "0.8rem", sm: "0.875rem" } }}
             >
               <Category sx={{
@@ -389,10 +381,6 @@ export const HomeForm: React.FC<HomeFormProps> = ({
                 }
               }}
               sx={{
-                "& .MuiSelect-select": {
-                  py: { xs: "8px", sm: "9px" },
-                  fontSize: { xs: "0.85rem", sm: "0.875rem" }
-                },
                 "& .MuiOutlinedInput-root": {
                   borderRadius: 2,
                   backgroundColor: model ? "#f0f9ff" : make ? "#ffffff" : "#f8fafc",
@@ -417,13 +405,13 @@ export const HomeForm: React.FC<HomeFormProps> = ({
                 ))}
             </TextField>
             {!make && (
-              <Typography variant="caption" color="#d1d5db" mt={0.5} sx={{ fontSize: { xs: "0.75rem", sm: "0.8rem" } }}>
+              <Typography variant="caption" color="#d1d5db" mt={0.5}>
                 Select make first
               </Typography>
             )}
           </Box>
 
-          <Divider sx={{ my: 0.75 }} />
+          <Divider sx={{ my: 1 }} />
 
           {/* Part Field */}
           <Box>
@@ -431,7 +419,7 @@ export const HomeForm: React.FC<HomeFormProps> = ({
               variant="body2"
               fontWeight={500}
               color="#ffffff"
-              mb={{ xs: 0.35, sm: 0.5 }}
+              mb={{ xs: 0.5, sm: 1 }}
               sx={{ fontSize: { xs: "0.8rem", sm: "0.875rem" } }}
             >
               <Build sx={{
@@ -458,10 +446,6 @@ export const HomeForm: React.FC<HomeFormProps> = ({
                 }
               }}
               sx={{
-                "& .MuiSelect-select": {
-                  py: { xs: "8px", sm: "9px" },
-                  fontSize: { xs: "0.85rem", sm: "0.875rem" }
-                },
                 "& .MuiOutlinedInput-root": {
                   borderRadius: 2,
                   backgroundColor: part ? "#f0f9ff" : "#ffffff",
@@ -487,17 +471,17 @@ export const HomeForm: React.FC<HomeFormProps> = ({
           </Box>
         </Stack>
 
-        {/* Search Button */}
-        <Button
-          fullWidth
-          variant="contained"
-          size="large"
-          onClick={handleSearch}
-          disabled={!year || !make || !model || !part}
-          startIcon={<Search sx={{ fontSize: { xs: 18, sm: 20 } }} />}
-          sx={{
-            mt: { xs: 1.25, sm: 1.5 },
-            py: { xs: 1.1, sm: 1.3 },
+                 {/* Search Button */}
+         <Button
+           fullWidth
+           variant="contained"
+           size="large"
+           onClick={handleSearch}
+           disabled={!year || !make || !model || !part}
+           startIcon={<Search sx={{ fontSize: { xs: 18, sm: 20 } }} />}
+           sx={{
+             mt: { xs: 1.5, sm: 2 },
+             py: { xs: 1.2, sm: 1.5 },
             borderRadius: 2,
             background: (year && make && model && part)
               ? "#3b82f6"
@@ -506,7 +490,7 @@ export const HomeForm: React.FC<HomeFormProps> = ({
               ? "#ffffff"
               : "#94a3b8",
             fontWeight: 600,
-            fontSize: { xs: "0.875rem", sm: "0.95rem" },
+            fontSize: { xs: "0.875rem", sm: "1rem" },
             textTransform: "none",
             boxShadow: "none",
             "&:hover": (year && make && model && part) ? {
@@ -525,17 +509,17 @@ export const HomeForm: React.FC<HomeFormProps> = ({
           Complete all fields to Search Parts
         </Button>
 
-        {/* Footer */}
-        <Typography
-          variant="caption"
-          color="#d1d5db"
-          textAlign="center"
-          display="block"
-          mt={{ xs: 0.75, sm: 1 }}
-          sx={{ fontSize: { xs: "0.7rem", sm: "0.75rem" } }}
-        >
-          ✓ Quality parts • ✓ Fast shipping • ✓ 6 Month warranty
-        </Typography>
+                 {/* Footer */}
+         <Typography
+           variant="caption"
+           color="#d1d5db"
+           textAlign="center"
+           display="block"
+           mt={{ xs: 1, sm: 1.5 }}
+           sx={{ fontSize: { xs: "0.7rem", sm: "0.75rem" } }}
+         >
+           ✓ Quality parts • ✓ Fast shipping • ✓ 6 Month warranty
+         </Typography>
     </Box>
   )
 }

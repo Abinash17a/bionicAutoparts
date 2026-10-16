@@ -1,0 +1,141 @@
+# USA Used Auto Parts - Complete Site & Technical Knowledge Graph
+
+> USA Used Auto Parts (usausedautopart.com) is a nationwide supplier of tested, OEM used auto parts including used engines, used transmissions, transaxles, long blocks, short blocks, and major drivetrain components. All components undergo multi-point inspection, compression testing (for engines), and fluid clarity verification (for transmissions) before shipment.
+
+---
+
+## Table of Contents
+1. Site Overview & Commercial Services
+2. Inventory & Category Architecture
+3. Automotive Technical Knowledge Base (Full Article Directory)
+4. Quality Control, Warranty & Shipping Logistics
+
+---
+
+## 1. Site Overview & Commercial Services
+
+- **Home Page**: `https://www.usausedautopart.com/`
+  Instant search interface for finding exact OEM auto parts by Year, Make, Model, and Part Type.
+- **Parts Catalog**: `https://www.usausedautopart.com/parts`
+  Searchable directory of active inventory items with condition grades, photos, vehicle VIN context, and fitment notes.
+- **About Us**: `https://www.usausedautopart.com/about-us`
+  Information on our partner salvage yards, quality inspection workflow, customer guarantees, and nationwide distribution network.
+- **Contact & Support**: `https://www.usausedautopart.com/contact`
+  Toll-free customer support line, live quote requests, and order tracking support.
+- **Warranty & Refund Policy**: `https://www.usausedautopart.com/refunds`
+  Complete policy terms covering 30-to-90 day replacement warranties, labor policy disclaimers, core charge returns, and RMA processes.
+
+---
+
+## 2. Inventory & Category Architecture
+
+### Category Hubs
+- **Used Engines**: `https://www.usausedautopart.com/used-engines`
+  Low-mileage petrol and diesel engines for Chevrolet, Ford, Toyota, Honda, Nissan, Dodge, RAM, GMC, Jeep, Hyundai, Kia, BMW, Mercedes-Benz, Audi, and Subaru.
+- **Used Transmissions**: `https://www.usausedautopart.com/used-transmissions`
+  Automatic (including CVT, Dual-Clutch, and torque-converter automatics) and Manual 5-speed / 6-speed transmissions.
+
+### Dynamic Inventory Sitemaps
+All vehicle-specific make/model/year hierarchy pages (e.g. `/used-engines/toyota/camry/2018`) and individual product part pages (e.g. `/parts/UAP-2018-TOY-CAM-ENG-01`) are automatically indexed and mapped in `https://www.usausedautopart.com/sitemap.xml`.
+
+---
+
+## 3. Automotive Technical Knowledge Base (Full Article Summaries)
+
+### Article 1: How to Check a Used Engine Before You Buy It
+- **URL**: `https://www.usausedautopart.com/blogs/how-to-check-used-engine-before-you-buy-it`
+- **Key Concepts**: Compression testing (minimum 120-150 PSI with less than 10% variance across cylinders), oil dipstick inspection (checking for milky white emulsion indicating blown head gasket), oil pan inspection for metallic sludge or brass shims, valve cover crack inspection, and turning crankshaft manually 360 degrees to verify no binding.
+
+### Article 2: How to Tell If a Used Transmission Is in Good Condition
+- **URL**: `https://www.usausedautopart.com/blogs/how-to-tell-if-used-transmission-is-good`
+- **Key Concepts**: Transmission fluid color and odor (bright red/pink vs dark brown/burnt scent), magnet pan check for metal filings vs normal clutch micro-fines, torque converter shaft play and seal inspection, shift solenoid terminal resistance testing, and bellhousing crack verification.
+
+### Article 3: VIN Number Guide: How to Identify the Right Auto Part for Your Vehicle
+- **URL**: `https://www.usausedautopart.com/blogs/vin-number-guide-identify-right-auto-part`
+- **Key Concepts**: Decoding 17-digit VIN numbers (Positions 1-3 World Manufacturer Identifier, 4-8 Vehicle Descriptor Section including engine digit 8 and transmission code, 10 Model Year digit, 11 Assembly Plant, 12-17 Sequential Serial). Eliminates guesswork when vehicle mid-year revisions occur.
+
+### Article 4: OEM vs Aftermarket vs Used Parts: What's the Difference?
+- **URL**: `https://www.usausedautopart.com/blogs/oem-vs-aftermarket-vs-used-parts-difference`
+- **Key Concepts**: OEM (Original Equipment Manufacturer) parts guarantee 100% factory fitment, exact metallurgy, and sensor compatibility. Used OEM parts provide genuine factory quality at 50-80% lower cost than new dealer parts, outperforming budget aftermarket alternatives.
+
+### Article 5: What Is a Salvage Yard? How Used Auto Parts Are Sourced and Tested
+- **URL**: `https://www.usausedautopart.com/blogs/what-is-salvage-yard-how-used-parts-sourced-tested`
+- **Key Concepts**: Modern automotive recycler operations: vehicle acquisition from insurance auctions, fluid draining/environmental containment, multi-point testing (run testing, compression, electrical testing), barcoding/inventory logging, and warehouse storage.
+
+### Article 6: Used Engine Buying Guide: Mileage, Compression, Warranty and Fitment
+- **URL**: `https://www.usausedautopart.com/blogs/used-engine-buying-guide-mileage-compression-warranty`
+- **Key Concepts**: Selecting optimal mileage ranges, verifying seller warranty terms, understanding core charges (deposit refunded upon returning rebuildable old engine core), and confirming engine assembly specs.
+
+### Article 7: Used Transmission Buying Guide: VIN, Transmission Code and Compatibility
+- **URL**: `https://www.usausedautopart.com/blogs/used-transmission-buying-guide-vin-code-compatibility`
+- **Key Concepts**: Matching transmission tag codes (e.g. 4L60E vs 4L65E, 5R55W vs 5R55S, 8HP70, 09G, A6MF1), torque converter lockup solenoid configurations, cooler line fitting sizes, and transfer case adapter spline counts for 4WD/AWD.
+
+### Article 8: How Auto Part Interchange Works: Hollander Numbers Explained
+- **URL**: `https://www.usausedautopart.com/blogs/how-auto-part-interchange-works-hollander-numbers`
+- **Key Concepts**: The Hollander Interchange system maps part cross-compatibility. Two vehicles from different model years or even different brands (e.g. Pontiac Vibe and Toyota Matrix) sharing identical engineering specs receive the same Hollander interchange number.
+
+### Article 9: What Do Used Auto Part Grades Mean? A Practical Grading Guide
+- **URL**: `https://www.usausedautopart.com/blogs/what-do-used-auto-part-grades-mean`
+- **Key Concepts**: Automotive Recyclers Association (ARA) condition grading:
+  - **Grade A**: Low mileage (under 60,000 miles for engines/transmissions), top mechanical condition, minimal wear.
+  - **Grade B**: Average mileage (60,000 - 100,000 miles), fully operational with normal superficial wear.
+  - **Grade C**: Higher mileage (over 100,000 miles), fully functional core sold at discounted pricing.
+
+### Article 10: Discover the Best Salvage Yard for Affordable Used Auto Parts Nationwide
+- **URL**: `https://www.usausedautopart.com/blogs/discover-the-best-salvage-yard-for-affordable-used-auto-parts-nationwide`
+- **Key Concepts**: Sourcing verified salvage auto parts through nationwide inventory networks with standardized inspection and freight delivery across all 50 states.
+
+### Article 11: How Nationwide Shipping Works for Used Auto Parts
+- **URL**: `https://www.usausedautopart.com/blogs/how-nationwide-shipping-works-used-auto-parts`
+- **Key Concepts**: Heavy freight logistics for engines and transmissions: drain fluids, secure to wood pallets with steel/poly strapping, shrink wrap protection, commercial terminal delivery vs residential delivery with liftgate truck service.
+
+### Article 12: What Is an Engine Assembly? Long Block vs Complete Engine Explained
+- **URL**: `https://www.usausedautopart.com/blogs/what-is-engine-assembly-long-block-vs-complete-engine`
+- **Key Concepts**:
+  - **Short Block**: Engine block, crankshaft, connecting rods, and pistons.
+  - **Long Block**: Short block + cylinder heads, camshafts, and valvetrain.
+  - **Complete Engine Assembly**: Long block + intake manifold, exhaust manifolds, water pump, oil pan, sensors, and wiring harness (excluding starter, alternator, and AC compressor).
+
+### Article 13: The Ultimate Guide to Finding Quality Used Auto Parts
+- **URL**: `https://www.usausedautopart.com/blogs/the-ultimate-guide-to-finding-quality-used-auto-parts`
+- **Key Concepts**: Sourcing strategies, verifying business reputation, inspecting part photos, reading warranty disclaimers, and confirming exact vehicle compatibility.
+
+### Article 14: Everything You Need to Know About Used OEM Parts
+- **URL**: `https://www.usausedautopart.com/blogs/everything-you-need-to-know-about-used-oem-parts`
+- **Key Concepts**: Reliability advantages of genuine factory parts over aftermarket copies, preserving vehicle resale value, and avoiding electrical sensor communication faults.
+
+### Article 15: How to Find GM Parts Online: A Complete Fitment and Identification Guide
+- **URL**: `https://www.usausedautopart.com/blogs/how-to-find-gm-parts-online`
+- **Key Concepts**: Locating 8-digit GM part numbers, RPO (Regular Production Option) codes on the service parts identification sticker (glovebox/trunk), and cross-referencing GM engines (LS1, LT1, L83, L86, 3.6L LFX/LGX) and transmissions (6L80, 8L90, 10L90).
+
+### Article 16: Top Reasons to Buy Used Auto Parts Online
+- **URL**: `https://www.usausedautopart.com/blogs/top-reasons-to-buy-used-auto-parts-online`
+- **Key Concepts**: Instant access to nationwide inventory beyond local junkyards, transparent pricing comparisons, verified warranty protection, and direct door/shop shipping.
+
+### Article 17: How to Identify Genuine OEM Used Parts Online: Forensic Verification
+- **URL**: `https://www.usausedautopart.com/blogs/how-to-identify-genuine-oem-used-parts-online`
+- **Key Concepts**: Inspecting factory casting marks, laser-etched manufacturer logos (GM, FoMoCo, Toyota, Honda), engineering part numbers, anti-counterfeiting security labels, and original weld seams.
+
+### Article 18: The Environmental and Economic Benefits of Buying Recycled Auto Parts
+- **URL**: `https://www.usausedautopart.com/blogs/the-benefits-of-buying-recycled-auto-parts`
+- **Key Concepts**: Saving over 85 million barrels of oil annually through auto recycling, preventing millions of tons of steel/aluminum from entering landfills, and reducing automotive repair costs by up to 70%.
+
+### Article 19: Top Websites for Used Auto Parts Online: Complete Comparison Guide
+- **URL**: `https://www.usausedautopart.com/blogs/top-websites-for-used-auto-parts-online`
+- **Key Concepts**: Comparing direct inventory suppliers vs marketplace aggregators, evaluating warranty lengths, return policies, shipping transparency, and customer support responsiveness.
+
+### Article 20: The Advantages of Buying Used Auto Parts for Classic and Vintage Cars
+- **URL**: `https://www.usausedautopart.com/blogs/advantages-of-buying-used-auto-parts-for-classic-vintage-cars`
+- **Key Concepts**: Sourcing rare out-of-production trim pieces, original iron cylinder heads, period-correct carburetors, manual gearboxes, and authentic body panels for classic restorations.
+
+### Article 21: Hybrid vs. Electric vs. Normal Engine: Which Vehicle Powertrain Is Right for You?
+- **URL**: `https://www.usausedautopart.com/blogs/hybrid-vs-electric-vs-normal-engine-comparison`
+- **Key Concepts**: Structural comparison of ICE (Internal Combustion Engine), HEV/PHEV (Hybrid Electric Vehicle), and EV (Electric Vehicle) powertrains, battery module longevity, inverter electronics, and maintenance/replacement cost profiles.
+
+---
+
+## 4. Quality Control, Warranty & Shipping Logistics
+
+- **Inspection Process**: All engines undergo leak-down / compression testing. Transmissions undergo torque converter clearance checks and fluid inspection.
+- **Warranty**: Standard 30 to 90-day replacement warranty on major mechanical components.
+- **Freight Delivery**: Palletized freight shipped via major LTL carriers nationwide across the United States.

@@ -142,9 +142,9 @@ async function main() {
         modelId_year_trim_engineCode_transmissionCode: {
           modelId: modelId,
           year: item.year,
-          trim: item.trim || null,
-          engineCode: item.engineCode || null,
-          transmissionCode: item.transmissionCode || null,
+          trim: (item.trim || null) as any,
+          engineCode: (item.engineCode || null) as any,
+          transmissionCode: (item.transmissionCode || null) as any,
         },
       },
       update: {},

@@ -204,7 +204,7 @@ export const article2_qualityUsedParts: BlogArticle = {
       description: 'Connect with an automotive fitment specialist to verify Hollander interchange numbers.',
     },
   ],
-  relatedArticles: [1, 3, 4, 6],
+  relatedArticles: [11, 12, 13, 18],
   cta: {
     title: 'Find the Exact Part for Your Vehicle Today',
     description: 'Enter your vehicle year, make, and model or connect with our parts specialists to match your VIN with verified, tested recycled OEM inventory backed by our 6-month warranty.',

@@ -40,7 +40,7 @@ export default function BlogList() {
               key={blog.id}
               className="group flex flex-col h-full shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-slate-200 hover:border-blue-500/60 bg-white"
             >
-              <div className="relative h-48 w-full overflow-hidden rounded-t-xl bg-slate-100">
+              <Link href={`/blogs/${blog.slug}`} className="relative h-48 w-full overflow-hidden rounded-t-xl bg-slate-100 block">
                 <img
                   src={blog.heroImage?.src || blog.image}
                   alt={blog.heroImage?.alt || blog.title}
@@ -51,14 +51,16 @@ export default function BlogList() {
                     {blog.category}
                   </span>
                 )}
-              </div>
+              </Link>
               <CardContent className="flex flex-col flex-1 p-6 gap-3">
                 <div className="flex items-center justify-between text-xs text-slate-500 mb-0.5">
                   <span>{blog.date}</span>
                   {blog.readTime && <span>{blog.readTime}</span>}
                 </div>
                 <CardTitle className="text-xl font-bold text-slate-900 mb-1 line-clamp-2 leading-snug">
-                  {blog.title}
+                  <Link href={`/blogs/${blog.slug}`} className="hover:text-blue-600 transition-colors">
+                    {blog.title}
+                  </Link>
                 </CardTitle>
                 <div className="text-slate-600 text-sm flex-1 line-clamp-3">
                   {blog.metaDescription || truncateText(blog.description.replace(/\*\*/g, ""), 24)}
@@ -68,7 +70,7 @@ export default function BlogList() {
                   variant="outline"
                   className="mt-4 w-fit px-5 py-2 text-blue-600 border-blue-500 hover:bg-blue-50 hover:text-blue-800 transition"
                 >
-                  <Link href={`/blogs/${blog.id}`}>
+                  <Link href={`/blogs/${blog.slug}`}>
                     Read Guide <ArrowRight className="ml-2 w-4 h-4" />
                   </Link>
                 </Button>

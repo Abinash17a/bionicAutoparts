@@ -231,7 +231,7 @@ export const article1_salvageYards: BlogArticle = {
       description: 'Browse our complete nationwide commercial inventory of verified OEM recycled components.',
     },
   ],
-  relatedArticles: [2, 3, 5, 7],
+  relatedArticles: [15, 7, 20, 19],
   cta: {
     title: 'Ready to Locate Your Replacement Auto Part?',
     description: 'Avoid dealership markups and low-grade aftermarket replicas. Search our live inventory of verified OEM used parts backed by our 6-month warranty and nationwide freight delivery.',

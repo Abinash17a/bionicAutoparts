@@ -63,7 +63,7 @@ export const legacyArticles: BlogArticle[] = [
       { title: 'Search Used Engines', href: '/used-engines', description: 'Browse tested OEM engines with warranty.' },
       { title: 'Search Used Transmissions', href: '/used-transmissions', description: 'Find bench-tested automatic and manual gearboxes.' },
     ],
-    relatedArticles: [1, 2, 5],
+    relatedArticles: [5, 20, 1, 15],
     cta: {
       title: 'Find the Part You Need Today',
       description: 'Search our nationwide inventory of quality-tested recycled OEM auto parts with guaranteed fitment and fast freight delivery.',
@@ -134,7 +134,7 @@ export const legacyArticles: BlogArticle[] = [
       { title: 'Search All Recycled Parts', href: '/parts', description: 'Browse our full catalog of vintage and modern OEM parts.' },
       { title: 'Custom Part Inquiries', href: '/contact', description: 'Let our specialists track down hard-to-find components.' },
     ],
-    relatedArticles: [2, 3, 6],
+    relatedArticles: [18, 14, 3, 13],
     cta: {
       title: 'Restoring a Classic or Vintage Vehicle?',
       description: 'Search our nationwide inventory of authentic OEM parts to keep your prized vintage car running with factory originality.',
@@ -205,7 +205,7 @@ export const legacyArticles: BlogArticle[] = [
       { title: 'Browse Used Engines', href: '/used-engines', description: 'Tested gas, diesel, and hybrid engine assemblies.' },
       { title: 'Browse Transmissions', href: '/used-transmissions', description: 'Automatic, manual, and hybrid transaxles.' },
     ],
-    relatedArticles: [2, 5, 7],
+    relatedArticles: [21, 16, 17, 11],
     cta: {
       title: 'Need Powertrain Replacement Parts?',
       description: 'Whether you drive an internal combustion vehicle, hybrid, or EV, search our verified nationwide inventory of tested OEM components backed by our 6-month warranty.',

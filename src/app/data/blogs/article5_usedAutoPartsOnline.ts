@@ -188,7 +188,7 @@ export const article5_usedAutoPartsOnline: BlogArticle = {
       description: 'Read our transparent warranty, return, and replacement coverage terms.',
     },
   ],
-  relatedArticles: [1, 2, 3, 7],
+  relatedArticles: [20, 8, 1, 15],
   cta: {
     title: 'Ready to Experience the Online Parts Advantage?',
     description: 'Search our nationwide inventory of over 100,000 verified recycled OEM auto parts. Get guaranteed fitment, clear pricing, fast commercial freight, and 6-month warranty protection.',

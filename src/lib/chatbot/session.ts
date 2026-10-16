@@ -84,6 +84,7 @@ export function clearStoredSession(): string {
     const newSessionId = generateUUID();
     window.sessionStorage.setItem(SESSION_KEY, newSessionId);
     window.sessionStorage.removeItem(MESSAGES_KEY);
+    window.sessionStorage.removeItem("bionic_chatbot_state");
     return newSessionId;
   } catch {
     return generateUUID();

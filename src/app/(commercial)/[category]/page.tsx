@@ -4,10 +4,8 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import {
   getCategoryBySlug,
-  getInventoryByCategory,
   getActiveMakes,
 } from '@/lib/inventory/inventoryRepository';
-import InventoryCard from '../../components/InventoryCard';
 import VehicleQuoteBox from '../../components/VehicleQuoteBox';
 import { ShieldCheck, Truck, Wrench, CheckCircle2, ChevronRight } from 'lucide-react';
 
@@ -42,10 +40,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     notFound();
   }
 
-  const [items, availableMakes] = await Promise.all([
-    getInventoryByCategory(category.slug),
-    getActiveMakes(category.slug),
-  ]);
+  const availableMakes = await getActiveMakes(category.slug);
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.usausedautopart.com';
 
@@ -152,35 +147,6 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
               </div>
             </div>
 
-            {/* Current In-Stock Inventory */}
-            <div>
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <h2 className="text-2xl font-bold text-slate-900">
-                    Verified {category.shortTitle} in Stock
-                  </h2>
-                  <p className="text-sm text-slate-500">
-                    Inspected OEM units ready for rapid nationwide freight dispatch
-                  </p>
-                </div>
-                <span className="text-xs bg-slate-200 text-slate-700 px-2.5 py-1 rounded-full font-medium">
-                  {items.length} {items.length === 1 ? 'Part' : 'Parts'} Listed
-                </span>
-              </div>
-
-              {items.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {items.map((item) => (
-                    <InventoryCard key={item.id} item={item} />
-                  ))}
-                </div>
-              ) : (
-                <div className="bg-white rounded-xl p-8 text-center border border-slate-200">
-                  <p className="text-slate-600 font-medium mb-2">No units currently listed in this immediate view.</p>
-                  <p className="text-slate-400 text-sm mb-4">Use the quote form to check our nationwide partner yards.</p>
-                </div>
-              )}
-            </div>
 
             {/* Testing and Quality Assurance Standards */}
             <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">

@@ -1,5 +1,6 @@
-import React from 'react';
-import Image from 'next/image';
+"use client";
+
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { InventoryItem } from '@/lib/inventory/inventoryRepository';
 import { ShieldCheck, Truck, ArrowRight } from 'lucide-react';
@@ -9,17 +10,26 @@ interface InventoryCardProps {
 }
 
 export default function InventoryCard({ item }: InventoryCardProps) {
+  const defaultFallback = item.categorySlug === 'used-transmissions' 
+    ? '/cardcarpartsmpage.jpg'
+    : item.categorySlug === 'used-body-parts'
+    ? '/mainpage2.jpg'
+    : item.categorySlug === 'used-interior-parts'
+    ? '/cardinteriormpage.jpg'
+    : '/cardmpageengine.jpg';
+
+  const [imgSrc, setImgSrc] = useState(item.image || defaultFallback);
+
   return (
     <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-slate-200 overflow-hidden flex flex-col justify-between">
       <div>
         {/* Card Header & Image */}
         <div className="relative h-52 w-full bg-slate-100 overflow-hidden">
-          <Image
-            src={item.image}
+          <img
+            src={imgSrc}
             alt={item.partName}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-cover hover:scale-105 transition-transform duration-300"
+            onError={() => setImgSrc(defaultFallback)}
+            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
           />
           <div className="absolute top-3 left-3 bg-blue-600/90 backdrop-blur-sm text-white text-xs font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider">
             {item.categoryName}

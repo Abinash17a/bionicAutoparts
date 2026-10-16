@@ -104,10 +104,10 @@ export const CarAboutSection = () => {
   const [hoveredImage, setHoveredImage] = useState<number | null>(null)
 
   return (
-    <div className="py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
-      <div className="max-w-full mx-auto px-12">
+    <div className="py-8 md:py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
+      <div className="max-w-full mx-auto px-0 md:px-12">
         {/* Header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-8 md:mb-12">
           <h1 className="text-4xl sm:text-5xl font-bold text-gray-800 mb-4">
             Premium Auto Parts
           </h1>

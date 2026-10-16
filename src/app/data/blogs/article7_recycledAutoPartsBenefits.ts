@@ -173,7 +173,7 @@ export const article7_recycledAutoPartsBenefits: BlogArticle = {
       description: 'Learn about our commitment to sustainable automotive recycling and quality standards.',
     },
   ],
-  relatedArticles: [1, 2, 3, 5],
+  relatedArticles: [15, 1, 20, 14],
   cta: {
     title: 'Drive Smarter, Save Money, and Protect the Planet',
     description: 'Join the circular automotive economy. Browse our nationwide catalog of tested, guaranteed recycled OEM auto parts backed by our 6-month warranty and fast commercial shipping.',
