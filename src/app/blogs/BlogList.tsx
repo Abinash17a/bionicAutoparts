@@ -2,15 +2,18 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { blogs } from "../data/blogsData";
+import { BlogSummary } from "../data/blogsData";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, ArrowRight } from "lucide-react";
 
-export default function BlogList() {
+export interface BlogListProps {
+  blogs?: BlogSummary[];
+}
+
+export default function BlogList({ blogs = [] }: BlogListProps) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [showNoResults, setShowNoResults] = useState(false);
 
   const truncateText = (text: string, wordLimit: number) => {
     const words = text.split(" ");
@@ -26,9 +29,7 @@ export default function BlogList() {
       blog.description.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  React.useEffect(() => {
-    setShowNoResults(searchTerm.length > 0 && filteredBlogs.length === 0);
-  }, [searchTerm, filteredBlogs.length]);
+  const showNoResults = searchTerm.length > 0 && filteredBlogs.length === 0;
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">

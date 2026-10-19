@@ -6,13 +6,18 @@ import { ToastContainer, toast } from 'react-toastify';
 import initialData from './data/initialData';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/navigation';
-import { FaShippingFast, FaCarSide, FaTools, FaHandHoldingUsd, FaTruck, FaPhoneAlt, FaUndoAlt, FaClock, FaFilePdf, FaCalendarAlt } from "react-icons/fa";
-import { TestimonialsSection } from './components/Testimonials';
+import dynamic from 'next/dynamic';
 import { CarPartsCardsSection } from './components/CarPartsCard';
 import { CarAboutSection } from './components/CarAboutSection';
+
+const TestimonialsSection = dynamic(
+  () => import('./components/Testimonials').then((mod) => mod.TestimonialsSection),
+  {
+    loading: () => <div className="min-h-[300px]" />,
+  }
+);
 import { ModalSection } from './components/HomeModalSection';
 import { HomeForm } from './components/HomeForm';
-import { HomeCarousel } from './components/HomeCarousel';
 import Link from 'next/link';
 import { INVENTORY_ITEMS } from './data/inventoryData';
 import InventoryCard from './components/InventoryCard';
@@ -24,130 +29,58 @@ interface DataType {
   parts: string[];
 }
 
+const formattedInitialData = {
+  ...initialData,
+  years: initialData.years.map(String),
+};
+
+const CATEGORY_SHORTCUTS = [
+  { href: '/used-engines', label: 'Used Engines' },
+  { href: '/used-transmissions', label: 'Used Transmissions' },
+  { href: '/used-body-parts', label: 'Body Parts' },
+  { href: '/used-interior-parts', label: 'Interior Parts' },
+];
+
 export default function Home() {
   const router = useRouter();
-  const [isMounted, setIsMounted] = useState(false);
 
   const [year, setYear] = useState('');
   const [make, setMake] = useState('');
   const [model, setModel] = useState('');
   const [part, setPart] = useState('');
-  const [isSubmitClicked, setisSubmitClicked] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [modalVisible, setModalVisible] = useState(false);
   const [searchedPart, setSearchedPart] = useState<DataType | null>(null);
-  const [searchedPartFormatted, setSearchedPartFormatted] = useState<string>('');
-  const [showSearchResult, setShowSearchResult] = useState(false);
 
-  const handleMakeChange = (e: any) => {
-    setMake(e.target.value);
-    setModel('');
-  };
   const [name, setName] = useState('');
   const [contact, setContact] = useState('');
   const [email, setEmail] = useState('');
   const [zipCode, setZipCode] = useState('');
-  const [isValid, setIsValid] = useState(false);
 
-  const validateForm = () => {
-    if (year && make && model && part) {
-      setIsValid(true);
-    } else {
-      setIsValid(false);
-    }
-  };
+  const isValid = Boolean(year && make && model && part);
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  useEffect(() => {
-    validateForm();
-  }, [year, make, model, part]);
-
-  const images = [
-    {
-      src: '/carouselImages/caro1.jpg',
-      alt: 'Car Parts',
-      title: 'High-Quality Car Parts',
-      description: 'Explore our wide selection of premium car parts for all makes and models.'
-    },
-    {
-      src: '/carouselImages/caro2_01.jpg',
-      alt: 'Car Parts',
-      title: 'Durable and Reliable',
-      description: 'Our parts are built to last, ensuring your car runs smoothly.'
-    },
-    {
-      src: '/carouselImages/caro3_01.jpg',
-      alt: 'Car Parts',
-      title: 'Affordable Prices',
-      description: 'Get the best quality at the most competitive prices in the market.'
-    },
-    {
-      src: '/carouselImages/caro4_01.jpg',
-      alt: 'Car Parts',
-      title: 'Fast Shipping',
-      description: 'We deliver quickly so you can get back on the road as soon as possible.'
-    },
-    {
-      src: '/carouselImages/caro5.jpg',
-      alt: 'Car Parts',
-      title: 'Customer Satisfaction',
-      description: 'Join thousands of satisfied customers who trust our parts.'
-    },
-  ];
-
-  const formatSearchedPart = (part: DataType | null): string => {
-    if (!part) return '';
-
-    return `${part.years.join(', ')} ${part.makes.join(', ')} ${part.models.join(', ')} ${part.parts.join(', ')}`;
-  };
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const handlePrev = () => {
-    setCurrentImageIndex((prevIndex) =>
-      prevIndex === 0 ? images.length - 1 : prevIndex - 1
-    );
-  };
-
-  const handleNext = () => {
-    setCurrentImageIndex((prevIndex) =>
-      prevIndex === images.length - 1 ? 0 : prevIndex + 1
-    );
-  };
-  useEffect(() => {
-    const interval = setInterval(() => {
-      handleNext();
-    }, 3000); // Change image every 3 seconds
-    return () => clearInterval(interval); // Clear interval on component unmount
-  }, [currentImageIndex]);
-
-  useEffect(() => {
-    if (searchedPart) {
-      const formattedPart = formatSearchedPart(searchedPart);
-      setSearchedPartFormatted(formattedPart);
-    }
-  }, [searchedPart]);
+  const searchedPartFormatted = searchedPart
+    ? `${searchedPart.years.join(', ')} ${searchedPart.makes.join(', ')} ${searchedPart.models.join(', ')} ${searchedPart.parts.join(', ')}`
+    : '';
 
   const handleSearch = () => {
     setSearchedPart({ years: [year], makes: [make], models: [model], parts: [part] });
     if (isValid) {
-      setShowSearchResult(true);
       setModalVisible(true);
-    }
-    else {
+    } else {
       setModalVisible(false);
       toast.error('All fields need to be filled before submitting!');
     }
   };
 
   const handleModalClose = () => {
-    setModalVisible(false); // Close the modal
+    setModalVisible(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setisSubmitClicked(!isSubmitClicked)
+    setIsSubmitting(true);
 
     try {
       const response = await fetch('/api/saveSubmission', {
@@ -172,10 +105,8 @@ export default function Home() {
         setEmail('');
         setZipCode('');
         handleModalClose();
-        setisSubmitClicked(false);
 
         router.push('/confirmation');
-
       } else {
         const errorData = await response.json();
         toast.error('Error submitting the form: ' + JSON.stringify(errorData));
@@ -183,12 +114,10 @@ export default function Home() {
     } catch (error) {
       console.error('Submission failed:', error);
       toast.error('Error submitting the form. Check console for details.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
-
-  if (!isMounted) {
-    return null;
-  }
 
   return (
     <div
@@ -202,18 +131,19 @@ export default function Home() {
     >
       <section className="w-full p-0">
         <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} closeOnClick pauseOnHover draggable />
-        <div className="w-full relative">
+        <div className="w-full relative min-h-[580px]">
           <Image
-            src="/carouselImages/herosectiono.jpg" // Random image from picsum.photos
-            alt="Random Background"
+            src="/carouselImages/herosectiono.jpg"
+            alt="Certified OEM Auto Parts Background"
             fill
+            sizes="100vw"
             style={{ objectFit: 'cover' }}
             className="z-0"
             priority
           />
           <div className="absolute inset-0 bg-black bg-opacity-0 z-10" />
           <div className="relative z-20 w-full">
-            <div className="max-w-7xl mx-auto w-full h-auto px-4 lg:px-6 pt-28 pb-8 md:py-12">
+            <div className="max-w-7xl mx-auto w-full h-auto px-4 lg:px-6 pt-28 pb-8 md:py-12 lg:pt-36">
               <div className="flex flex-col md:flex-row w-full gap-8 items-center justify-between">
                 {/* Left Hero Text */}
                 <div className="flex-1 text-left md:pr-8 mb-10 md:mb-0">
@@ -230,25 +160,22 @@ export default function Home() {
                   {/* Desktop Category Shortcuts & CTA */}
                   <div className="hidden md:block">
                     <div className="grid grid-cols-2 gap-2.5 mb-6 max-w-md">
-                      <Link href="/used-engines" className="px-3.5 py-2.5 rounded-lg bg-white/15 hover:bg-white/25 text-white font-semibold text-xs border border-white/20 backdrop-blur text-center transition-all">
-                        Used Engines
-                      </Link>
-                      <Link href="/used-transmissions" className="px-3.5 py-2.5 rounded-lg bg-white/15 hover:bg-white/25 text-white font-semibold text-xs border border-white/20 backdrop-blur text-center transition-all">
-                        Used Transmissions
-                      </Link>
-                      <Link href="/used-body-parts" className="px-3.5 py-2.5 rounded-lg bg-white/15 hover:bg-white/25 text-white font-semibold text-xs border border-white/20 backdrop-blur text-center transition-all">
-                        Body Parts
-                      </Link>
-                      <Link href="/used-interior-parts" className="px-3.5 py-2.5 rounded-lg bg-white/15 hover:bg-white/25 text-white font-semibold text-xs border border-white/20 backdrop-blur text-center transition-all">
-                        Interior Parts
-                      </Link>
+                      {CATEGORY_SHORTCUTS.map((cat) => (
+                        <Link
+                          key={cat.href}
+                          href={cat.href}
+                          className="px-3.5 py-2.5 rounded-lg bg-white/15 hover:bg-white/25 text-white font-semibold text-xs border border-white/20 backdrop-blur text-center transition-all"
+                        >
+                          {cat.label}
+                        </Link>
+                      ))}
                     </div>
 
                     <div className="flex flex-col sm:flex-row gap-3">
-                      <Link href="/parts" className="inline-flex items-center justify-center bg-[#3b82f6] hover:bg-[#2563eb] text-white font-bold py-3.5 px-6 rounded-lg text-sm shadow-lg transition-all duration-200">
+                      <Link href="/parts" className="inline-flex items-center justify-center bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-bold py-3.5 px-6 rounded-lg text-sm shadow-lg transition-all duration-200">
                         Browse All Catalog Parts &rarr;
                       </Link>
-                      <Link href="/car-guide" className="inline-flex items-center justify-center bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 px-6 rounded-lg text-sm shadow-lg transition-all duration-200">
+                      <Link href="/car-guide" className="inline-flex items-center justify-center bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-3.5 px-6 rounded-lg text-sm shadow-lg transition-all duration-200">
                         🔍 Free US Vehicle Guide (NHTSA & VIN) &rarr;
                       </Link>
                     </div>
@@ -266,32 +193,29 @@ export default function Home() {
                     part={part}
                     setPart={setPart}
                     handleSearch={handleSearch}
-                    initialData={{ ...initialData, years: initialData.years.map(String) }}
+                    initialData={formattedInitialData}
                   />
 
                   {/* Mobile Category Shortcuts & CTA (Below Form) */}
                   <div className="w-full max-w-sm mt-6 md:hidden">
-                    <Link href="/parts" className="w-full inline-flex items-center justify-center bg-[#3b82f6] hover:bg-[#2563eb] text-white font-bold py-3.5 px-6 rounded-lg text-base shadow-lg transition-all duration-200">
+                    <Link href="/parts" className="w-full inline-flex items-center justify-center bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-bold py-3.5 px-6 rounded-lg text-base shadow-lg transition-all duration-200">
                       Browse All Catalog Parts &rarr;
                     </Link>
 
-                    <Link href="/car-guide" className="w-full mt-2.5 inline-flex items-center justify-center bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-6 rounded-lg text-sm shadow-lg transition-all duration-200">
+                    <Link href="/car-guide" className="w-full mt-2.5 inline-flex items-center justify-center bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-3 px-6 rounded-lg text-sm shadow-lg transition-all duration-200">
                       🔍 Free US Vehicle Guide (NHTSA & VIN) &rarr;
                     </Link>
 
                     <div className="grid grid-cols-2 gap-2.5 mt-4">
-                      <Link href="/used-engines" className="px-3.5 py-2.5 rounded-lg bg-white/15 hover:bg-white/25 text-white font-semibold text-xs border border-white/20 backdrop-blur text-center transition-all">
-                        Used Engines
-                      </Link>
-                      <Link href="/used-transmissions" className="px-3.5 py-2.5 rounded-lg bg-white/15 hover:bg-white/25 text-white font-semibold text-xs border border-white/20 backdrop-blur text-center transition-all">
-                        Used Transmissions
-                      </Link>
-                      <Link href="/used-body-parts" className="px-3.5 py-2.5 rounded-lg bg-white/15 hover:bg-white/25 text-white font-semibold text-xs border border-white/20 backdrop-blur text-center transition-all">
-                        Body Parts
-                      </Link>
-                      <Link href="/used-interior-parts" className="px-3.5 py-2.5 rounded-lg bg-white/15 hover:bg-white/25 text-white font-semibold text-xs border border-white/20 backdrop-blur text-center transition-all">
-                        Interior Parts
-                      </Link>
+                      {CATEGORY_SHORTCUTS.map((cat) => (
+                        <Link
+                          key={cat.href}
+                          href={cat.href}
+                          className="px-3.5 py-2.5 rounded-lg bg-white/15 hover:bg-white/25 text-white font-semibold text-xs border border-white/20 backdrop-blur text-center transition-all"
+                        >
+                          {cat.label}
+                        </Link>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -345,7 +269,7 @@ export default function Home() {
           setZipCode={setZipCode}
           handleSubmit={handleSubmit}
           handleModalClose={handleModalClose}
-          isSubmitClicked={isSubmitClicked}
+          isSubmitClicked={isSubmitting}
         />
         <CarAboutSection />
         <CarPartsCardsSection />

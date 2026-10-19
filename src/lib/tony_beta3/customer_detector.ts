@@ -4,12 +4,13 @@
  */
 
 import { detectEntities, STOP_WORDS } from "./detector";
+import { isAnyValidPostal, isE164, parseContactMessage } from "./contact_rules";
 import { CustomerContext } from "./types";
 
 // Phone format candidate regex:
 // Optional leading '+' and country code (1-3 digits), optional area code, and main number segments.
 const PHONE_CANDIDATE_RE = /(?<!\w|\+)(?:\+\d{1,3}[\s.-]*)?(?:\(?\d{1,5}\)?[\s.-]*)?\d{3,5}[\s.-]*\d{3,5}(?:[\s.-]*\d{1,5})?(?!\w|\d)/g;
-const ZIP_RE = /(?<!\d)(\d{6})(?!\d)/;
+const ZIP_RE = /(?<!\d)(\d{5}(?:-\d{4})?|\d{6})(?!\d)/;
 const EXPLICIT_NAME_RE = /\b(?:my name is|my name's|name is|i am|i'm|im|this is|call me)\s+([a-z][a-z' -]*)/i;
 
 // Words that can never be (part of) a customer name.
@@ -21,16 +22,18 @@ const NOT_NAME = new Set([
 ]);
 
 /**
- * Validates whether a given string contains exactly 10 or 11 numeric digits.
+ * Validates a stored phone: exactly 10 or 11 digits (free-text path) or an E.164 number
+ * already validated against its country by the contact form (+<code><national>).
  */
 export function isValidPhone(v: unknown): v is string {
   if (typeof v !== "string" || !v.trim()) return false;
   const clean = v.trim();
-  return /^\d{10,11}$/.test(clean);
+  return /^\d{10,11}$/.test(clean) || isE164(clean);
 }
 
+/** 6 digits (free-text path) or any supported country's postal format from the contact form. */
 export function isValidZip(v: unknown): v is string {
-  return typeof v === "string" && /^\d{6}$/.test(v.trim());
+  return typeof v === "string" && (/^\d{6}$/.test(v.trim()) || isAnyValidPostal(v));
 }
 
 export function isValidName(v: unknown): v is string {
@@ -120,6 +123,10 @@ export interface CustomerDetection {
 export function detectCustomer(message: string, askingForName = false): CustomerDetection {
   let remaining = message;
   const customer: CustomerContext = { name: null, phone: null, zip: null };
+
+  // Contact-form submission: already country-validated, carries nothing else.
+  const form = parseContactMessage(message);
+  if (form) return { customer: { ...customer, ...form }, remaining: "" };
 
   const phoneExtraction = extractAndNormalizePhone(remaining);
   if (phoneExtraction && isValidPhone(phoneExtraction.normalized)) {

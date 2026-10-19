@@ -57,4 +57,6 @@ export interface ChatMessage {
   sender: "user" | "bot";
   text: string;
   timestamp: number;
+  category?: string;
+  context?: SessionState;
 }

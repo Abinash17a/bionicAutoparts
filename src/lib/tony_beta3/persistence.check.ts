@@ -25,6 +25,7 @@ import { chat } from "./chat";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getSupabaseClient } from "./database/supabase_client";
 import { CustomerRequestRepository } from "./database/customer_request_repository";
+import { SessionRepository } from "./database/session_repository";
 
 (async function runPersistenceVerification() {
   console.log("=== VERIFYING SUPABASE PERSISTENCE & PLACEHOLDER REMOVAL ===");
@@ -34,11 +35,14 @@ import { CustomerRequestRepository } from "./database/customer_request_repositor
   const originalServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   const originalAnonKey = process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
+  const originalSecretKey = process.env.SUPABASE_SECRET_KEY;
   delete process.env.NEXT_PUBLIC_SUPABASE_URL;
   delete process.env.SUPABASE_URL;
+  delete process.env.SUPABASE_SECRET_KEY;
   delete process.env.SUPABASE_SERVICE_ROLE_KEY;
   delete process.env.SUPABASE_ANON_KEY;
   delete process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  delete process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
   const dummyClient = createAdminClient();
   assert.strictEqual(
@@ -52,10 +56,12 @@ import { CustomerRequestRepository } from "./database/customer_request_repositor
   if (originalUrl) process.env.SUPABASE_URL = originalUrl;
   if (originalUrl) process.env.NEXT_PUBLIC_SUPABASE_URL = originalUrl;
   if (originalServiceKey) process.env.SUPABASE_SERVICE_ROLE_KEY = originalServiceKey;
+  if (originalSecretKey) process.env.SUPABASE_SECRET_KEY = originalSecretKey;
   if (originalAnonKey) process.env.SUPABASE_ANON_KEY = originalAnonKey;
 
   // 2. Test CustomerRequestRepository local in-memory fallback (useSupabase = false for unit testing)
   const localRepo = new CustomerRequestRepository(false);
+  const localSessionRepo = new SessionRepository(false);
   const localSession = "pers-verify-local-" + Date.now();
   let localCtx: any = null;
 
@@ -73,6 +79,7 @@ import { CustomerRequestRepository } from "./database/customer_request_repositor
       sessionId: localSession,
       context: localCtx,
       customerRequestRepository: localRepo,
+      sessionRepository: localSessionRepo,
     });
     assert.strictEqual(res.category, turn.expectedCategory, `Expected category ${turn.expectedCategory} for input ${turn.input}`);
     assert.ok(!res.reply.includes("having trouble recording your request"), "Must not return error response");
@@ -92,6 +99,7 @@ import { CustomerRequestRepository } from "./database/customer_request_repositor
         sessionId: sId,
         context: c,
         customerRequestRepository: localRepo,
+        sessionRepository: localSessionRepo,
       });
       c = res.context;
       if (msg === z) {

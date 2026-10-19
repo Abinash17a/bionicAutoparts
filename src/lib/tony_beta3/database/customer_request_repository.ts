@@ -56,7 +56,7 @@ export class CustomerRequestRepository {
     if (client) {
       try {
         const { data, error } = await client
-          .from("customer_requests")
+          .from("usaautopartsbot_customer_requests")
           .select("*")
           .eq("session_id", cleanSessionId)
           .order("created_at", { ascending: false })
@@ -124,7 +124,7 @@ export class CustomerRequestRepository {
         if (client) {
           try {
             await client
-              .from("customer_requests")
+              .from("usaautopartsbot_customer_requests")
               .update({
                 customer_name: input.customer_name,
                 phone: input.phone,
@@ -179,7 +179,7 @@ export class CustomerRequestRepository {
         };
 
         const { data, error } = await client
-          .from("customer_requests")
+          .from("usaautopartsbot_customer_requests")
           .insert([payload])
           .select();
 

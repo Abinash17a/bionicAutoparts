@@ -37,6 +37,7 @@ export async function chat(
   options?: ChatOptions
 ): Promise<ChatOutput> {
   const repo = options?.repository || getRepository();
+  await repo.ensureLoaded();
   const sessionRepo = options?.sessionRepository || getSessionRepository();
   const customerRequestRepo =
     options?.customerRequestRepository || getCustomerRequestRepository();
@@ -154,8 +155,8 @@ export async function chat(
   if (sessionId) {
     try {
       await sessionRepo.saveSession(sessionId, updatedCtx);
-    } catch {
-      // Non-blocking save error handling
+    } catch (sessionErr: any) {
+      console.error("[TonyBeta3 Chat] Session save failed:", sessionErr?.message);
     }
   }
 

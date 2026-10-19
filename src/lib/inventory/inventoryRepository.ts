@@ -154,7 +154,7 @@ function mapPartRowToInventoryItem(row: any): InventoryItem {
 export async function getInventoryById(id: string): Promise<InventoryItem | null> {
   if (!id) return null;
 
-  if (process.env.NEXT_PUBLIC_SUPABASE_URL && (process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) {
+  if (process.env.NEXT_PUBLIC_SUPABASE_URL && (process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY)) {
     try {
       const { data, error } = await supabaseAdmin
         .from('parts')
@@ -181,7 +181,7 @@ export async function getInventoryById(id: string): Promise<InventoryItem | null
 export async function getInventoryByCategory(categorySlug: string): Promise<InventoryItem[]> {
   if (!categorySlug) return [];
 
-  if (process.env.NEXT_PUBLIC_SUPABASE_URL && (process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) {
+  if (process.env.NEXT_PUBLIC_SUPABASE_URL && (process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY)) {
     try {
       let query = supabaseAdmin.from('parts').select(PART_SELECT_QUERY);
       if (categorySlug !== 'used-auto-parts') {
@@ -221,7 +221,7 @@ export async function getInventoryByVehicle(
   const targetModel = modelSlug ? modelSlug.toLowerCase() : undefined;
   const targetYear = year !== undefined && year !== null && year !== '' ? String(year) : undefined;
 
-  if (process.env.NEXT_PUBLIC_SUPABASE_URL && (process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) {
+  if (process.env.NEXT_PUBLIC_SUPABASE_URL && (process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY)) {
     try {
       let query = supabaseAdmin.from('parts').select(PART_SELECT_QUERY);
       if (targetCategory !== 'used-auto-parts') {
@@ -372,7 +372,7 @@ export async function getRelatedInventoryByMake(
  * Retrieve all categories metadata.
  */
 export async function getAllCategories(): Promise<CategoryMeta[]> {
-  if (process.env.NEXT_PUBLIC_SUPABASE_URL && (process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) {
+  if (process.env.NEXT_PUBLIC_SUPABASE_URL && (process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY)) {
     try {
       const { data, error } = await supabaseAdmin.from('categories').select('*');
       if (!error && data && data.length > 0) {
@@ -404,7 +404,7 @@ export async function getAllCategories(): Promise<CategoryMeta[]> {
 export async function getCategoryBySlug(categorySlug: string): Promise<CategoryMeta | null> {
   if (!categorySlug || !rawIsValidCategorySlug(categorySlug)) return null;
 
-  if (process.env.NEXT_PUBLIC_SUPABASE_URL && (process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) {
+  if (process.env.NEXT_PUBLIC_SUPABASE_URL && (process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY)) {
     try {
       const { data, error } = await supabaseAdmin
         .from('categories')
@@ -445,7 +445,7 @@ export function isValidCategorySlug(slug: string): slug is CategoryMeta['slug'] 
  * Retrieve all currently active inventory units.
  */
 export async function getAllActiveInventory(): Promise<InventoryItem[]> {
-  if (process.env.NEXT_PUBLIC_SUPABASE_URL && (process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) {
+  if (process.env.NEXT_PUBLIC_SUPABASE_URL && (process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY)) {
     try {
       const { data, error } = await supabaseAdmin.from('parts').select(PART_SELECT_QUERY);
       if (!error && data && data.length > 0) {

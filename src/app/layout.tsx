@@ -1,15 +1,21 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type { Metadata } from "next";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 import Footer from "./components/Footer";
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "600", "700", "800"],
+  display: "swap",
+  variable: "--font-poppins",
+});
 import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 import CarCompanySlider from "./components/Companyslider";
 import Script from "next/script";
 import Header from './components/Header';
 import GoogleTagManager from "./components/GoogleTagManager";
 import { LoadingProvider } from "./context/LoadingContext";
-import LoadingWrapper from "./components/LoadingWrapper";
 import ChatbotRoot from "./components/chatbot/ChatbotRoot";
 import FloatingVinSticker from "./components/FloatingVinSticker";
 
@@ -43,7 +49,10 @@ export const metadata: Metadata = {
     url: "/",
   },
   icons: {
-    icon: "/favicon.png",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon.png", type: "image/png", sizes: "48x48" },
+    ],
   },
 };
 
@@ -55,7 +64,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -116,32 +124,34 @@ export default function RootLayout({
         />
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=AW-16746690398"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
         <Script
           id="google-analytics"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
+              gtag('consent', 'default', {
+                'ad_storage': 'denied',
+                'ad_user_data': 'denied',
+                'ad_personalization': 'denied',
+                'analytics_storage': 'granted'
+              });
               gtag('js', new Date());
               gtag('config', 'AW-16746690398');
             `,
           }}
         />
       </head>
-      <body className="flex flex-col min-h-screen font-sans">
+      <body className={`flex flex-col min-h-screen font-sans ${poppins.className} ${poppins.variable}`}>
         <LoadingProvider>
           <GoogleTagManager />
           <Header />
           <main className="flex-grow">{children}</main>
-          <LoadingWrapper>
-            <CarCompanySlider />
-          </LoadingWrapper>
-          <LoadingWrapper>
-            <Footer />
-          </LoadingWrapper>
+          <CarCompanySlider />
+          <Footer />
           <ChatbotRoot />
           <FloatingVinSticker />
         </LoadingProvider>

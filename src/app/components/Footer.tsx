@@ -6,7 +6,7 @@ import { ClickToRevealEmail } from "./ProtectedEmail";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#428eff] text-white">
+    <footer className="bg-[#023047] text-white">
       {/* Trust/Payment/Delivery Image Section */}
       <div className="bg-gray-100 py-4 md:py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -15,8 +15,9 @@ export default function Footer() {
             alt="Trusted Shopping, Payment Options, Delivery Partners"
             width={1200}
             height={100}
+            sizes="(max-width: 768px) 100vw, 1200px"
             className="w-full h-auto object-contain"
-            priority
+            loading="lazy"
           />
         </div>
       </div>
@@ -47,18 +48,22 @@ export default function Footer() {
             </p>
             <div className="flex space-x-4">
               <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
+                 aria-label="Follow USA Used Auto Parts on Facebook"
                  className="text-gray-300 hover:text-white transition-colors">
                 <Facebook className="w-4 h-4 md:w-5 md:h-5" />
               </a>
               <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
+                 aria-label="Follow USA Used Auto Parts on Twitter"
                  className="text-gray-300 hover:text-white transition-colors">
                 <Twitter className="w-4 h-4 md:w-5 md:h-5" />
               </a>
               <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"
+                 aria-label="Follow USA Used Auto Parts on Instagram"
                  className="text-gray-300 hover:text-white transition-colors">
                 <Instagram className="w-4 h-4 md:w-5 md:h-5" />
               </a>
               <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"
+                 aria-label="Follow USA Used Auto Parts on LinkedIn"
                  className="text-gray-300 hover:text-white transition-colors">
                 <Linkedin className="w-4 h-4 md:w-5 md:h-5" />
               </a>
@@ -100,7 +105,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/blogs" className="text-gray-300 hover:text-white transition-colors text-sm md:text-base">
+                <Link href="/blogs" prefetch={false} className="text-gray-300 hover:text-white transition-colors text-sm md:text-base">
                   Automotive Guides
                 </Link>
               </li>
@@ -133,7 +138,7 @@ export default function Footer() {
               <ClickToRevealEmail
                 email="part@usausedautopart.com"
                 label="Click to reveal email"
-                className="text-gray-400 hover:text-white transition-colors text-sm md:text-base cursor-pointer"
+                className="inline-flex text-slate-300 hover:text-white transition-colors text-sm md:text-base cursor-pointer"
               />
             </div>
           </div>

@@ -200,13 +200,17 @@ export default function PaymentPage() {
       if (formattedValue.length === 6) {
         // Fetch data when orderId is exactly 6 characters
         try {
-          // Fetch data from both collections using correct API endpoints
-          const responseSubmissions = await fetch(`/api/getSubmissions?orderId=${formattedValue}&timestamp=${new Date().getTime()}`);
-          const responseSubmissionsV2 = await fetch(`/api/getSubmissionsv2?orderId=${formattedValue}&timestamp=${new Date().getTime()}`);
+          // Fetch data from both collections in parallel
+          const [responseSubmissions, responseSubmissionsV2] = await Promise.all([
+            fetch(`/api/getSubmissions?orderId=${formattedValue}&timestamp=${Date.now()}`),
+            fetch(`/api/getSubmissionsv2?orderId=${formattedValue}&timestamp=${Date.now()}`),
+          ]);
 
-          // Parse responses
-          const dataSubmissions = await responseSubmissions.json();
-          const dataSubmissionsV2 = await responseSubmissionsV2.json();
+          // Parse responses in parallel
+          const [dataSubmissions, dataSubmissionsV2] = await Promise.all([
+            responseSubmissions.json(),
+            responseSubmissionsV2.json(),
+          ]);
 
           // Enhanced logging
           console.log('Submissions response:', responseSubmissions.ok, dataSubmissions);
@@ -489,93 +493,48 @@ if (!formData.zipCode || !/^[A-Za-z0-9\s-]{3,10}$/.test(formData.zipCode)) {
     return 'unknown'
   }
 
-  // Get card brand colors
-  const getCardBrandLogos = (cardNumber: string) => {
-    const cardType = getCardType(cardNumber)
-    if (cardType === 'visa') {
-      return (
-        <div className="flex items-center">
-          <div className="w-10 h-6 sm:w-12 sm:h-8 bg-white border border-gray-200 rounded flex items-center justify-center">
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png"
-              alt="Visa"
-              className="w-8 h-4 sm:w-10 sm:h-5 object-contain"
-            />
-          </div>
-        </div>
-      )
-    } else if (cardType === 'mastercard') {
-      return (
-        <div className="flex items-center">
-          <div className="w-8 h-5 sm:w-10 sm:h-6 bg-white border border-gray-200 rounded flex items-center justify-center">
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png"
-              alt="Mastercard"
-              className="w-6 h-4 sm:w-8 sm:h-5 object-contain"
-            />
-          </div>
-        </div>
-      )
-    } else if (cardType === 'amex') {
-      return (
-        <div className="flex items-center">
-          <div className="w-8 h-5 sm:w-10 sm:h-6 bg-white border border-gray-200 rounded flex items-center justify-center">
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/American_Express_logo_%282018%29.svg/1280px-American_Express_logo_%282018%29.svg.png"
-              alt="American Express"
-              className="w-6 h-4 sm:w-8 sm:h-5 object-contain"
-            />
-          </div>
-        </div>
-      )
-    }
-    return null
-  }
+  const CARD_BRAND_IMAGES: Record<string, { src: string; alt: string }> = {
+    visa: {
+      src: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png",
+      alt: "Visa",
+    },
+    mastercard: {
+      src: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png",
+      alt: "Mastercard",
+    },
+    amex: {
+      src: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/American_Express_logo_%282018%29.svg/1280px-American_Express_logo_%282018%29.svg.png",
+      alt: "American Express",
+    },
+  };
 
-  // Get order summary card gradient
+  const getCardBrandLogos = (cardNumber: string) => {
+    const brand = CARD_BRAND_IMAGES[getCardType(cardNumber)];
+    if (!brand) return null;
+    return (
+      <div className="flex items-center">
+        <div className="w-10 h-6 sm:w-12 sm:h-8 bg-white border border-gray-200 rounded flex items-center justify-center">
+          <img src={brand.src} alt={brand.alt} className="w-8 h-4 sm:w-10 sm:h-5 object-contain" />
+        </div>
+      </div>
+    );
+  };
+
   const getOrderSummaryCardGradient = (cardNumber: string) => {
-    const cardType = getCardType(cardNumber)
-    if (cardType === 'visa') {
+    const brand = CARD_BRAND_IMAGES[getCardType(cardNumber)];
+    if (!brand) {
       return (
-        <div className="flex items-center space-x-2">
-          <div className="w-8 h-5 sm:w-10 sm:h-6 bg-white border border-gray-200 rounded flex items-center justify-center">
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png"
-              alt="Visa"
-              className="w-6 h-3 sm:w-8 sm:h-4 object-contain"
-            />
-          </div>
-        </div>
-      )
-    } else if (cardType === 'mastercard') {
-      return (
-        <div className="flex items-center space-x-2">
-          <div className="w-8 h-5 sm:w-10 sm:h-6 bg-white border border-gray-200 rounded flex items-center justify-center">
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png"
-              alt="Mastercard"
-              className="w-5 h-3 sm:w-7 sm:h-4 object-contain"
-            />
-          </div>
-        </div>
-      )
-    } else if (cardType === 'amex') {
-      return (
-        <div className="flex items-center space-x-2">
-          <div className="w-8 h-5 sm:w-10 sm:h-6 bg-white border border-gray-200 rounded flex items-center justify-center">
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/American_Express_logo_%282018%29.svg/1280px-American_Express_logo_%282018%29.svg.png"
-              alt="American Express"
-              className="w-5 h-3 sm:w-7 sm:h-4 object-contain"
-            />
-          </div>
-        </div>
-      )
+        <div className="w-8 h-5 sm:w-10 sm:h-6 bg-gradient-to-r from-gray-400 to-gray-600 rounded"></div>
+      );
     }
     return (
-      <div className="w-8 h-5 sm:w-10 sm:h-6 bg-gradient-to-r from-gray-400 to-gray-600 rounded"></div>
-    )
-  }
+      <div className="flex items-center space-x-2">
+        <div className="w-8 h-5 sm:w-10 sm:h-6 bg-white border border-gray-200 rounded flex items-center justify-center">
+          <img src={brand.src} alt={brand.alt} className="w-6 h-3 sm:w-8 sm:h-4 object-contain" />
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 flex items-center justify-center p-1 sm:p-2">

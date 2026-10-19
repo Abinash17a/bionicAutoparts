@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 
 export const Carousel = ({ imageUrls }: { imageUrls: string[] }) => {
   const [index, setIndex] = useState(0);
@@ -7,8 +7,14 @@ export const Carousel = ({ imageUrls }: { imageUrls: string[] }) => {
   const mainRef = useRef<HTMLDivElement | null>(null); // container for pointer events
   const imgRef = useRef<HTMLImageElement | null>(null);
 
-  const prev = () => setIndex((i) => (i - 1 + imageUrls.length) % imageUrls.length);
-  const next = () => setIndex((i) => (i + 1) % imageUrls.length);
+  const prev = useCallback(() => {
+    setIndex((i) => (i - 1 + imageUrls.length) % imageUrls.length);
+  }, [imageUrls.length]);
+
+  const next = useCallback(() => {
+    setIndex((i) => (i + 1) % imageUrls.length);
+  }, [imageUrls.length]);
+
   const goTo = (i: number) => setIndex(Math.max(0, Math.min(i, imageUrls.length - 1)));
 
   // Ensure selected thumbnail is visible
@@ -27,50 +33,50 @@ export const Carousel = ({ imageUrls }: { imageUrls: string[] }) => {
   }, [index]);
 
   // Pointer (mouse/touch) swipe support on main image container
-useEffect(() => {
-  const el = mainRef.current;
-  if (!el) return;
+  useEffect(() => {
+    const el = mainRef.current;
+    if (!el) return;
 
-  let pointerDown = false;
-  let startX = 0;
-  let lastX = 0;
+    let pointerDown = false;
+    let startX = 0;
+    let lastX = 0;
 
-  const onPointerDown = (e: PointerEvent) => {
-    pointerDown = true;
-    el.setPointerCapture?.(e.pointerId);
-    startX = e.clientX;
-    lastX = startX;
-  };
+    const onPointerDown = (e: PointerEvent) => {
+      pointerDown = true;
+      el.setPointerCapture?.(e.pointerId);
+      startX = e.clientX;
+      lastX = startX;
+    };
 
-  const onPointerMove = (e: PointerEvent) => {
-    if (!pointerDown) return;
-    lastX = e.clientX;
-  };
+    const onPointerMove = (e: PointerEvent) => {
+      if (!pointerDown) return;
+      lastX = e.clientX;
+    };
 
-  const onPointerUp = (e: PointerEvent) => {
-    if (!pointerDown) return;
-    pointerDown = false;
-    el.releasePointerCapture?.(e.pointerId);
-    const delta = lastX - startX;
-    const threshold = 50;
-    if (Math.abs(delta) > threshold) {
-      if (delta > 0) prev();
-      else next();
-    }
-  };
+    const onPointerUp = (e: PointerEvent) => {
+      if (!pointerDown) return;
+      pointerDown = false;
+      el.releasePointerCapture?.(e.pointerId);
+      const delta = lastX - startX;
+      const threshold = 50;
+      if (Math.abs(delta) > threshold) {
+        if (delta > 0) prev();
+        else next();
+      }
+    };
 
-  el.addEventListener("pointerdown", onPointerDown);
-  window.addEventListener("pointermove", onPointerMove);
-  window.addEventListener("pointerup", onPointerUp);
-  el.addEventListener("pointercancel", onPointerUp);
+    el.addEventListener("pointerdown", onPointerDown);
+    window.addEventListener("pointermove", onPointerMove);
+    window.addEventListener("pointerup", onPointerUp);
+    el.addEventListener("pointercancel", onPointerUp);
 
-  return () => {
-    el.removeEventListener("pointerdown", onPointerDown);
-    window.removeEventListener("pointermove", onPointerMove);
-    window.removeEventListener("pointerup", onPointerUp);
-    el.removeEventListener("pointercancel", onPointerUp);
-  };
-}, [prev, next]);
+    return () => {
+      el.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointerup", onPointerUp);
+      el.removeEventListener("pointercancel", onPointerUp);
+    };
+  }, [prev, next]);
 
   // Keyboard navigation
   useEffect(() => {
@@ -81,7 +87,7 @@ useEffect(() => {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [isOpen, imageUrls.length]);
+  }, [isOpen, prev, next]);
 
   return (
     <div className="mt-3">

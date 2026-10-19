@@ -38,7 +38,7 @@
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: var(--font-poppins), 'Poppins', sans-serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -379,5 +379,98 @@ body {
   .vin-sticker-btn:hover .vin-sticker-icon-svg:first-child {
     transform: none !important;
   }
+}
+
+/* Lightweight Slick Carousel Controls (Replaces slick-theme.css and eliminates slick.woff font chain) */
+.slick-dots {
+  position: absolute;
+  bottom: -25px;
+  display: block !important;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  text-align: center;
+}
+.slick-dots li {
+  position: relative;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin: 0 5px;
+  padding: 0;
+  cursor: pointer;
+}
+.slick-dots li button {
+  font-size: 0;
+  line-height: 0;
+  display: block;
+  width: 20px;
+  height: 20px;
+  padding: 5px;
+  cursor: pointer;
+  color: transparent;
+  border: 0;
+  outline: none;
+  background: transparent;
+}
+.slick-dots li button:before {
+  content: '•';
+  font-size: 24px;
+  line-height: 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  color: #94a3b8;
+  opacity: 0.5;
+}
+.slick-dots li.slick-active button:before {
+  color: #2563eb;
+  opacity: 1;
+}
+.slick-prev,
+.slick-next {
+  font-size: 0;
+  line-height: 0;
+  position: absolute;
+  top: 50%;
+  display: block;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  transform: translate(0, -50%);
+  cursor: pointer;
+  color: transparent;
+  border: none;
+  outline: none;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 9999px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+.slick-prev {
+  left: -36px;
+}
+.slick-next {
+  right: -36px;
+}
+.slick-prev:before {
+  content: '‹';
+  font-size: 24px;
+  color: #1e293b;
+  display: block;
+  text-align: center;
+  line-height: 28px;
+}
+.slick-next:before {
+  content: '›';
+  font-size: 24px;
+  color: #1e293b;
+  display: block;
+  text-align: center;
+  line-height: 28px;
 }
 

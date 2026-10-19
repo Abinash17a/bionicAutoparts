@@ -11,33 +11,29 @@ import {
   ListItem,
   ListItemButton,
   ListItemText,
-  useTheme,
-  useMediaQuery,
 } from "@mui/material"
 import { Menu as MenuIcon, Close as CloseIcon } from "@mui/icons-material"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
+const NAV_ITEMS = [
+  { title: "Home", path: "/" },
+  { title: "Used Engines", path: "/used-engines" },
+  { title: "Transmissions", path: "/used-transmissions" },
+  { title: "All Parts", path: "/parts" },
+  { title: "About", path: "/about-us" },
+  { title: "Contact", path: "/contact" },
+  { title: "Blogs", path: "/blogs" },
+]
+
 export default function Header() {
   const pathname = usePathname()
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"))
   const [mobileOpen, setMobileOpen] = React.useState(false)
   const isHome = pathname === "/"
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen)
   }
-
-  const navItems = [
-    { title: "Home", path: "/" },
-    { title: "Used Engines", path: "/used-engines" },
-    { title: "Transmissions", path: "/used-transmissions" },
-    { title: "All Parts", path: "/parts" },
-    { title: "About", path: "/about-us" },
-    { title: "Contact", path: "/contact" },
-    { title: "Blogs", path: "/blogs" },
-  ]
 
   const isActive = (path: string) => pathname === path
 
@@ -78,7 +74,7 @@ export default function Header() {
           }}
         >
           {/* Logo + Brand */}
-          <Link href="/" passHref style={{ textDecoration: "none", display: "flex", alignItems: "center" }}>
+          <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center" }}>
             <Box
               sx={{
                 display: "flex",
@@ -96,11 +92,8 @@ export default function Header() {
                 alt="USA Used Auto Parts"
                 width={380}
                 height={120}
-                style={{
-                  height: isMobile ? "64px" : "90px",
-                  width: "auto",
-                  objectFit: "contain",
-                }}
+                sizes="(max-width: 768px) 200px, 280px"
+                className="h-[64px] md:h-[90px] w-auto object-contain"
                 priority
               />
             </Box>
@@ -114,33 +107,35 @@ export default function Header() {
               gap: { md: 0.5, lg: 1.25 },
             }}
           >
-            {navItems.map((item) => {
+            {NAV_ITEMS.map((item) => {
               const active = isActive(item.path)
               return (
-                <Link key={item.title} href={item.path} passHref style={{ textDecoration: "none" }}>
-                  <Button
-                    sx={{
-                      color: active ? "#2563eb" : "#1f2937",
-                      fontWeight: active ? 700 : 500,
-                      fontSize: { md: "0.85rem", lg: "0.925rem" },
-                      textTransform: "none",
-                      px: { md: 1.25, lg: 1.75 },
-                      py: 0.8,
-                      borderRadius: "10px",
-                      backgroundColor: active ? "rgba(37, 99, 235, 0.08)" : "transparent",
-                      transition: "all 0.2s ease",
-                      fontFamily: "'Poppins', 'Inter', 'sans-serif'",
-                      "&:hover": {
-                        color: "#2563eb",
-                        backgroundColor: active
-                          ? "rgba(37, 99, 235, 0.12)"
-                          : "rgba(37, 99, 235, 0.05)",
-                      },
-                    }}
-                  >
-                    {item.title}
-                  </Button>
-                </Link>
+                <Button
+                  key={item.title}
+                  component={Link}
+                  href={item.path}
+                  prefetch={true}
+                  sx={{
+                    color: active ? "#2563eb" : "#1f2937",
+                    fontWeight: active ? 700 : 500,
+                    fontSize: { md: "0.85rem", lg: "0.925rem" },
+                    textTransform: "none",
+                    px: { md: 1.25, lg: 1.75 },
+                    py: 0.8,
+                    borderRadius: "10px",
+                    backgroundColor: active ? "rgba(37, 99, 235, 0.08)" : "transparent",
+                    transition: "all 0.2s ease",
+                    fontFamily: "'Poppins', 'Inter', 'sans-serif'",
+                    "&:hover": {
+                      color: "#2563eb",
+                      backgroundColor: active
+                        ? "rgba(37, 99, 235, 0.12)"
+                        : "rgba(37, 99, 235, 0.05)",
+                    },
+                  }}
+                >
+                  {item.title}
+                </Button>
               )
             })}
           </Box>
@@ -204,7 +199,6 @@ export default function Header() {
           <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}>
             <Link
               href="/"
-              passHref
               onClick={handleDrawerToggle}
               style={{ textDecoration: "none", display: "flex", alignItems: "center" }}
             >
@@ -226,39 +220,40 @@ export default function Header() {
           </Box>
 
           <List sx={{ pt: 1 }}>
-            {navItems.map((item) => {
+            {NAV_ITEMS.map((item) => {
               const active = isActive(item.path)
               return (
                 <ListItem key={item.title} disablePadding>
-                  <Link href={item.path} passHref style={{ textDecoration: "none", width: "100%" }}>
-                    <ListItemButton
-                      onClick={handleDrawerToggle}
+                  <ListItemButton
+                    component={Link}
+                    href={item.path}
+                    prefetch={true}
+                    onClick={handleDrawerToggle}
+                    sx={{
+                      borderRadius: "10px",
+                      mb: 0.75,
+                      backgroundColor: active ? "rgba(37, 99, 235, 0.08)" : "transparent",
+                      "&:hover": {
+                        backgroundColor: active
+                          ? "rgba(37, 99, 235, 0.12)"
+                          : "rgba(0, 0, 0, 0.04)",
+                      },
+                      fontFamily: "'Poppins', 'Inter', 'sans-serif'",
+                    }}
+                  >
+                    <ListItemText
+                      primary={item.title}
                       sx={{
-                        borderRadius: "10px",
-                        mb: 0.75,
-                        backgroundColor: active ? "rgba(37, 99, 235, 0.08)" : "transparent",
-                        "&:hover": {
-                          backgroundColor: active
-                            ? "rgba(37, 99, 235, 0.12)"
-                            : "rgba(0, 0, 0, 0.04)",
+                        "& .MuiListItemText-primary": {
+                          color: active ? "#2563eb" : "#1f2937",
+                          fontWeight: active ? 700 : 500,
+                          fontSize: "0.95rem",
+                          fontFamily: "'Poppins', 'Inter', 'sans-serif'",
+                          textDecoration: "none",
                         },
-                        fontFamily: "'Poppins', 'Inter', 'sans-serif'",
                       }}
-                    >
-                      <ListItemText
-                        primary={item.title}
-                        sx={{
-                          "& .MuiListItemText-primary": {
-                            color: active ? "#2563eb" : "#1f2937",
-                            fontWeight: active ? 700 : 500,
-                            fontSize: "0.95rem",
-                            fontFamily: "'Poppins', 'Inter', 'sans-serif'",
-                            textDecoration: "none",
-                          },
-                        }}
-                      />
-                    </ListItemButton>
-                  </Link>
+                    />
+                  </ListItemButton>
                 </ListItem>
               )
             })}

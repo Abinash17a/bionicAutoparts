@@ -5,7 +5,6 @@ import { Upload } from "@aws-sdk/lib-storage";
 import { v4 as uuidv4 } from "uuid";
 
 const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, AWS_BUCKET_NAME } = process.env;
-console.log("process.env.alll things:", process.env);
 
 // Early runtime validation of env vars (clear error instead of AWS's generic message)
 if (!AWS_ACCESS_KEY_ID || !AWS_SECRET_ACCESS_KEY || !AWS_REGION || !AWS_BUCKET_NAME) {
@@ -16,14 +15,7 @@ if (!AWS_ACCESS_KEY_ID || !AWS_SECRET_ACCESS_KEY || !AWS_REGION || !AWS_BUCKET_N
     AWS_REGION: !!AWS_REGION,
     AWS_BUCKET_NAME: !!AWS_BUCKET_NAME,
   });
-  // Keep process running — this file will still be imported, but calls will immediately error with helpful message
 }
-console.log("AWS Config:", {
-  AWS_ACCESS_KEY_ID: !!AWS_ACCESS_KEY_ID,
-  AWS_SECRET_ACCESS_KEY: !!AWS_SECRET_ACCESS_KEY,
-  AWS_REGION: !!AWS_REGION,
-  AWS_BUCKET_NAME: !!AWS_BUCKET_NAME,
-});
 
 const s3Client = new S3Client({
   region: AWS_REGION,

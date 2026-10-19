@@ -4,22 +4,7 @@ import { useState, useRef } from "react"
 import { motion, useInView, AnimatePresence } from "framer-motion"
 import { Star, Quote, PenSquare, X, CheckCircle, ShieldCheck, Sparkles } from "lucide-react"
 
-export const TestimonialsSection = () => {
-  const [showAll, setShowAll] = useState(false)
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [isSubmitted, setIsSubmitted] = useState(false)
-  const [newReview, setNewReview] = useState({
-    name: "",
-    car: "",
-    part: "",
-    rating: 5,
-    text: "",
-  })
-
-  const sectionRef = useRef(null)
-  const isVisible = useInView(sectionRef, { once: true, amount: 0.15 })
-
-  const testimonials = [
+const testimonials = [
     {
       name: "Marcus Vance",
       car: "2017 Chevrolet Silverado 1500",
@@ -191,6 +176,22 @@ export const TestimonialsSection = () => {
       }
     })
   }
+
+export const TestimonialsSection = () => {
+
+  const [showAll, setShowAll] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [newReview, setNewReview] = useState({
+    name: "",
+    car: "",
+    part: "",
+    rating: 5,
+    text: "",
+  })
+
+  const sectionRef = useRef(null)
+  const isVisible = useInView(sectionRef, { once: true, amount: 0.15 })
 
   const handleReviewSubmit = (e: React.FormEvent) => {
     e.preventDefault()

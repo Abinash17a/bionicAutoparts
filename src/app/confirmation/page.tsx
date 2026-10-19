@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 const Confirmation: React.FC = () => {
   const router = useRouter();
@@ -20,10 +21,12 @@ const Confirmation: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100 p-6 text-center">
-      <img
+      <Image
         src="/confirmation.png"
         alt="Confirm Logo"
-        className="mb-6 h-16"
+        width={64}
+        height={64}
+        className="mb-6 h-16 w-auto"
       />
       <h1 className="text-4xl font-bold text-gray-800 mb-4">
         Thank You for Your Submission!

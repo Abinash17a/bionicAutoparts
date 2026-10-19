@@ -21,7 +21,9 @@ export default function ChatbotRoot() {
     setMounted(true);
   }, []);
 
-  if (!mounted) return null;
+  // Chatbot temporarily disabled per user request
+  const isEnabled = false;
+  if (!isEnabled || !mounted) return null;
 
   return (
     <>

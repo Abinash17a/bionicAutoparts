@@ -52,6 +52,7 @@ export class IndexedCatalog {
 export class CatalogRepository {
   public useSupabase: boolean;
   private isLoaded: boolean = false;
+  private loadPromise: Promise<void> | null = null;
 
   private manufacturers: ManufacturerRecord[] = [];
   private models: ModelRecord[] = [];
@@ -74,41 +75,53 @@ export class CatalogRepository {
     if (this.isLoaded && !forceReload) {
       return;
     }
-
-    const client = this.useSupabase ? getSupabaseClient() : null;
-
-    if (client) {
-      try {
-        const [mfgRes, modRes, prtRes, synRes, tplRes] = await Promise.all([
-          client.table("manufacturers").select("id, name, slug"),
-          client.table("models").select("id, manufacturer_id, name, slug"),
-          client.table("parts").select("id, name, slug"),
-          client.table("part_synonyms").select("id, part_id, synonym"),
-          client.table("response_templates").select("id, category, template_text"),
-        ]);
-
-        const manufacturers = (mfgRes.data && mfgRes.data.length > 0 ? mfgRes.data : DEFAULT_MANUFACTURERS) as ManufacturerRecord[];
-        const models = (modRes.data && modRes.data.length > 0 ? modRes.data : DEFAULT_MODELS) as ModelRecord[];
-        const parts = (prtRes.data && prtRes.data.length > 0 ? prtRes.data : DEFAULT_PARTS) as PartRecord[];
-        const synonyms = (synRes.data && synRes.data.length > 0 ? synRes.data : DEFAULT_PART_SYNONYMS) as PartSynonymRecord[];
-        const templates = (tplRes.data && tplRes.data.length > 0 ? tplRes.data : DEFAULT_RESPONSE_TEMPLATES) as ResponseTemplateRecord[];
-
-        this.buildIndexes(manufacturers, models, parts, synonyms, templates);
-        this.isLoaded = true;
-        return;
-      } catch {
-        // Fall back to default catalog on error
-      }
+    if (this.loadPromise && !forceReload) {
+      return this.loadPromise;
     }
 
-    this.buildIndexes(
-      DEFAULT_MANUFACTURERS,
-      DEFAULT_MODELS,
-      DEFAULT_PARTS,
-      DEFAULT_PART_SYNONYMS,
-      DEFAULT_RESPONSE_TEMPLATES
-    );
-    this.isLoaded = true;
+    this.loadPromise = (async () => {
+      const client = this.useSupabase ? getSupabaseClient() : null;
+
+      if (client) {
+        try {
+          const [mfgRes, modRes, prtRes, synRes, tplRes] = await Promise.all([
+            client.from("usaautopartsbot_manufacturers").select("id, name, slug, canonical_name"),
+            client.from("usaautopartsbot_models").select("id, manufacturer_id, name, slug"),
+            client.from("usaautopartsbot_parts").select("id, name, slug"),
+            client.from("usaautopartsbot_part_synonyms").select("id, part_id, synonym"),
+            client.from("usaautopartsbot_response_templates").select("id, category, template_text"),
+          ]);
+
+          if (mfgRes.error || modRes.error || prtRes.error || synRes.error || tplRes.error) {
+            const err = mfgRes.error || modRes.error || prtRes.error || synRes.error || tplRes.error;
+            console.warn("[CatalogRepository] Supabase catalog query error:", err?.message);
+          } else if (mfgRes.data && mfgRes.data.length > 0) {
+            const manufacturers = mfgRes.data as ManufacturerRecord[];
+            const models = (modRes.data && modRes.data.length > 0 ? modRes.data : DEFAULT_MODELS) as ModelRecord[];
+            const parts = (prtRes.data && prtRes.data.length > 0 ? prtRes.data : DEFAULT_PARTS) as PartRecord[];
+            const synonyms = (synRes.data && synRes.data.length > 0 ? synRes.data : DEFAULT_PART_SYNONYMS) as PartSynonymRecord[];
+            const templates = (tplRes.data && tplRes.data.length > 0 ? tplRes.data : DEFAULT_RESPONSE_TEMPLATES) as ResponseTemplateRecord[];
+
+            this.buildIndexes(manufacturers, models, parts, synonyms, templates);
+            this.isLoaded = true;
+            return;
+          }
+        } catch (err: any) {
+          console.warn("[CatalogRepository] Failed to load catalog from Supabase, falling back to static catalog:", err?.message);
+        }
+      }
+
+      this.buildIndexes(
+        DEFAULT_MANUFACTURERS,
+        DEFAULT_MODELS,
+        DEFAULT_PARTS,
+        DEFAULT_PART_SYNONYMS,
+        DEFAULT_RESPONSE_TEMPLATES
+      );
+      this.isLoaded = true;
+    })();
+
+    return this.loadPromise;
   }
 
   private buildIndexes(
@@ -240,6 +253,18 @@ export class CatalogRepository {
       return this.templatesByCategory[catUpper] || [];
     }
     return this.responseTemplates;
+  }
+
+  public getManufacturers(): ManufacturerRecord[] {
+    return this.manufacturers;
+  }
+
+  public getModels(): ModelRecord[] {
+    return this.models;
+  }
+
+  public getParts(): PartRecord[] {
+    return Object.values(this.partsById);
   }
 }
 

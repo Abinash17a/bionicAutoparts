@@ -4,8 +4,13 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   transpilePackages: ['react-icons'],
+  images: {
+    formats: ['image/avif', 'image/webp'],
+    deviceSizes: [360, 480, 640, 750, 828, 1080, 1200, 1920],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+  },
   experimental: {
-    optimizePackageImports: ['react-icons'],
+    optimizePackageImports: ['react-icons', '@mui/material', '@mui/icons-material', 'lucide-react'],
   },
   async redirects() {
     return [
@@ -113,6 +118,31 @@ const nextConfig = {
         source: '/blogs/21',
         destination: '/blogs/what-is-engine-assembly-long-block-vs-complete-engine',
         permanent: true,
+      },
+    ];
+  },
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Frame-Options',
+            value: 'SAMEORIGIN',
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
+          },
+          {
+            key: 'Cross-Origin-Opener-Policy',
+            value: 'same-origin-allow-popups',
+          },
+        ],
       },
     ];
   },

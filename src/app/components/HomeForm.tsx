@@ -141,6 +141,7 @@ export const HomeForm: React.FC<HomeFormProps> = ({
         {/* Header */}
         <Box textAlign="center" mb={{ xs: 1.5, sm: 2 }}>
           <Typography
+            component="h2"
             variant="h5"
             fontWeight={600}
             color="#ffffff"
@@ -209,11 +210,13 @@ export const HomeForm: React.FC<HomeFormProps> = ({
               Vehicle Year
             </Typography>
             <TextField
+              id="vehicle-year"
               select
               fullWidth
               value={year}
               onChange={(e) => setYear(e.target.value)}
               size="small"
+              inputProps={{ 'aria-label': 'Vehicle Year' }}
               SelectProps={{
                 displayEmpty: true,
                 renderValue: (selected: unknown): ReactNode => {
@@ -269,6 +272,7 @@ export const HomeForm: React.FC<HomeFormProps> = ({
             </Typography>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <TextField
+              id="vehicle-make"
               select
               fullWidth
               value={make}
@@ -278,6 +282,7 @@ export const HomeForm: React.FC<HomeFormProps> = ({
               }}
               size="small"
               disabled={!year}
+              inputProps={{ 'aria-label': 'Vehicle Make' }}
               SelectProps={{
                 displayEmpty: true,
                 renderValue: (selected: unknown): ReactNode => {
@@ -365,12 +370,14 @@ export const HomeForm: React.FC<HomeFormProps> = ({
               Vehicle Model
             </Typography>
             <TextField
+              id="vehicle-model"
               select
               fullWidth
               value={model}
               onChange={(e) => setModel(e.target.value)}
               size="small"
               disabled={!make}
+              inputProps={{ 'aria-label': 'Vehicle Model' }}
               SelectProps={{
                 displayEmpty: true,
                 renderValue: (selected: unknown): ReactNode => {
@@ -431,11 +438,13 @@ export const HomeForm: React.FC<HomeFormProps> = ({
               Part Type
             </Typography>
             <TextField
+              id="vehicle-part"
               select
               fullWidth
               value={part}
               onChange={(e) => setPart(e.target.value)}
               size="small"
+              inputProps={{ 'aria-label': 'Part Type' }}
               SelectProps={{
                 displayEmpty: true,
                 renderValue: (selected: unknown): ReactNode => {

@@ -87,3 +87,19 @@ export interface BlogArticle {
   image: string;
   description: string;
 }
+
+export interface BlogSummary {
+  id: number;
+  slug: string;
+  title: string;
+  date: string;
+  readTime?: string;
+  category?: string;
+  image: string;
+  heroImage?: {
+    src: string;
+    alt: string;
+  };
+  description: string;
+  metaDescription?: string;
+}

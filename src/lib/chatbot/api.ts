@@ -6,6 +6,8 @@ interface SendMessageResult {
   reply: string;
   response?: ChatResponseBody;
   sessionState?: SessionState;
+  category?: string;
+  context?: SessionState;
   error?: string;
 }
 
@@ -110,6 +112,8 @@ export async function sendChatMessage(
       reply: data.reply || BOT_CONFIG.defaultErrorMessage,
       response: data,
       sessionState: resolvedState,
+      category: data.category,
+      context: data.context,
     };
   } catch (err: unknown) {
     clearTimeout(timeoutId);

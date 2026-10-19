@@ -1,6 +1,7 @@
 import React from "react";
 import { Metadata } from "next";
 import BlogList from "./BlogList";
+import { blogs, BlogSummary } from "../data/blogsData";
 
 export const metadata: Metadata = {
   title: "Used Auto Parts Guides | OEM, Fitment and Buying Advice",
@@ -18,6 +19,24 @@ export const metadata: Metadata = {
 };
 
 export default function BlogsPage() {
+  const summaries: BlogSummary[] = blogs.map((b) => ({
+    id: b.id,
+    slug: b.slug,
+    title: b.title,
+    date: b.date,
+    readTime: b.readTime,
+    category: b.category,
+    image: b.image,
+    heroImage: b.heroImage
+      ? {
+          src: b.heroImage.src,
+          alt: b.heroImage.alt,
+        }
+      : undefined,
+    description: b.description,
+    metaDescription: b.metaDescription,
+  }));
+
   return (
     <div className="mx-auto mt-8 px-4 sm:px-6 lg:px-8 max-w-screen-2xl mb-16">
       <div className="mb-8">
@@ -28,7 +47,7 @@ export default function BlogsPage() {
           Expert articles on recycled OEM parts, vehicle maintenance, transmission diagnostics, and engine replacement.
         </p>
       </div>
-      <BlogList />
+      <BlogList blogs={summaries} />
     </div>
   );
 }

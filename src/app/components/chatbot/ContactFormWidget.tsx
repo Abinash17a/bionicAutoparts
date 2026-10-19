@@ -1,68 +1,51 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import {
+  CONTACT_COUNTRIES,
+  detectDefaultCountry,
+  findCountryByDialDigits,
+  formatContactMessage,
+  getCountry,
+  normalizePhone,
+  normalizePostal,
+} from "@/lib/tony_beta3/contact_rules";
 
 interface ContactFormWidgetProps {
   onSubmit: (formattedMessage: string) => void;
   disabled?: boolean;
 }
 
-const COUNTRY_CODES = [
-  { code: "+1", country: "US / Canada", flag: "🇺🇸" },
-  { code: "+91", country: "India", flag: "🇮🇳" },
-  { code: "+44", country: "UK", flag: "🇬🇧" },
-  { code: "+61", country: "Australia", flag: "🇦🇺" },
-  { code: "+52", country: "Mexico", flag: "🇲🇽" },
-  { code: "+49", country: "Germany", flag: "🇩🇪" },
-  { code: "+33", country: "France", flag: "🇫🇷" },
-  { code: "+971", country: "UAE", flag: "🇦🇪" },
-  { code: "+65", country: "Singapore", flag: "🇸🇬" },
-  { code: "+81", country: "Japan", flag: "🇯🇵" },
-  { code: "+34", country: "Spain", flag: "🇪🇸" },
-  { code: "+39", country: "Italy", flag: "🇮🇹" },
-  { code: "+55", country: "Brazil", flag: "🇧🇷" },
-  { code: "+27", country: "South Africa", flag: "🇿🇦" },
-];
-
 export const ContactFormWidget: React.FC<ContactFormWidgetProps> = ({
   onSubmit,
   disabled = false,
 }) => {
-  const [countryCode, setCountryCode] = useState("+1");
+  const [iso, setIso] = useState("US");
   const [phone, setPhone] = useState("");
   const [zip, setZip] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [submitted, setSubmitted] = useState(false);
+  const country = getCountry(iso)!;
+
+  // Auto-detect country based on browser timezone/locale on mount (client-only to avoid SSR hydration mismatch)
+  useEffect(() => {
+    const detected = detectDefaultCountry();
+    if (detected && detected !== "US") {
+      setIso(detected);
+    }
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (disabled || submitted) return;
+    if (disabled) return; // a request is already processing
 
-    const cleanPhone = phone.trim();
-    const cleanZip = zip.trim();
-
-    const rawDigits = cleanPhone.replace(/\D/g, "");
-    if (rawDigits.length !== 10 && rawDigits.length !== 11) {
-      setError("Please enter a valid 10 or 11-digit contact number.");
-      return;
-    }
-
-    if (!/^\d{6}$/.test(cleanZip)) {
-      setError("ZIP code must be exactly 6 numeric digits.");
-      return;
-    }
+    const p = normalizePhone(iso, phone);
+    if (!p.ok) return setError(p.error);
+    const z = normalizePostal(iso, zip);
+    if (!z.ok) return setError(z.error);
 
     setError(null);
-    setSubmitted(true);
-
-    let finalPhone = cleanPhone;
-    if (!finalPhone.startsWith("+")) {
-      finalPhone = `${countryCode} ${finalPhone}`;
-    }
-
-    onSubmit(`${finalPhone}, ZIP: ${cleanZip}`);
+    onSubmit(formatContactMessage(iso, p.value, z.value));
   };
-
   return (
     <div className="mt-3 bg-white dark:bg-slate-800 rounded-xl p-3.5 border border-blue-200 dark:border-slate-700 shadow-sm text-left">
       <div className="flex items-center justify-between mb-2.5">
@@ -83,14 +66,14 @@ export const ContactFormWidget: React.FC<ContactFormWidgetProps> = ({
           <div className="grid grid-cols-12 gap-1.5">
             {/* Box 1: Country Code Selector */}
             <select
-              value={countryCode}
-              onChange={(e) => setCountryCode(e.target.value)}
-              disabled={disabled || submitted}
+              value={iso}
+              onChange={(e) => { setIso(e.target.value); setError(null); }}
+              disabled={disabled}
               className="col-span-5 text-xs bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-100 rounded-lg px-1.5 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
             >
-              {COUNTRY_CODES.map((c) => (
-                <option key={c.code + c.country} value={c.code}>
-                  {c.flag} {c.code}
+              {CONTACT_COUNTRIES.map((c) => (
+                <option key={c.iso} value={c.iso} title={c.name}>
+                  {c.flag} {c.iso} +{c.dial}
                 </option>
               ))}
             </select>
@@ -98,13 +81,31 @@ export const ContactFormWidget: React.FC<ContactFormWidgetProps> = ({
             {/* Box 2: Phone Number Input */}
             <input
               type="tel"
-              placeholder="e.g. 6175551234"
+              placeholder="National number"
               value={phone}
               onChange={(e) => {
-                setPhone(e.target.value);
+                const val = e.target.value;
+                setPhone(val);
                 setError(null);
+
+                const trimmed = val.trim();
+                if (trimmed.startsWith("+") || trimmed.startsWith("00")) {
+                  const digits = (trimmed.startsWith("00") ? trimmed.slice(2) : trimmed.slice(1)).replace(/\D/g, "");
+                  const matched = findCountryByDialDigits(digits);
+                  if (matched && matched.iso !== iso) {
+                    setIso(matched.iso);
+                  }
+                } else {
+                  const digits = trimmed.replace(/\D/g, "");
+                  const matched = findCountryByDialDigits(digits);
+                  if (matched && matched.iso !== iso && matched.national.test(digits.slice(matched.dial.length))) {
+                    setIso(matched.iso);
+                  } else if (iso === "US" && digits.length === 10 && /^[6-9]\d{9}$/.test(digits) && (digits[3] === "0" || digits[3] === "1")) {
+                    setIso("IN");
+                  }
+                }
               }}
-              disabled={disabled || submitted}
+              disabled={disabled}
               className="col-span-7 text-xs bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-100 rounded-lg px-2.5 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none placeholder:text-slate-400"
             />
           </div>
@@ -117,14 +118,13 @@ export const ContactFormWidget: React.FC<ContactFormWidgetProps> = ({
           </label>
           <input
             type="text"
-            maxLength={6}
-            placeholder="6-digit ZIP (e.g. 411001 or 021100)"
+            placeholder={`${country.name}: ${country.postalExample}`}
             value={zip}
             onChange={(e) => {
               setZip(e.target.value);
               setError(null);
             }}
-            disabled={disabled || submitted}
+            disabled={disabled}
             className="w-full text-xs bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-100 rounded-lg px-2.5 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none placeholder:text-slate-400"
           />
         </div>
@@ -137,10 +137,10 @@ export const ContactFormWidget: React.FC<ContactFormWidgetProps> = ({
 
         <button
           type="submit"
-          disabled={disabled || submitted}
+          disabled={disabled}
           className="w-full bg-[#023047] hover:bg-[#034262] text-white text-xs font-bold py-2 px-3 rounded-lg shadow transition-all active:scale-[0.98] disabled:opacity-50"
         >
-          {submitted ? "Submitted ✓" : "Submit Contact Info"}
+          {disabled ? "Submitting…" : "Submit Contact Info"}
         </button>
       </form>
     </div>

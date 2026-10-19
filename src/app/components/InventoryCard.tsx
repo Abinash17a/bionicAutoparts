@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { InventoryItem } from '@/lib/inventory/inventoryRepository';
 import { ShieldCheck, Truck, ArrowRight } from 'lucide-react';
@@ -25,16 +26,20 @@ export default function InventoryCard({ item }: InventoryCardProps) {
       <div>
         {/* Card Header & Image */}
         <div className="relative h-52 w-full bg-slate-100 overflow-hidden">
-          <img
+          <Image
             src={imgSrc}
             alt={item.partName}
+            fill
+            sizes="(max-width: 640px) calc(100vw - 32px), (max-width: 1024px) 50vw, 384px"
+            quality={68}
             onError={() => setImgSrc(defaultFallback)}
-            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+            className="object-cover hover:scale-105 transition-transform duration-300"
+            loading="lazy"
           />
           <div className="absolute top-3 left-3 bg-blue-600/90 backdrop-blur-sm text-white text-xs font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider">
             {item.categoryName}
           </div>
-          <div className="absolute top-3 right-3 bg-emerald-600 text-white text-xs font-semibold px-2.5 py-1 rounded-full">
+          <div className="absolute top-3 right-3 bg-emerald-700 text-white text-xs font-semibold px-2.5 py-1 rounded-full">
             {item.availability}
           </div>
         </div>
@@ -89,12 +94,12 @@ export default function InventoryCard({ item }: InventoryCardProps) {
       {/* Footer Section with Price & Action */}
       <div className="p-5 pt-0 border-t border-slate-100 mt-4 flex items-center justify-between">
         <div>
-          <span className="text-xs text-slate-400 block">Recycled OEM Price</span>
+          <span className="text-xs text-slate-600 block">Recycled OEM Price</span>
           <span className="text-2xl font-black text-blue-700">{item.priceFormatted}</span>
         </div>
         <Link
           href={`/parts/${item.id}`}
-          className="inline-flex items-center px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm transition-colors shadow-sm"
+          className="inline-flex items-center px-4 py-2.5 rounded-lg bg-blue-700 hover:bg-blue-800 text-white font-medium text-sm transition-colors shadow-sm"
         >
           View Details
           <ArrowRight className="w-4 h-4 ml-1.5" />

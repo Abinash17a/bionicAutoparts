@@ -88,9 +88,13 @@ const SubmissionCard: React.FC<CardProps> = (props) => {
   const mainImgRef = useRef<HTMLImageElement | null>(null)
 
   // Prev/Next main image
-  const prev = () => setIndex((i) => (images.length ? (i - 1 + images.length) % images.length : 0))
-  const next = () => setIndex((i) => (images.length ? (i + 1) % images.length : 0))
+  const prev = React.useCallback(() => {
+    setIndex((i) => (images.length ? (i - 1 + images.length) % images.length : 0));
+  }, [images.length]);
 
+  const next = React.useCallback(() => {
+    setIndex((i) => (images.length ? (i + 1) % images.length : 0));
+  }, [images.length]);
 
   // Ensure selected thumbnail is visible in view
   useEffect(() => {
@@ -145,7 +149,7 @@ const SubmissionCard: React.FC<CardProps> = (props) => {
       imgEl.removeEventListener("touchmove", onTouchMove)
       imgEl.removeEventListener("touchend", onTouchEnd)
     }
-  }, [images.length])
+  }, [prev, next])
 
   if (variant !== "submission") return null
 

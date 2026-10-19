@@ -1,4 +1,5 @@
 // src/lib/supabase/admin.ts
+// SERVER-ONLY privileged client. Never import from browser code.
 import { createClient as createSupabaseClient, SupabaseClient } from '@supabase/supabase-js';
 
 export function createAdminClient(): SupabaseClient | null {
@@ -14,19 +15,18 @@ export function createAdminClient(): SupabaseClient | null {
     supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   }
 
-  let serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (isInvalid(serviceRoleKey)) {
-    serviceRoleKey = process.env.SUPABASE_ANON_KEY;
-  }
-  if (isInvalid(serviceRoleKey)) {
-    serviceRoleKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  // Privileged key only: new secret key, else legacy service_role.
+  // Deliberately NO fallback to publishable/anon keys.
+  let secretKey = process.env.SUPABASE_SECRET_KEY;
+  if (isInvalid(secretKey)) {
+    secretKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   }
 
-  if (isInvalid(supabaseUrl) || isInvalid(serviceRoleKey)) {
+  if (isInvalid(supabaseUrl) || isInvalid(secretKey)) {
     return null;
   }
 
-  return createSupabaseClient(supabaseUrl!, serviceRoleKey!, {
+  return createSupabaseClient(supabaseUrl!, secretKey!, {
     auth: {
       autoRefreshToken: false,
       persistSession: false,
@@ -38,7 +38,9 @@ export const supabaseAdmin = new Proxy({} as SupabaseClient, {
   get(_target, prop, receiver) {
     const client = createAdminClient();
     if (!client) {
-      throw new Error("Supabase admin client is not configured or missing valid credentials.");
+      throw new Error(
+        "Supabase admin client is not configured: set SUPABASE_URL and SUPABASE_SECRET_KEY (or legacy SUPABASE_SERVICE_ROLE_KEY)."
+      );
     }
     const val = Reflect.get(client, prop, receiver);
     return typeof val === "function" ? val.bind(client) : val;

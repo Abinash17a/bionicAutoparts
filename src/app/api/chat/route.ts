@@ -1,17 +1,18 @@
 import { NextResponse } from "next/server";
-import { db } from "../../lib/firebase";
-import { doc, getDoc, setDoc, collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { chat, ConversationContext } from "@/lib/tony_beta3";
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
     const sessionId = (body.session_id || body.sessionId || "").trim();
+    const isTestMode = process.env.USA_AUTOPARTSBOT_TEST_MODE === "true";
 
-    // Retrieve persistent session state from Firebase if not provided in request body
+    // Retrieve persistent session state from Firebase only if NOT in test mode and not provided in request body
     let sessionState = body.session_state || body.context || null;
-    if (!sessionState && sessionId) {
+    if (!isTestMode && !sessionState && sessionId) {
       try {
+        const { db } = await import("../../lib/firebase");
+        const { doc, getDoc } = await import("firebase/firestore");
         const sessionSnap = await getDoc(doc(db, "quinbot_sessions", sessionId));
         if (sessionSnap.exists()) {
           const data = sessionSnap.data();
@@ -65,8 +66,9 @@ export async function POST(req: Request) {
     };
 
     // Progressive Firebase save — separate QuinBot namespace: quinbot_sessions/{sessionId}
+    // Only executed when test mode is disabled
     const resolvedSessionId = sessionId || chatOutput.session_id;
-    if (resolvedSessionId) {
+    if (!isTestMode && resolvedSessionId) {
       saveToFirebase(resolvedSessionId, body.message, responsePayload).catch((err) => {
         console.error("[Chat API] Firebase save error (non-blocking):", err);
       });
@@ -91,6 +93,11 @@ async function saveToFirebase(
   userMessage: string,
   botResponse: Record<string, unknown>
 ) {
+  if (process.env.USA_AUTOPARTSBOT_TEST_MODE === "true") return;
+
+  const { db } = await import("../../lib/firebase");
+  const { doc, setDoc, collection, addDoc, serverTimestamp } = await import("firebase/firestore");
+
   const sessionRef = doc(db, "quinbot_sessions", sessionId);
   const extracted = (botResponse.extracted_data || botResponse.context || {}) as Record<string, unknown>;
   const vehicle = (extracted.vehicle || {}) as Record<string, unknown>;

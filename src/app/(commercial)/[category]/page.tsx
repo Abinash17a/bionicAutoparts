@@ -5,12 +5,17 @@ import { Metadata } from 'next';
 import {
   getCategoryBySlug,
   getActiveMakes,
+  CATEGORIES,
 } from '@/lib/inventory/inventoryRepository';
 import VehicleQuoteBox from '../../components/VehicleQuoteBox';
 import { ShieldCheck, Truck, Wrench, CheckCircle2, ChevronRight } from 'lucide-react';
 
 interface CategoryPageProps {
   params: { category: string };
+}
+
+export function generateStaticParams() {
+  return Object.keys(CATEGORIES).map((category) => ({ category }));
 }
 
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {

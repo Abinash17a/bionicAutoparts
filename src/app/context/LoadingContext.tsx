@@ -1,6 +1,5 @@
 "use client";
-import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
-import { usePathname } from 'next/navigation';
+import React, { createContext, useContext, useState } from 'react';
 import PageTransitionLoader from '../components/PageTransitionLoader';
 
 interface LoadingContextType {
@@ -26,23 +25,6 @@ export const useLoading = () => {
 export const LoadingProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const isContentLoaded = true;
-  const pathname = usePathname();
-  const isFirstRender = useRef(true);
-
-  useEffect(() => {
-    // Avoid triggering full-screen loading on initial mount
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
-
-    setIsLoading(true);
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 400);
-
-    return () => clearTimeout(timer);
-  }, [pathname]);
 
   return (
     <LoadingContext.Provider value={{ isLoading, setIsLoading, isContentLoaded }}>

@@ -49,7 +49,7 @@ export class SessionRepository {
     if (client) {
       try {
         const { data, error } = await client
-          .from("chat_sessions")
+          .from("usaautopartsbot_chat_sessions")
           .select("id, session_id, context_json, created_at, updated_at")
           .eq("session_id", cleanSessionId)
           .limit(1);
@@ -83,8 +83,11 @@ export class SessionRepository {
           };
         }
         return null;
-      } catch {
-        // Fall back to local in-memory store
+      } catch (err: any) {
+        console.error("[SessionRepository] Error retrieving session from Supabase:", err?.message);
+        if (this.useSupabase) {
+          throw new SessionPersistenceError(`Failed to get session from Supabase: ${err?.message || "Unknown error"}`);
+        }
       }
     }
 
@@ -117,7 +120,7 @@ export class SessionRepository {
         const existing = await this.getSession(cleanSessionId);
         if (existing) {
           const { data, error } = await client
-            .from("chat_sessions")
+            .from("usaautopartsbot_chat_sessions")
             .update({ context_json: ctx, updated_at: nowTs })
             .eq("session_id", cleanSessionId)
             .select();
@@ -138,7 +141,7 @@ export class SessionRepository {
             created_at: nowTs,
             updated_at: nowTs,
           };
-          const { data, error } = await client.from("chat_sessions").insert(rowData).select();
+          const { data, error } = await client.from("usaautopartsbot_chat_sessions").insert(rowData).select();
           if (error) throw error;
           const newId = data && data.length > 0 ? data[0].id : cleanSessionId;
           return {
@@ -149,9 +152,16 @@ export class SessionRepository {
             updated_at: nowTs,
           };
         }
-      } catch {
-        // Fall back to local store
+      } catch (err: any) {
+        console.error("[SessionRepository] Error saving session to Supabase:", err?.message);
+        if (this.useSupabase) {
+          throw new SessionPersistenceError(`Failed to save session to Supabase: ${err?.message || "Unknown error"}`);
+        }
       }
+    }
+
+    if (this.useSupabase) {
+      throw new SessionPersistenceError("Supabase client is not available or not properly configured for session persistence.");
     }
 
     if (this.localStore.has(cleanSessionId)) {
@@ -195,7 +205,7 @@ export class SessionRepository {
     if (client) {
       try {
         const { data, error } = await client
-          .from("chat_sessions")
+          .from("usaautopartsbot_chat_sessions")
           .delete()
           .eq("session_id", cleanSessionId)
           .select();
@@ -204,8 +214,8 @@ export class SessionRepository {
           this.localStore.delete(cleanSessionId);
           return true;
         }
-      } catch {
-        // Fall through to local delete
+      } catch (err: any) {
+        console.error("[SessionRepository] Error deleting session in Supabase:", err?.message);
       }
     }
 

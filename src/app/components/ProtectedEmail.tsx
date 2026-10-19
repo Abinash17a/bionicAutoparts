@@ -3,64 +3,6 @@
 import React, { useState } from 'react'
 import { Mail, Eye, EyeOff } from 'lucide-react'
 
-interface ProtectedEmailProps {
-  user: string
-  domain: string
-  label: string
-  className?: string
-}
-
-export const ProtectedEmail: React.FC<ProtectedEmailProps> = ({ 
-  user, 
-  domain, 
-  label, 
-  className = "" 
-}) => {
-  const [isRevealed, setIsRevealed] = useState(false)
-  
-  // Base64 encode the email parts for additional obfuscation
-  const encodedUser = btoa(user)
-  const encodedDomain = btoa(domain)
-  
-  const revealEmail = () => {
-    setIsRevealed(true)
-  }
-  
-  const getEmail = () => {
-    try {
-      return `${atob(encodedUser)}@${atob(encodedDomain)}`
-    } catch {
-      return `${user}@${domain}`
-    }
-  }
-  
-  const handleEmailClick = () => {
-    if (isRevealed) {
-      window.location.href = `mailto:${getEmail()}`
-    } else {
-      revealEmail()
-    }
-  }
-  
-  return (
-    <button
-      onClick={handleEmailClick}
-      className={`text-blue-800 hover:text-blue-600 font-medium transition-colors flex items-center gap-2 ${className}`}
-      title={isRevealed ? `Email: ${getEmail()}` : "Click to reveal email"}
-    >
-      <Mail className="w-4 h-4" />
-      {isRevealed ? (
-        <span>{getEmail()}</span>
-      ) : (
-        <span className="flex items-center gap-1">
-          <span>Click to show {label}</span>
-          <Eye className="w-4 h-4" />
-        </span>
-      )}
-    </button>
-  )
-}
-
 interface ObfuscatedEmailProps {
   children: string
   className?: string
@@ -123,8 +65,10 @@ export const ClickToRevealEmail: React.FC<ClickToRevealEmailProps> = ({
         type="button"
         onClick={handleEmailClick}
         className={`font-medium transition-all duration-300 inline-flex items-center gap-2 ${
-          className?.includes('inline-flex') 
-            ? 'text-white hover:text-cyan-300 hover:scale-105' 
+          className?.includes('text-')
+            ? ''
+            : className?.includes('inline-flex')
+            ? 'text-white hover:text-cyan-300 hover:scale-105'
             : 'text-blue-800 hover:text-blue-600'
         }`}
         title={isVisible ? `Email: ${email}` : "Click to reveal email address"}
