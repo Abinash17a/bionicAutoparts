@@ -66,5 +66,5 @@
     "@humanwhocodes/config-array": "^0.14.0",
     "@humanwhocodes/object-schema": "^1.0.0",
     "glob": "^9.0.0"
-  },
+  }
 }
