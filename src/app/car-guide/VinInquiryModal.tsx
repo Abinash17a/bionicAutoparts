@@ -29,6 +29,7 @@ export default function VinInquiryModal({
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [zipCode, setZipCode] = useState("");
   const [requestedPart, setRequestedPart] = useState("");
   const [message, setMessage] = useState("");
 
@@ -92,6 +93,13 @@ export default function VinInquiryModal({
       return;
     }
 
+    // ZIP Code validation (US 5-digit or ZIP+4)
+    const zipRegex = /^\d{5}(-\d{4})?$/;
+    if (zipCode.trim() && !zipRegex.test(zipCode.trim())) {
+      setErrorMessage("Please enter a valid 5-digit ZIP code (or ZIP+4 format).");
+      return;
+    }
+
     if (!requestedPart.trim() || requestedPart.trim().length < 2) {
       setErrorMessage("Please describe the part you need.");
       return;
@@ -109,6 +117,7 @@ export default function VinInquiryModal({
           name: name.trim(),
           email: email.trim(),
           phone: phone.trim(),
+          zipCode: zipCode.trim(),
           requestedPart: requestedPart.trim(),
           message: message.trim(),
           vin: decodedVehicle.vin,
@@ -347,6 +356,22 @@ export default function VinInquiryModal({
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="e.g. (617) 555-0199"
+                    disabled={submitting}
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:bg-slate-100"
+                  />
+                </div>
+
+                {/* ZIP Code */}
+                <div>
+                  <label htmlFor="inquiry-zip" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
+                    ZIP Code <span className="text-slate-400 font-normal">(Optional)</span>
+                  </label>
+                  <input
+                    id="inquiry-zip"
+                    type="text"
+                    value={zipCode}
+                    onChange={(e) => setZipCode(e.target.value)}
+                    placeholder="Enter ZIP code (e.g. 90210 or 90210-1234)"
                     disabled={submitting}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:bg-slate-100"
                   />

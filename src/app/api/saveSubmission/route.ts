@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { db } from '../../lib/firebase';
 import { collection, addDoc, query, where, getDocs, doc, getDoc, updateDoc, setDoc } from 'firebase/firestore';
 import nodemailer from 'nodemailer';
+import { waitUntil } from '@vercel/functions';
+
 function generateCustomId(length = 6) {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let result = '';
@@ -36,7 +38,8 @@ async function updateCounter(counterValue: any) {
     throw error;
   }
 }
-let targetCollection: string ='';
+
+let targetCollection: string = '';
 async function getRandomCollection(): Promise<string> {
   try {
     let counter = await getCounterValue();
@@ -54,7 +57,24 @@ async function getRandomCollection(): Promise<string> {
     throw error;
   }
 }
-console.log("target collection is",targetCollection);
+
+console.log("target collection is", targetCollection);
+
+// Email transporter - created once and reused
+let emailTransporter: any = null;
+function getEmailTransporter() {
+  if (!emailTransporter && process.env.EMAIL_USER && process.env.EMAIL_APP_PASSWORD) {
+    emailTransporter = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_APP_PASSWORD,
+      },
+    });
+  }
+  return emailTransporter;
+}
+
 async function sendEmail(
   name: string,
   contact: string,
@@ -64,76 +84,57 @@ async function sendEmail(
   orderId: string,
   targetCollection: string
 ) {
+  const transporter = getEmailTransporter();
+  if (!transporter) {
+    console.log('Email not configured, skipping');
+    return;
+  }
+
   try {
-    const transporter = nodemailer.createTransport({
-      service: 'Gmail',
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_APP_PASSWORD,
-      },
-      debug: true,
-      logger: true,
+    const recipientEmail = 'part@usausedautopart.com';
+
+    const subjectPrefix =
+      targetCollection === 'submissions'
+        ? 'New Submission Notification'
+        : 'Exclusive New Submission Notification';
+
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: recipientEmail,
+      subject: `${subjectPrefix} ${orderId}`,
+      html: `
+        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
+          <h2 style="color: #007BFF; text-align: center;">${subjectPrefix}</h2>
+          <p style="font-size: 16px;">Kindly review and assist in confirming the availability and pricing of the requested part. Let's ensure we respond promptly to the customer:</p>
+          <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+            <tr>
+              <td style="font-weight: bold; padding: 8px; border: 1px solid #ddd;">Name:</td>
+              <td style="padding: 8px; border: 1px solid #ddd;">${name}</td>
+            </tr>
+            <tr>
+              <td style="font-weight: bold; padding: 8px; border: 1px solid #ddd;">Contact:</td>
+              <td style="padding: 8px; border: 1px solid #ddd;">${contact}</td>
+            </tr>
+            <tr>
+              <td style="font-weight: bold; padding: 8px; border: 1px solid #ddd;">Email:</td>
+              <td style="padding: 8px; border: 1px solid #ddd;">${email}</td>
+            </tr>
+            <tr>
+              <td style="font-weight: bold; padding: 8px; border: 1px solid #ddd;">Zip Code:</td>
+              <td style="padding: 8px; border: 1px solid #ddd;">${zipCode}</td>
+            </tr>
+            <tr>
+              <td style="font-weight: bold; padding: 8px; border: 1px solid #ddd;">Part:</td>
+              <td style="padding: 8px; border: 1px solid #ddd;">${searchedPartFormatted}</td>
+            </tr>
+          </table>
+          <p style="font-size: 14px; color: #555;">This is an automated notification. If you have any questions, please contact support.</p>
+          <footer style="margin-top: 20px; text-align: center; font-size: 14px; color: #888;">
+            &copy; ${new Date().getFullYear()} American Dismantling. All rights reserved.
+          </footer>
+        </div>
+      `,
     });
-
-    const getMailOptions = (target: string) => {
-      if (target === undefined) {
-        throw new Error("Target collection is undefined. Cannot proceed with mail options.");
-      }
-
-      const recipientEmail =
-        target === 'submissions'
-          ? 'part@usausedautopart.com'
-          : 'part@usausedautopart.com';
-
-      const subjectPrefix =
-        target === 'submissions'
-          ? 'New Submission Notification'
-          : 'Exclusive New Submission Notification';
-
-      return {
-        from: process.env.EMAIL_USER,
-        to: recipientEmail,
-        subject: `${subjectPrefix} ${orderId}`,
-        html: `
-          <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
-            <h2 style="color: #007BFF; text-align: center;">${subjectPrefix}</h2>
-            <p style="font-size: 16px;">Kindly review and assist in confirming the availability and pricing of the requested part. Let’s ensure we respond promptly to the customer:</p>
-            <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
-              <tr>
-                <td style="font-weight: bold; padding: 8px; border: 1px solid #ddd;">Name:</td>
-                <td style="padding: 8px; border: 1px solid #ddd;">${name}</td>
-              </tr>
-              <tr>
-                <td style="font-weight: bold; padding: 8px; border: 1px solid #ddd;">Contact:</td>
-                <td style="padding: 8px; border: 1px solid #ddd;">${contact}</td>
-              </tr>
-              <tr>
-                <td style="font-weight: bold; padding: 8px; border: 1px solid #ddd;">Email:</td>
-                <td style="padding: 8px; border: 1px solid #ddd;">${email}</td>
-              </tr>
-              <tr>
-                <td style="font-weight: bold; padding: 8px; border: 1px solid #ddd;">Zip Code:</td>
-                <td style="padding: 8px; border: 1px solid #ddd;">${zipCode}</td>
-              </tr>
-              <tr>
-                <td style="font-weight: bold; padding: 8px; border: 1px solid #ddd;">Part:</td>
-                <td style="padding: 8px; border: 1px solid #ddd;">${searchedPartFormatted}</td>
-              </tr>
-            </table>
-            <p style="font-size: 14px; color: #555;">This is an automated notification. If you have any questions, please contact support.</p>
-            <footer style="margin-top: 20px; text-align: center; font-size: 14px; color: #888;">
-              &copy; ${new Date().getFullYear()} American Dismantling. All rights reserved.
-            </footer>
-          </div>
-        `,
-      };
-    };
-    console.log("target collection is in before mail",targetCollection);
-
-
-    const mailOptions = getMailOptions(targetCollection);
-
-    await transporter.sendMail(mailOptions);
     console.log('Email sent successfully.');
   } catch (error: any) {
     console.error('Error sending email:', error);
@@ -150,17 +151,21 @@ async function sendEmail(
 }
 
 export async function POST(req: NextRequest) {
-  const { name, contact, email, zipCode, searchedPartFormatted } = await req.json();
+  const startTime = Date.now();
 
   try {
-    const submissionsRef = collection(db, 'submissions');
-    const submissionsV2Ref = collection(db, 'submissionsv2');
+    const { name, contact, email, zipCode, searchedPartFormatted } = await req.json();
 
-    const querySubmissions = query(submissionsRef, where('contact', '==', contact));
-    const submissionsSnapshot = await getDocs(querySubmissions);
+    // Validate required fields
+    if (!name || !contact || !email || !searchedPartFormatted) {
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    }
 
-    const querySubmissionsV2 = query(submissionsV2Ref, where('contact', '==', contact));
-    const submissionsV2Snapshot = await getDocs(querySubmissionsV2);
+    // Run duplicate check queries in parallel
+    const [submissionsSnapshot, submissionsV2Snapshot] = await Promise.all([
+      getDocs(query(collection(db, 'submissions'), where('contact', '==', contact))),
+      getDocs(query(collection(db, 'submissionsv2'), where('contact', '==', contact))),
+    ]);
 
     let orderId: string;
 
@@ -186,13 +191,18 @@ export async function POST(req: NextRequest) {
       orderId,
     });
 
-    // Send email notification
-    if(targetCollection === 'submissions') {
-    await sendEmail(name, contact, email, zipCode,searchedPartFormatted,orderId,targetCollection);
-    }
-    if(targetCollection === 'submissionsv2') {
-      await sendEmail(name, contact, email, zipCode,searchedPartFormatted,orderId,targetCollection);
-      }
+    const dbDuration = Date.now() - startTime;
+    console.log(`[PERF] saveSubmission DB write: ${dbDuration}ms, orderId: ${orderId}, collection: ${targetCollection}`);
+
+    // Send email notification in background using waitUntil (Vercel-supported)
+    // This ensures the email is sent even after the response is returned
+    waitUntil(
+      sendEmail(name, contact, email, zipCode, searchedPartFormatted, orderId, targetCollection).catch((e) => console.error('Background email failed:', e))
+    );
+
+    const totalDuration = Date.now() - startTime;
+    console.log(`[PERF] saveSubmission total: ${totalDuration}ms, orderId: ${orderId}`);
+
     const response = NextResponse.json({
       message: `Data saved successfully in ${targetCollection}!`,
       id: docRef.id,
@@ -205,7 +215,8 @@ export async function POST(req: NextRequest) {
 
     return response;
   } catch (error) {
-    console.error('Error adding document: ', error);
+    const totalDuration = Date.now() - startTime;
+    console.error(`[PERF] saveSubmission failed after ${totalDuration}ms:`, error);
     return NextResponse.json({ error: 'Error saving data' }, { status: 500 });
   }
 }

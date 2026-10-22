@@ -22,7 +22,7 @@ export default function ChatbotRoot() {
   }, []);
 
   // Chatbot temporarily disabled per user request
-  const isEnabled = false;
+  const isEnabled = true;
   if (!isEnabled || !mounted) return null;
 
   return (

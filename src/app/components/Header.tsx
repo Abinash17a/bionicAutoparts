@@ -57,22 +57,22 @@ export default function Header() {
         }}
       >
         <Box
-          sx={{
-            width: { xs: "94%", sm: "92%", md: "90%" },
-            maxWidth: "1450px",
-            height: { xs: "80px", md: "105px" },
-            pointerEvents: "auto",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            px: { xs: 2, sm: 2.5, md: 3.5, lg: 4 },
-            backgroundColor: "#ffffff",
-            borderRadius: { xs: "16px", md: "20px" },
-            border: "1px solid rgba(226, 232, 240, 0.9)",
-            boxShadow: "0 10px 30px -5px rgba(0, 0, 0, 0.16), 0 4px 12px -2px rgba(0, 0, 0, 0.08)",
-            fontFamily: "'Poppins', 'Inter', 'sans-serif'",
-          }}
-        >
+                  sx={{
+                    width: { xs: "94%", sm: "92%", md: "90%" },
+                    maxWidth: "1450px",
+                    height: { xs: "80px", md: "105px" },
+                    pointerEvents: "auto",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    px: { xs: 2, sm: 2.5, md: 3.5, lg: 4 },
+                    backgroundColor: "#ffffff",
+                    borderRadius: { xs: "16px", md: "20px" },
+                    border: "1px solid rgba(226, 232, 240, 0.9)",
+                    boxShadow: "0 10px 30px -5px rgba(0, 0, 0, 0.16), 0 4px 12px -2px rgba(0, 0, 0, 0.08)",
+                    fontFamily: "Arial, 'Helvetica Neue', Helvetica, sans-serif",
+                  }}
+                >
           {/* Logo + Brand */}
           <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center" }}>
             <Box
@@ -100,45 +100,45 @@ export default function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <Box
-            sx={{
-              display: { xs: "none", md: "flex" },
-              alignItems: "center",
-              gap: { md: 0.5, lg: 1.25 },
-            }}
-          >
-            {NAV_ITEMS.map((item) => {
-              const active = isActive(item.path)
-              return (
-                <Button
-                  key={item.title}
-                  component={Link}
-                  href={item.path}
-                  prefetch={true}
-                  sx={{
-                    color: active ? "#2563eb" : "#1f2937",
-                    fontWeight: active ? 700 : 500,
-                    fontSize: { md: "0.85rem", lg: "0.925rem" },
-                    textTransform: "none",
-                    px: { md: 1.25, lg: 1.75 },
-                    py: 0.8,
-                    borderRadius: "10px",
-                    backgroundColor: active ? "rgba(37, 99, 235, 0.08)" : "transparent",
-                    transition: "all 0.2s ease",
-                    fontFamily: "'Poppins', 'Inter', 'sans-serif'",
-                    "&:hover": {
-                      color: "#2563eb",
-                      backgroundColor: active
-                        ? "rgba(37, 99, 235, 0.12)"
-                        : "rgba(37, 99, 235, 0.05)",
-                    },
-                  }}
-                >
-                  {item.title}
-                </Button>
-              )
-            })}
-          </Box>
+                    <Box
+                      sx={{
+                        display: { xs: "none", md: "flex" },
+                        alignItems: "center",
+                        gap: { md: 0.5, lg: 1.25 },
+                      }}
+                    >
+                      {NAV_ITEMS.map((item) => {
+                        const active = isActive(item.path)
+                        return (
+                          <Button
+                            key={item.title}
+                            component={Link}
+                            href={item.path}
+                            prefetch={true}
+                            sx={{
+                              color: active ? "#2563eb" : "#1f2937",
+                              fontWeight: active ? 700 : 500,
+                              fontSize: { md: "0.85rem", lg: "0.925rem" },
+                              textTransform: "none",
+                              px: { md: 1.25, lg: 1.75 },
+                              py: 0.8,
+                              borderRadius: "10px",
+                              backgroundColor: active ? "rgba(37, 99, 235, 0.08)" : "transparent",
+                              transition: "all 0.2s ease",
+                              fontFamily: "Arial, 'Helvetica Neue', Helvetica, sans-serif",
+                              "&:hover": {
+                                color: "#2563eb",
+                                backgroundColor: active
+                                  ? "rgba(37, 99, 235, 0.12)"
+                                  : "rgba(37, 99, 235, 0.05)",
+                              },
+                            }}
+                          >
+                            {item.title}
+                          </Button>
+                        )
+                      })}
+                    </Box>
 
           {/* Mobile Menu Button */}
           <IconButton
@@ -176,90 +176,90 @@ export default function Header() {
 
       {/* Mobile Drawer */}
       <Drawer
-        variant="temporary"
-        anchor="right"
-        open={mobileOpen}
-        onClose={handleDrawerToggle}
-        ModalProps={{
-          keepMounted: true,
-        }}
-        sx={{
-          display: { xs: "block", md: "none" },
-          "& .MuiDrawer-paper": {
-            boxSizing: "border-box",
-            width: 290,
-            backgroundColor: "#fff",
-            backgroundImage: "none",
-            borderLeft: "1px solid #e0e0e0",
-            fontFamily: "'Poppins', 'Inter', 'sans-serif'",
-          },
-        }}
-      >
-        <Box sx={{ p: 2.5 }}>
-          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}>
-            <Link
-              href="/"
-              onClick={handleDrawerToggle}
-              style={{ textDecoration: "none", display: "flex", alignItems: "center" }}
+              variant="temporary"
+              anchor="right"
+              open={mobileOpen}
+              onClose={handleDrawerToggle}
+              ModalProps={{
+                keepMounted: true,
+              }}
+              sx={{
+                display: { xs: "block", md: "none" },
+                "& .MuiDrawer-paper": {
+                  boxSizing: "border-box",
+                  width: 290,
+                  backgroundColor: "#fff",
+                  backgroundImage: "none",
+                  borderLeft: "1px solid #e0e0e0",
+                  fontFamily: "Arial, 'Helvetica Neue', Helvetica, sans-serif",
+                },
+              }}
             >
-              <Image
-                src="/logo and landing/usedautopartslogo.png"
-                alt="USA Used Auto Parts"
-                width={260}
-                height={85}
-                style={{
-                  height: "60px",
-                  width: "auto",
-                  objectFit: "contain",
-                }}
-              />
-            </Link>
-            <IconButton onClick={handleDrawerToggle} sx={{ color: "#1f2937" }} aria-label="close menu">
-              <CloseIcon />
-            </IconButton>
-          </Box>
-
-          <List sx={{ pt: 1 }}>
-            {NAV_ITEMS.map((item) => {
-              const active = isActive(item.path)
-              return (
-                <ListItem key={item.title} disablePadding>
-                  <ListItemButton
-                    component={Link}
-                    href={item.path}
-                    prefetch={true}
+              <Box sx={{ p: 2.5 }}>
+                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}>
+                  <Link
+                    href="/"
                     onClick={handleDrawerToggle}
-                    sx={{
-                      borderRadius: "10px",
-                      mb: 0.75,
-                      backgroundColor: active ? "rgba(37, 99, 235, 0.08)" : "transparent",
-                      "&:hover": {
-                        backgroundColor: active
-                          ? "rgba(37, 99, 235, 0.12)"
-                          : "rgba(0, 0, 0, 0.04)",
-                      },
-                      fontFamily: "'Poppins', 'Inter', 'sans-serif'",
-                    }}
+                    style={{ textDecoration: "none", display: "flex", alignItems: "center" }}
                   >
-                    <ListItemText
-                      primary={item.title}
-                      sx={{
-                        "& .MuiListItemText-primary": {
-                          color: active ? "#2563eb" : "#1f2937",
-                          fontWeight: active ? 700 : 500,
-                          fontSize: "0.95rem",
-                          fontFamily: "'Poppins', 'Inter', 'sans-serif'",
-                          textDecoration: "none",
-                        },
+                    <Image
+                      src="/logo and landing/usedautopartslogo.png"
+                      alt="USA Used Auto Parts"
+                      width={260}
+                      height={85}
+                      style={{
+                        height: "60px",
+                        width: "auto",
+                        objectFit: "contain",
                       }}
                     />
-                  </ListItemButton>
-                </ListItem>
-              )
-            })}
-          </List>
-        </Box>
-      </Drawer>
+                  </Link>
+                  <IconButton onClick={handleDrawerToggle} sx={{ color: "#1f2937" }} aria-label="close menu">
+                    <CloseIcon />
+                  </IconButton>
+                </Box>
+
+                <List sx={{ pt: 1 }}>
+                  {NAV_ITEMS.map((item) => {
+                    const active = isActive(item.path)
+                    return (
+                      <ListItem key={item.title} disablePadding>
+                        <ListItemButton
+                          component={Link}
+                          href={item.path}
+                          prefetch={true}
+                          onClick={handleDrawerToggle}
+                          sx={{
+                            borderRadius: "10px",
+                            mb: 0.75,
+                            backgroundColor: active ? "rgba(37, 99, 235, 0.08)" : "transparent",
+                            "&:hover": {
+                              backgroundColor: active
+                                ? "rgba(37, 99, 235, 0.12)"
+                                : "rgba(0, 0, 0, 0.04)",
+                            },
+                            fontFamily: "Arial, 'Helvetica Neue', Helvetica, sans-serif",
+                          }}
+                        >
+                          <ListItemText
+                            primary={item.title}
+                            sx={{
+                              "& .MuiListItemText-primary": {
+                                color: active ? "#2563eb" : "#1f2937",
+                                fontWeight: active ? 700 : 500,
+                                fontSize: "0.95rem",
+                                fontFamily: "Arial, 'Helvetica Neue', Helvetica, sans-serif",
+                                textDecoration: "none",
+                              },
+                            }}
+                          />
+                        </ListItemButton>
+                      </ListItem>
+                    )
+                  })}
+                </List>
+              </Box>
+            </Drawer>
     </>
   )
 }

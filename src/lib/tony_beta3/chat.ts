@@ -133,9 +133,16 @@ export async function chat(
       category = "REQUEST_COMPLETE";
       reply = responseObj.reply || "Thanks! We have all the details we need. Our team will get in touch with you shortly.";
     } else {
-      console.error("[TonyBeta3 Chat] Customer request save failed:", saveResult.error);
+      const reqId = `req_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+      const errDetail = saveResult.error || 'Unknown error';
+      console.error('[TonyBeta3 Chat] Customer request save failed', {
+        requestId: reqId,
+        sessionId: sessionId || 'none',
+        error: errDetail,
+        vehicle: { manufacturer: String(mfg), model: String(model), year: Number(year), part: String(part) },
+      });
       // Failure safety: do NOT claim success or return REQUEST_COMPLETE
-      category = "ERROR";
+      category = 'ERROR';
       reply = "Sorry, I'm having trouble recording your request right now. Please try again in a moment.";
     }
   } else {
@@ -156,7 +163,12 @@ export async function chat(
     try {
       await sessionRepo.saveSession(sessionId, updatedCtx);
     } catch (sessionErr: any) {
-      console.error("[TonyBeta3 Chat] Session save failed:", sessionErr?.message);
+      const reqId = `req_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+      console.error('[TonyBeta3 Chat] Session save failed', {
+        requestId: reqId,
+        sessionId,
+        error: sessionErr?.message || 'Unknown error',
+      });
     }
   }
 

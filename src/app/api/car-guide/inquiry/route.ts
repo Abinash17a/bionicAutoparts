@@ -3,6 +3,7 @@ import { db } from '@/app/lib/firebase';
 import { collection, addDoc } from 'firebase/firestore';
 import nodemailer from 'nodemailer';
 import { validateVinFormat } from '@/lib/nhtsa/nhtsaService';
+import { waitUntil } from '@vercel/functions';
 
 function generateOrderId(length = 6): string {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
@@ -20,6 +21,7 @@ async function sendNotificationEmail(params: {
   name: string;
   email: string;
   phone: string;
+  zipCode?: string;
   requestedPart: string;
   message?: string;
   vin: string;
@@ -34,6 +36,7 @@ async function sendNotificationEmail(params: {
   }
 
   try {
+    // Reuse transporter for better performance
     const transporter = nodemailer.createTransport({
       service: 'Gmail',
       auth: {
@@ -69,6 +72,11 @@ async function sendNotificationEmail(params: {
               <td style="font-weight: bold; padding: 8px; border: 1px solid #ddd;">Phone:</td>
               <td style="padding: 8px; border: 1px solid #ddd;">${params.phone}</td>
             </tr>
+            ${params.zipCode ? `
+            <tr>
+              <td style="font-weight: bold; padding: 8px; border: 1px solid #ddd;">ZIP Code:</td>
+              <td style="padding: 8px; border: 1px solid #ddd;">${params.zipCode}</td>
+            </tr>` : ''}
             <tr>
               <td style="font-weight: bold; padding: 8px; border: 1px solid #ddd;">Part Requested:</td>
               <td style="padding: 8px; border: 1px solid #ddd; font-weight: bold; color: #1E40AF;">${params.requestedPart}</td>
@@ -102,12 +110,15 @@ async function sendNotificationEmail(params: {
 }
 
 export async function POST(req: NextRequest) {
+  const startTime = Date.now();
+
   try {
     const body = await req.json();
     const {
       name,
       email,
       phone,
+      zipCode,
       requestedPart,
       message,
       vin,
@@ -138,6 +149,15 @@ export async function POST(req: NextRequest) {
     if (!phone || typeof phone !== 'string' || digitsOnly.length < 7) {
       return NextResponse.json(
         { error: 'Please provide a valid phone number (at least 7 digits).' },
+        { status: 400 }
+      );
+    }
+
+    // ZIP Code validation (US 5-digit or ZIP+4) - optional but validated if provided
+    const zipRegex = /^\d{5}(-\d{4})?$/;
+    if (zipCode && typeof zipCode === 'string' && zipCode.trim() && !zipRegex.test(zipCode.trim())) {
+      return NextResponse.json(
+        { error: 'Please provide a valid 5-digit ZIP code (or ZIP+4 format).' },
         { status: 400 }
       );
     }
@@ -174,6 +194,7 @@ export async function POST(req: NextRequest) {
       name: name.trim(),
       email: email.trim().toLowerCase(),
       phone: phone.trim(),
+      zipCode: zipCode ? zipCode.trim() : '',
       contact: phone.trim(), // for legacy dashboard queries
       requestedPart: requestedPart.trim(),
       part: requestedPart.trim(),
@@ -194,21 +215,31 @@ export async function POST(req: NextRequest) {
     const targetRef = collection(db, 'submissions');
     const docRef = await addDoc(targetRef, submissionDoc);
 
-    // Attempt email notification in background
-    sendNotificationEmail({
-      orderId,
-      name: submissionDoc.name,
-      email: submissionDoc.email,
-      phone: submissionDoc.phone,
-      requestedPart: submissionDoc.requestedPart,
-      message: submissionDoc.message,
-      vin: cleanVin,
-      vehicleYear: submissionDoc.vehicleYear,
-      vehicleMake: submissionDoc.vehicleMake,
-      vehicleModel: submissionDoc.vehicleModel,
-      vehicleTrim: submissionDoc.vehicleTrim,
-      vehicleEngine: submissionDoc.vehicleEngine,
-    }).catch((e) => console.error('Background email failed:', e));
+    const dbDuration = Date.now() - startTime;
+    console.log(`[PERF] VIN inquiry DB write: ${dbDuration}ms, orderId: ${orderId}`);
+
+    // Attempt email notification in background using waitUntil (Vercel-supported)
+    // This ensures the email is sent even after the response is returned
+    waitUntil(
+      sendNotificationEmail({
+        orderId,
+        name: submissionDoc.name,
+        email: submissionDoc.email,
+        phone: submissionDoc.phone,
+        zipCode: submissionDoc.zipCode,
+        requestedPart: submissionDoc.requestedPart,
+        message: submissionDoc.message,
+        vin: cleanVin,
+        vehicleYear: submissionDoc.vehicleYear,
+        vehicleMake: submissionDoc.vehicleMake,
+        vehicleModel: submissionDoc.vehicleModel,
+        vehicleTrim: submissionDoc.vehicleTrim,
+        vehicleEngine: submissionDoc.vehicleEngine,
+      }).catch((e) => console.error('Background email failed:', e))
+    );
+
+    const totalDuration = Date.now() - startTime;
+    console.log(`[PERF] VIN inquiry total: ${totalDuration}ms, orderId: ${orderId}`);
 
     return NextResponse.json(
       {
@@ -226,7 +257,8 @@ export async function POST(req: NextRequest) {
       { status: 201 }
     );
   } catch (error: unknown) {
-    console.error('Error saving VIN parts inquiry:', error);
+    const totalDuration = Date.now() - startTime;
+    console.error(`[PERF] VIN inquiry failed after ${totalDuration}ms:`, error);
     const message = error instanceof Error ? error.message : 'Failed to save parts inquiry.';
     return NextResponse.json(
       { error: 'An unexpected error occurred while saving your inquiry. Please try again.', details: message },
